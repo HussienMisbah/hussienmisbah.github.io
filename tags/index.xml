@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 0xMesbaha</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on 0xMesbaha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© all rights reserved for 0xMesbaha.</copyright>
+    <lastBuildDate>Thu, 27 Jan 2022 00:45:08 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hackthebox</title>
+      <link>/tags/hackthebox/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/hackthebox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>path poisoning</title>
+      <link>/tags/path-poisoning/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/path-poisoning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>RCE</title>
+      <link>/tags/rce/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/rce/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SSRF</title>
+      <link>/tags/ssrf/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/ssrf/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
