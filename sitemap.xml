@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2022-01-27T00:45:09+02:00</lastmod>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
+  </url><url>
+    <loc>/tags/chisel/</loc>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
+  </url><url>
+    <loc>/tags/hackthebox/</loc>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
+  </url><url>
+    <loc>/post/horizontall/</loc>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
+  </url><url>
+    <loc>/tags/port-forwading/</loc>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2022-02-04T00:45:09+02:00</lastmod>
   </url><url>
     <loc>/post/forge/</loc>
     <lastmod>2022-01-27T00:45:09+02:00</lastmod>
   </url><url>
-    <loc>/tags/hackthebox/</loc>
-    <lastmod>2022-01-27T00:45:09+02:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2022-01-27T00:45:09+02:00</lastmod>
-  </url><url>
     <loc>/tags/ssrf/</loc>
-    <lastmod>2022-01-27T00:45:09+02:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2022-01-27T00:45:09+02:00</lastmod>
   </url><url>
     <loc>/tags/path-poisoning/</loc>

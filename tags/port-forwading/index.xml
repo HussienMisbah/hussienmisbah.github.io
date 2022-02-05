@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Port forwading on 0xMesbaha</title>
+    <link>/tags/port-forwading/</link>
+    <description>Recent content in Port forwading on 0xMesbaha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© all rights reserved for 0xMesbaha.</copyright>
+    <lastBuildDate>Fri, 04 Feb 2022 00:45:09 +0200</lastBuildDate><atom:link href="/tags/port-forwading/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Horizontall Hackthebox writeup</title>
+      <link>/post/horizontall/</link>
+      <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
+      
+      <guid>/post/horizontall/</guid>
+      <description>&lt;p&gt;we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
