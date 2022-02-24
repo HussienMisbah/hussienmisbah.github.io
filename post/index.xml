@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Fri, 04 Feb 2022 00:45:09 +0200</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Feb 2022 00:45:12 +0200</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bolt Hackthebox writeup</title>
+      <link>/post/bolt/</link>
+      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
+      
+      <guid>/post/bolt/</guid>
+      <description>&lt;p&gt;In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &amp;ldquo;demo&amp;rdquo; which has some functions aren&amp;rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Horizontall Hackthebox writeup</title>
       <link>/post/horizontall/</link>
