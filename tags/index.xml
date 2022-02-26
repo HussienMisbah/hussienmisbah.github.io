@@ -7,13 +7,40 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Fri, 18 Feb 2022 00:45:12 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Feb 2022 00:45:08 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>evil-winrm</title>
+      <link>/tags/evil-winrm/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/evil-winrm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>firmware</title>
+      <link>/tags/firmware/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/firmware/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Hackthebox</title>
       <link>/tags/hackthebox/</link>
-      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       
       <guid>/tags/hackthebox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>print nigthmare</title>
+      <link>/tags/print-nigthmare/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/tags/print-nigthmare/</guid>
       <description></description>
     </item>
     

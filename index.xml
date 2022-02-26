@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Fri, 18 Feb 2022 00:45:12 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Feb 2022 00:45:08 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>/about/</link>
@@ -18,6 +18,17 @@
 Interested in the red teaming side, looking forward to sharpening my skills and satisfying my endless curiosity.
 I am really happy you are in my blog reading stuff , Feel free to contact me on My LinkedIn.
 Thanks !</description>
+    </item>
+    
+    <item>
+      <title>Driver Hackthebox writeup</title>
+      <link>/post/driver/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
+      
+      <guid>/post/driver/</guid>
+      <description>&lt;p&gt;In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
+the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
+except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.&lt;/p&gt;</description>
     </item>
     
     <item>
