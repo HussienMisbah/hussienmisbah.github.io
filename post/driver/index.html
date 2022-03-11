@@ -195,7 +195,7 @@
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">Driver Hackthebox writeup</h1>
-      <p class="post-meta">@0xMesbaha · Feb 25, 2022 · 4 min read</p>
+      <p class="post-meta">@0xMesbaha · Feb 25, 2022 · 5 min read</p>
     </header>
     <article class="post-content"><p>In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
 the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
@@ -205,10 +205,10 @@ except the smb shares aren&rsquo;t accessible so we will use evil-winrm to get t
 </code></pre></div><p>output :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PORT    STATE SERVICE      VERSION
 80/tcp  open  http         Microsoft IIS httpd 10.0
-| http-auth: 
+| http-auth:
 | HTTP/1.1 <span style="color:#ae81ff">401</span> Unauthorized<span style="color:#ae81ff">\x</span>0D
 |_  Basic realm<span style="color:#f92672">=</span>MFP Firmware Update Center. Please enter password <span style="color:#66d9ef">for</span> admin
-| http-methods: 
+| http-methods:
 |_  Potentially risky methods: TRACE
 |_http-server-header: Microsoft-IIS/10.0
 |_http-title: Site doesn<span style="color:#ae81ff">\&#39;</span>t have a title <span style="color:#f92672">(</span>text/html; charset<span style="color:#f92672">=</span>UTF-8<span style="color:#f92672">)</span>.
@@ -219,12 +219,12 @@ Service Info: Host: DRIVER; OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Host script results:
 |_clock-skew: mean: 7h17m43s, deviation: 0s, median: 7h17m43s
-| smb-security-mode: 
+| smb-security-mode:
 |   authentication_level: user
 |   challenge_response: supported
 |_  message_signing: disabled <span style="color:#f92672">(</span>dangerous, but default<span style="color:#f92672">)</span>
-| smb2-security-mode: 
-|   2.02: 
+| smb2-security-mode:
+|   2.02:
 |_    Message signing enabled but not required
 </code></pre></div><p>we can also run full port scan and will get  :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PORT     STATE SERVICE
@@ -268,7 +268,12 @@ Host script results:
 </ul>
 <pre><code>NTLM and the older LAN Manager (LM) encryption are supported by Microsoft SMB Protocol. Both encryption methods use challenge-response authentication, where the server sends the client a random string and the client returns a computed response string that proves the client has sufficient credentials for access.
 </code></pre><ul>
-<li>so if the client (the target) tries to connect to us (attacker) the NTLM hash will be used to authenticate and then we can capture it with <a href="https://github.com/lgandx/Responder">Responder</a> tool.</li>
+<li>
+<p>so if the client (the target) tries to connect to us (attacker) the NTLM hash will be used to authenticate and then we can capture it with <a href="https://github.com/lgandx/Responder">Responder</a> tool.</p>
+</li>
+<li>
+<p>and as the firmwares are checked manually so a user will click on the icon we will create .</p>
+</li>
 </ul>
 <h3 id="exploitation-">Exploitation :</h3>
 <ul>
@@ -340,7 +345,7 @@ Invoke-Nightmare -NewUser <span style="color:#e6db74">&#34;0xMesbaha&#34;</span>
         
           <li><a href="/tags/print-nigthmare"><span class="tag">Print Nigthmare</span></a></li>
         
-          <li><a href="/tags/firmware"><span class="tag">Firmware</span></a></li>
+          <li><a href="/tags/scf-attacks"><span class="tag">Scf Attacks</span></a></li>
         
           <li><a href="/tags/evil-winrm"><span class="tag">Evil-Winrm</span></a></li>
         

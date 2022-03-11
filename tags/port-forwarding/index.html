@@ -6,7 +6,7 @@
 
   
   <title>
-  Tag → evil-winrm
+  Tag → Port forwarding
   
    | 0xMesbaha
 </title>
@@ -43,7 +43,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="0xMesbaha">
   <meta property="og:description" content="Trying Harder.">
-  <meta property="og:url" content="/tags/evil-winrm/">
+  <meta property="og:url" content="/tags/port-forwarding/">
   <meta property="og:image" content="/images/avatar.gif">
 
 
@@ -52,8 +52,8 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/tags/evil-winrm/">
-<link rel="alternate" type="application/rss+xml" href="/tags/evil-winrm/index.xml" title="0xMesbaha">
+<link rel="canonical" href="/tags/port-forwarding/">
+<link rel="alternate" type="application/rss+xml" href="/tags/port-forwarding/index.xml" title="0xMesbaha">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -195,16 +195,32 @@
       
         <article class="post-entry">
   <header class="post-header">
-    <h3 class="post-title"><a href="/post/driver/" class="post-link">Driver Hackthebox writeup</a></h3>
-    <p class="post-meta">@0xMesbaha · Feb 25, 2022 · 5 min read</p>
+    <h3 class="post-title"><a href="/post/devzat/" class="post-link">Devzat Hackthebox writeup</a></h3>
+    <p class="post-meta">@0xMesbaha · Mar 11, 2022 · 6 min read</p>
   </header>
   
-    <img class="post-cover" src="/media/Driver/20220226105919.png" alt="Driver Hackthebox writeup" lazyload="on">
+    <img class="post-cover" src="/media/devzat/20220311132144.png" alt="Devzat Hackthebox writeup" lazyload="on">
   
-  <p class="post-summary">In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren’t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service “spooler” and add a user in the administrator group.
+  <p class="post-summary">In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command “file” which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
 </p>
   <footer class="post-footer">
-    <a class="read-more" href="/post/driver/">Read More →</a>
+    <a class="read-more" href="/post/devzat/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="/post/horizontall/" class="post-link">Horizontall Hackthebox writeup</a></h3>
+    <p class="post-meta">@0xMesbaha · Feb 4, 2022 · 3 min read</p>
+  </header>
+  
+    <img class="post-cover" src="/media/Horizontall/start.png" alt="Horizontall Hackthebox writeup" lazyload="on">
+  
+  <p class="post-summary">we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh
+</p>
+  <footer class="post-footer">
+    <a class="read-more" href="/post/horizontall/">Read More →</a>
   </footer>
 </article>
 

@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Fri, 25 Feb 2022 00:45:08 +0200</lastBuildDate><atom:link href="/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 11 Mar 2022 00:45:12 +0900</lastBuildDate><atom:link href="/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Devzat Hackthebox writeup</title>
+      <link>/post/devzat/</link>
+      <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate>
+      
+      <guid>/post/devzat/</guid>
+      <description>&lt;p&gt;In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Driver Hackthebox writeup</title>
       <link>/post/driver/</link>
