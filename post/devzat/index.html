@@ -26,7 +26,7 @@
 
   
   <meta name="author" content="0xMesbaha">
-  <meta name="description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+  <meta name="description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
 ">
 
   
@@ -34,7 +34,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@gohugoio">
     <meta name="twitter:title" content="Devzat Hackthebox writeup">
-    <meta name="twitter:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+    <meta name="twitter:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
 ">
     <meta name="twitter:image" content="/media/devzat/20220311132144.png">
   
@@ -42,7 +42,7 @@
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Devzat Hackthebox writeup">
-  <meta property="og:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+  <meta property="og:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
 ">
   <meta property="og:url" content="/post/devzat/">
   <meta property="og:image" content="/media/devzat/20220311132144.png">
@@ -197,7 +197,7 @@
       <h1 class="post-title">Devzat Hackthebox writeup</h1>
       <p class="post-meta">@0xMesbaha · Mar 11, 2022 · 6 min read</p>
     </header>
-    <article class="post-content"><p>In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the souce-code for a bot , the bot has 2 versions one of them is running locally and it has a command &ldquo;file&rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root</p>
+    <article class="post-content"><p>In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &ldquo;file&rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root</p>
 <h1 id="scanning-">Scanning :</h1>
 <p>i will start with basic scanning :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -A -T <span style="color:#ae81ff">4</span> -sV 10.10.11.118
