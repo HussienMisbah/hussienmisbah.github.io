@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>maria-DB on 0xMesbaha</title>
+    <link>/tags/maria-db/</link>
+    <description>Recent content in maria-DB on 0xMesbaha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© all rights reserved for 0xMesbaha.</copyright>
+    <lastBuildDate>Fri, 01 Apr 2022 00:49:18 +1808</lastBuildDate><atom:link href="/tags/maria-db/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shibboleth Hackthebox writeup</title>
+      <link>/post/shibboleth/</link>
+      <pubDate>Fri, 01 Apr 2022 00:49:18 +1808</pubDate>
+      
+      <guid>/post/shibboleth/</guid>
+      <description>&lt;p&gt;In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

