@@ -7,7 +7,61 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sun, 17 Apr 2022 12:49:18 +3408</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Apr 2022 00:51:12 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>directory Traversal</title>
+      <link>/tags/directory-traversal/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/directory-traversal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gdb server</title>
+      <link>/tags/gdb-server/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/gdb-server/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hackthebox</title>
+      <link>/tags/hackthebox/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/hackthebox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>screen</title>
+      <link>/tags/screen/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/screen/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Waste</title>
+      <link>/tags/waste/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/waste/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wordpress</title>
+      <link>/tags/wordpress/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/wordpress/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>CTF</title>
       <link>/tags/ctf/</link>
@@ -32,15 +86,6 @@
       <pubDate>Sun, 17 Apr 2022 12:49:18 +3408</pubDate>
       
       <guid>/tags/sql-injection/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Hackthebox</title>
-      <link>/tags/hackthebox/</link>
-      <pubDate>Fri, 01 Apr 2022 00:49:18 +1808</pubDate>
-      
-      <guid>/tags/hackthebox/</guid>
       <description></description>
     </item>
     
