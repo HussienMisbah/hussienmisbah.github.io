@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sat, 23 Apr 2022 00:51:12 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Apr 2022 00:52:13 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>/about/</link>
@@ -18,6 +18,15 @@
 Interested in the red teaming side, looking forward to sharpening my skills and satisfying my endless curiosity.
 I am really happy you are in my blog reading stuff , Feel free to contact me on My LinkedIn.
 Thanks !</description>
+    </item>
+    
+    <item>
+      <title>Windows-PrivEsc-Arena TryHackMe writeup</title>
+      <link>/post/windowsprivescarena/</link>
+      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
+      
+      <guid>/post/windowsprivescarena/</guid>
+      <description>&lt;p&gt;During studying the &lt;a href=&#34;https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners&#34;&gt;TCM windows privielge escalation course&lt;/a&gt; this is the &lt;a href=&#34;https://tryhackme.com/room/windowsprivescarena&#34;&gt;Lab&lt;/a&gt; designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist&lt;/p&gt;</description>
     </item>
     
     <item>

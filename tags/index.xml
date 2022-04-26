@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sat, 23 Apr 2022 00:51:12 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Apr 2022 00:52:13 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackme</title>
+      <link>/tags/tryhackme/</link>
+      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
+      
+      <guid>/tags/tryhackme/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>windows-privesc</title>
+      <link>/tags/windows-privesc/</link>
+      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
+      
+      <guid>/tags/windows-privesc/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>directory Traversal</title>
       <link>/tags/directory-traversal/</link>
