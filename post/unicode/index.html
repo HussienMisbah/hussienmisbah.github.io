@@ -319,7 +319,7 @@ cookie <span style="color:#f92672">=</span>{
 <p>After some tinkering around , we can use the <code>File://</code> wrapper to read local files :&quot;</p>
 <p><img src="/media/unicode/20220506232454.png" alt="error"></p>
 <p>and Finally you can read the flag with <code>File:///root/root.txt</code></p>
-<h1 id="bonus-after-root">[BONUS] After root</h1>
+<h2 id="analyzing-the-binary">Analyzing the binary</h2>
 <p>Downloading the Binary and start analyzing it , searching online found some tools which can help us de-compile a python binary and the binary we have looks like a python binary indeed</p>
 <p><img src="/media/unicode/20220507100201.png" alt="error"></p>
 <p>commands used :</p>
@@ -336,7 +336,18 @@ make ../pycdc/
 python3 pyinstxtractor.py &lt;binary&gt;
 ./pycdc /binary_extracted/binary.pyc
 </code></pre></div><p><img src="/media/unicode/20220507100601.png" alt="error"></p>
-<p>And it seems to have a blacklist , also it uses the curl command to download the files . and if we searched online how to read localfiles with curl will see using the <code>File://</code> wrapper as we did.</p></article>
+<p>And it seems to have a blacklist , also it uses the curl command to download the files . and if we searched online how to read localfiles with curl will see using the <code>File://</code> wrapper as we did.</p>
+<h2 id="root-access">Root Access</h2>
+<p>now we want to login as root , i have downloaded the root id_rsa But unable to login with it. we can try uploading our public key at the  <code>/root/.ssh/authorized_keys</code> , then try to connect with our private key.</p>
+<p>As we have option to download let&rsquo;s download our public key , But we can&rsquo;t specify where to save it:</p>
+<p><img src="/media/unicode/20220507185729.png" alt="error"></p>
+<p>Seems the space is the problem , and hence the <strong>'}'</strong> and <strong>'{'</strong> are not filter we can make use of this technique:</p>
+<p><img src="/media/unicode/20220507185909.png" alt="error"></p>
+<p>which the spaces are replaced with the <strong>','</strong></p>
+<p><img src="/media/unicode/20220507191553.png" alt="error"></p>
+<p>then let&rsquo;s connect :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -i unicode root@hackmedia.htb
+</code></pre></div><p><img src="/media/unicode/20220507191635.png" alt="error"></p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
