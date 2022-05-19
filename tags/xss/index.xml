@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XSS on 0xMesbaha</title>
+    <link>//localhost:1313/tags/xss/</link>
+    <description>Recent content in XSS on 0xMesbaha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© all rights reserved for 0xMesbaha.</copyright>
+    <lastBuildDate>Thu, 19 May 2022 12:49:18 +3408</lastBuildDate><atom:link href="//localhost:1313/tags/xss/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kryptos Support challenge Writeup</title>
+      <link>//localhost:1313/post/kryptos-support/</link>
+      <pubDate>Thu, 19 May 2022 12:49:18 +3408</pubDate>
+      
+      <guid>//localhost:1313/post/kryptos-support/</guid>
+      <description>&lt;p&gt;HTB Cyber Apocalypse CTF 2022 was held from the 14th of May Until the 19th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
