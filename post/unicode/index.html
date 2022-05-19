@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Unicode Hackthebox writeup">
     <meta name="twitter:description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.
 ">
-    <meta name="twitter:image" content="//localhost:1313/media/unicode/20220506203915.png">
+    <meta name="twitter:image" content="/media/unicode/20220506203915.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Unicode Hackthebox writeup">
   <meta property="og:description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.
 ">
-  <meta property="og:url" content="//localhost:1313/post/unicode/">
-  <meta property="og:image" content="//localhost:1313/media/unicode/20220506203915.png">
+  <meta property="og:url" content="/post/unicode/">
+  <meta property="og:image" content="/media/unicode/20220506203915.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="//localhost:1313/post/unicode/">
+<link rel="canonical" href="/post/unicode/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="//localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
-<link rel="manifest" href="//localhost:1313/manifest.json">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
 
 
-<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
-<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
   
   <p class="subtitle"></p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="//localhost:1313/">Posts</a>
+          <a href="/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="//localhost:1313/tags/">Tags</a>
+          <a href="/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="//localhost:1313/about/">About</a>
+          <a href="/about/">About</a>
         </li>
       
     </ul>
@@ -219,17 +219,17 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 </code></pre></div><p>and the full port scan doesn&rsquo;t reveal more ports.</p>
 <h1 id="enumeration">Enumeration</h1>
 <p>As we only have the web service to enumerate let&rsquo;s get into it:</p>
-<p><img src="//localhost:1313/media/unicode/20220506204508.png" alt="error"></p>
+<p><img src="/media/unicode/20220506204508.png" alt="error"></p>
 <p>static page doesn&rsquo;t tell much , it has Login and register functions. we can try to do some authentication bypass at login But no results. so let&rsquo;s create an account and login with it</p>
 <p>Once we login we have this <code>/dashboard</code> page :</p>
-<p><img src="//localhost:1313/media/unicode/20220506204717.png" alt="error"></p>
+<p><img src="/media/unicode/20220506204717.png" alt="error"></p>
 <p>it also has an upload function we can try uploading files But doesn&rsquo;t reveal any indicator where it is uploaded. so we can leave at as the 2nd option for us</p>
 <p>we can notice also the cookie we have :</p>
-<p><img src="//localhost:1313/media/unicode/20220506204858.png" alt="error"></p>
+<p><img src="/media/unicode/20220506204858.png" alt="error"></p>
 <p>Seems like JWT thing we can take it and paste it into <a href="https://jwt.io/">jwt.io</a></p>
-<p><img src="//localhost:1313/media/unicode/20220506205319.png" alt="error"></p>
+<p><img src="/media/unicode/20220506205319.png" alt="error"></p>
 <p>we can see the url <code>http://hackmedia.htb/static/jwks.json</code>  , adding the  <code>hackmedia.htb</code> to the <code>/etc/hosts</code> then viewing the page :</p>
-<p><img src="//localhost:1313/media/unicode/20220506205439.png" alt="error"></p>
+<p><img src="/media/unicode/20220506205439.png" alt="error"></p>
 <p>so it seems it visits this page for the verification process , searching for JWT JKU attacks found this great Article <a href="https://blog.pentesteracademy.com/hacking-jwt-tokens-jku-claim-misuse-2e732109ac1c">Here</a> and it looks exactly like the situation we have.</p>
 <p><strong>Briefly we will :</strong></p>
 <p>1- Generate public and private key and add them as a signature for the JWT token and change the username to <strong>admin</strong></p>
@@ -237,13 +237,13 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 <p>3- modify the JKU with your host then host the <code>jwks.json</code> at our http server .</p>
 <p>By hosting it and make the web application visit us to verify we will login with our forged JWT.</p>
 <p>using <a href="https://mkjwk.org/">here</a> with the following options:</p>
-<p><img src="//localhost:1313/media/unicode/20220506210001.png" alt="error"></p>
+<p><img src="/media/unicode/20220506210001.png" alt="error"></p>
 <p>using the private and public keys at the signature at <code>jwt.io</code> , and take the <strong>n</strong> value to modify the <code>jwks.json</code> we will host</p>
-<p><img src="//localhost:1313/media/unicode/20220506210334.png" alt="error"></p>
+<p><img src="/media/unicode/20220506210334.png" alt="error"></p>
 <p>now modify the JKU, username and the Signature:</p>
-<p><img src="//localhost:1313/media/unicode/20220506210527.png" alt="error"></p>
+<p><img src="/media/unicode/20220506210527.png" alt="error"></p>
 <p>now using that JWT as our new cookie we got this and it didn&rsquo;t even make the request to our side.</p>
-<p><img src="//localhost:1313/media/unicode/20220506210617.png" alt="error"></p>
+<p><img src="/media/unicode/20220506210617.png" alt="error"></p>
 <p>digging more and using dirsearch found :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ae81ff">308</span>   266B   http://10.10.11.126:80/dashboard    -&gt; REDIRECTS TO: http://10.10.11.126/dashboard/
 <span style="color:#ae81ff">308</span>   262B   http://10.10.11.126:80/display    -&gt; REDIRECTS TO: http://10.10.11.126/display/
@@ -255,22 +255,22 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 <span style="color:#ae81ff">308</span>   264B   http://10.10.11.126:80/register    -&gt; REDIRECTS TO: http://10.10.11.126/register/
 </code></pre></div><p>and trying the following it makes the request to our side :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">http://10.10.11.126/redirect?url=10.10.16.39
-</code></pre></div><p><img src="//localhost:1313/media/unicode/20220506210957.png" alt="error"></p>
+</code></pre></div><p><img src="/media/unicode/20220506210957.png" alt="error"></p>
 <p>We can try modifying the JKU again with :</p>
-<p><img src="//localhost:1313/media/unicode/20220506211117.png" alt="error"></p>
+<p><img src="/media/unicode/20220506211117.png" alt="error"></p>
 <p>we also got :</p>
-<p><img src="//localhost:1313/media/unicode/20220506211149.png" alt="error"></p>
+<p><img src="/media/unicode/20220506211149.png" alt="error"></p>
 <p>maybe it is checking for the word &ldquo;static&rdquo; we can try :</p>
-<p><img src="//localhost:1313/media/unicode/20220506211238.png" alt="error"></p>
+<p><img src="/media/unicode/20220506211238.png" alt="error"></p>
 <p>sending the cookie finally we are in :</p>
-<p><img src="//localhost:1313/media/unicode/20220506211310.png" alt="error"></p>
+<p><img src="/media/unicode/20220506211310.png" alt="error"></p>
 <p><!-- raw HTML omitted --><strong>Note</strong> :Don&rsquo;t close your http server as it will request the verify with each request issued<!-- raw HTML omitted --></p>
 <h1 id="foothold">Foothold</h1>
 <p>visiting the <strong>last quarter</strong> we can find it issues this request :</p>
 <pre><code>http://10.10.11.126/display/?page=quarterly.pdf
 </code></pre><p>we can try directory traversal But it fails , we can make use of the <a href="https://owasp.org/www-community/attacks/Unicode_Encoding">Unicode_Encoding</a> as the machine name suggests , and using this payload</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">page<span style="color:#f92672">=</span>%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/etc/passwd
-</code></pre></div><p><img src="//localhost:1313/media/unicode/20220506211903.png" alt="error"></p>
+</code></pre></div><p><img src="/media/unicode/20220506211903.png" alt="error"></p>
 <p>It works , we can try to read the ssh key for the user <strong>code</strong> But we can&rsquo;t. so we can start fuzzing different files on the machine until we got a password for our foothold.</p>
 <p>From the <code>/etc/passwd</code> we can see it has the MYSQL and ngnix Services running we can read their configuration files.</p>
 <p>searching online found these default configuration files :</p>
@@ -303,25 +303,25 @@ cookie <span style="color:#f92672">=</span>{
 				print(<span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">50</span>)
 
 		<span style="color:#75715e">#time.sleep(3)</span>
-</code></pre></div><p><img src="//localhost:1313/media/unicode/20220506224248.png" alt="error"></p>
+</code></pre></div><p><img src="/media/unicode/20220506224248.png" alt="error"></p>
 <p>we can see the comment <code>#change the user password from db.yaml</code> .we can also it reveals other directories at the home of the user code</p>
 <pre><code>/home/code/coder/static/styles/
 /home/code/app/
 </code></pre><p>Eventually will find out the <code>db.yaml</code> is at <code>/home/code/coder/db.yaml</code> :</p>
-<p><img src="//localhost:1313/media/unicode/20220506224642.png" alt="error"></p>
+<p><img src="/media/unicode/20220506224642.png" alt="error"></p>
 <p>using this password we can login with ssh successfully</p>
-<p><img src="//localhost:1313/media/unicode/20220506224830.png" alt="error"></p>
+<p><img src="/media/unicode/20220506224830.png" alt="error"></p>
 <h1 id="privilege-escalation">Privilege escalation</h1>
 <p>Examining the binary we have :</p>
-<p><img src="//localhost:1313/media/unicode/20220506225759.png" alt="error"></p>
+<p><img src="/media/unicode/20220506225759.png" alt="error"></p>
 <p>so it seems it can take a url and download the content into a file we can read latter:</p>
-<p><img src="//localhost:1313/media/unicode/20220506231218.png" alt="error"></p>
+<p><img src="/media/unicode/20220506231218.png" alt="error"></p>
 <p>After some tinkering around , we can use the <code>File://</code> wrapper to read local files :&quot;</p>
-<p><img src="//localhost:1313/media/unicode/20220506232454.png" alt="error"></p>
+<p><img src="/media/unicode/20220506232454.png" alt="error"></p>
 <p>and Finally you can read the flag with <code>File:///root/root.txt</code></p>
 <h2 id="analyzing-the-binary">Analyzing the binary</h2>
 <p>Downloading the Binary and start analyzing it , searching online found some tools which can help us de-compile a python binary and the binary we have looks like a python binary indeed</p>
-<p><img src="//localhost:1313/media/unicode/20220507100201.png" alt="error"></p>
+<p><img src="/media/unicode/20220507100201.png" alt="error"></p>
 <p>commands used :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/LucifielHack/pyinstxtractor.git
 git clone https://github.com/LucifielHack/pycdc.git 
@@ -335,30 +335,30 @@ cmake ../pycdc/CMakeLists.txt
 make ../pycdc/
 python3 pyinstxtractor.py &lt;binary&gt;
 ./pycdc /binary_extracted/binary.pyc
-</code></pre></div><p><img src="//localhost:1313/media/unicode/20220507100601.png" alt="error"></p>
+</code></pre></div><p><img src="/media/unicode/20220507100601.png" alt="error"></p>
 <p>And it seems to have a blacklist , also it uses the curl command to download the files . and if we searched online how to read localfiles with curl will see using the <code>File://</code> wrapper as we did.</p>
 <h2 id="root-access">Root Access</h2>
 <p>now we want to login as root , i have downloaded the root id_rsa But unable to login with it. we can try uploading our public key at the  <code>/root/.ssh/authorized_keys</code> , then try to connect with our private key.</p>
 <p>As we have option to download let&rsquo;s download our public key , But we can&rsquo;t specify where to save it:</p>
-<p><img src="//localhost:1313/media/unicode/20220507185729.png" alt="error"></p>
+<p><img src="/media/unicode/20220507185729.png" alt="error"></p>
 <p>Seems the space is the problem , and hence the <strong>'}'</strong> and <strong>'{'</strong> are not filter we can make use of this technique:</p>
-<p><img src="//localhost:1313/media/unicode/20220507185909.png" alt="error"></p>
+<p><img src="/media/unicode/20220507185909.png" alt="error"></p>
 <p>which the spaces are replaced with the <strong>','</strong></p>
-<p><img src="//localhost:1313/media/unicode/20220507191553.png" alt="error"></p>
+<p><img src="/media/unicode/20220507191553.png" alt="error"></p>
 <p>then let&rsquo;s connect :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -i unicode root@hackmedia.htb
-</code></pre></div><p><img src="//localhost:1313/media/unicode/20220507191635.png" alt="error"></p></article>
+</code></pre></div><p><img src="/media/unicode/20220507191635.png" alt="error"></p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="//localhost:1313/tags/jwt"><span class="tag">JWT</span></a></li>
+          <li><a href="/tags/jwt"><span class="tag">JWT</span></a></li>
         
-          <li><a href="//localhost:1313/tags/directory-traversal"><span class="tag">Directory-Traversal</span></a></li>
+          <li><a href="/tags/directory-traversal"><span class="tag">Directory-Traversal</span></a></li>
         
-          <li><a href="//localhost:1313/tags/decompile-binary"><span class="tag">Decompile-Binary</span></a></li>
+          <li><a href="/tags/decompile-binary"><span class="tag">Decompile-Binary</span></a></li>
         
       </ul>
       
@@ -412,7 +412,7 @@ python3 pyinstxtractor.py &lt;binary&gt;
 
 
 
-<script src="//localhost:1313/scripts/index.min.js"></script>
+<script src="/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

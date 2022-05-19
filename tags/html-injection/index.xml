@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>html injection on 0xMesbaha</title>
-    <link>//localhost:1313/tags/html-injection/</link>
+    <link>/tags/html-injection/</link>
     <description>Recent content in html injection on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Mon, 02 May 2022 12:49:18 +3408</lastBuildDate><atom:link href="//localhost:1313/tags/html-injection/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 May 2022 12:49:18 +3408</lastBuildDate><atom:link href="/tags/html-injection/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hacker Ts challenge writeup</title>
-      <link>//localhost:1313/post/hacker-ts/</link>
+      <link>/post/hacker-ts/</link>
       <pubDate>Mon, 02 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/post/hacker-ts/</guid>
+      <guid>/post/hacker-ts/</guid>
       <description>&lt;p&gt;Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to document it in this writeup&lt;/p&gt;</description>
     </item>
     

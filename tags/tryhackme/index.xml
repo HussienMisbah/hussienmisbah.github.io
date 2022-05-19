@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>TryHackme on 0xMesbaha</title>
-    <link>//localhost:1313/tags/tryhackme/</link>
+    <link>/tags/tryhackme/</link>
     <description>Recent content in TryHackme on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Tue, 26 Apr 2022 00:52:13 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/tryhackme/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Apr 2022 00:52:13 +0200</lastBuildDate><atom:link href="/tags/tryhackme/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Windows-PrivEsc-Arena TryHackMe writeup</title>
-      <link>//localhost:1313/post/windowsprivescarena/</link>
+      <link>/post/windowsprivescarena/</link>
       <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
       
-      <guid>//localhost:1313/post/windowsprivescarena/</guid>
+      <guid>/post/windowsprivescarena/</guid>
       <description>&lt;p&gt;During studying the &lt;a href=&#34;https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners&#34;&gt;TCM windows privilege escalation course&lt;/a&gt; this is the &lt;a href=&#34;https://tryhackme.com/room/windowsprivescarena&#34;&gt;Lab&lt;/a&gt; designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist&lt;/p&gt;</description>
     </item>
     

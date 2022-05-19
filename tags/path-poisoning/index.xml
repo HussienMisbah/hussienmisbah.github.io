@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>path poisoning on 0xMesbaha</title>
-    <link>//localhost:1313/tags/path-poisoning/</link>
+    <link>/tags/path-poisoning/</link>
     <description>Recent content in path poisoning on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Thu, 27 Jan 2022 00:45:08 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/path-poisoning/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jan 2022 00:45:08 +0200</lastBuildDate><atom:link href="/tags/path-poisoning/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Previse Hackthebox writeup</title>
-      <link>//localhost:1313/post/previse/</link>
+      <link>/post/previse/</link>
       <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/post/previse/</guid>
+      <guid>/post/previse/</guid>
       <description>&lt;p&gt;In this Writeup you will find walkthrough of the retired machine previse From Hackthebox&lt;/p&gt;</description>
     </item>
     

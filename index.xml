@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>0xMesbaha</title>
-    <link>//localhost:1313/</link>
+    <link>/</link>
     <description>Recent content on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Thu, 19 May 2022 12:49:18 +3408</lastBuildDate><atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 May 2022 12:49:18 +3408</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
-      <link>//localhost:1313/about/</link>
+      <link>/about/</link>
       <pubDate>Fri, 25 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>//localhost:1313/about/</guid>
+      <guid>/about/</guid>
       <description>Just another cybersecurity geek 👨🏻‍💻.
 Interested in the red teaming side, looking forward to sharpening my skills and satisfying my endless curiosity.
 I am really happy you are in my blog reading stuff , Feel free to contact me on My LinkedIn.
@@ -22,91 +22,91 @@ Thanks !</description>
     
     <item>
       <title>Kryptos Support challenge Writeup</title>
-      <link>//localhost:1313/post/kryptos-support/</link>
+      <link>/post/kryptos-support/</link>
       <pubDate>Thu, 19 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/post/kryptos-support/</guid>
+      <guid>/post/kryptos-support/</guid>
       <description>&lt;p&gt;HTB Cyber Apocalypse CTF 2022 was held from the 14th of May Until the 19th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Unicode Hackthebox writeup</title>
-      <link>//localhost:1313/post/unicode/</link>
+      <link>/post/unicode/</link>
       <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
       
-      <guid>//localhost:1313/post/unicode/</guid>
+      <guid>/post/unicode/</guid>
       <description>&lt;p&gt;In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Hacker Ts challenge writeup</title>
-      <link>//localhost:1313/post/hacker-ts/</link>
+      <link>/post/hacker-ts/</link>
       <pubDate>Mon, 02 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/post/hacker-ts/</guid>
+      <guid>/post/hacker-ts/</guid>
       <description>&lt;p&gt;Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to document it in this writeup&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Windows-PrivEsc-Arena TryHackMe writeup</title>
-      <link>//localhost:1313/post/windowsprivescarena/</link>
+      <link>/post/windowsprivescarena/</link>
       <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
       
-      <guid>//localhost:1313/post/windowsprivescarena/</guid>
+      <guid>/post/windowsprivescarena/</guid>
       <description>&lt;p&gt;During studying the &lt;a href=&#34;https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners&#34;&gt;TCM windows privilege escalation course&lt;/a&gt; this is the &lt;a href=&#34;https://tryhackme.com/room/windowsprivescarena&#34;&gt;Lab&lt;/a&gt; designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Backdoor Hackthebox writeup</title>
-      <link>//localhost:1313/post/backdoor/</link>
+      <link>/post/backdoor/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/post/backdoor/</guid>
+      <guid>/post/backdoor/</guid>
       <description>&lt;p&gt;In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>SQL Tutor challenge writeup</title>
-      <link>//localhost:1313/post/sql-tutor/</link>
+      <link>/post/sql-tutor/</link>
       <pubDate>Sun, 17 Apr 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/post/sql-tutor/</guid>
+      <guid>/post/sql-tutor/</guid>
       <description>&lt;p&gt;DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Shibboleth Hackthebox writeup</title>
-      <link>//localhost:1313/post/shibboleth/</link>
+      <link>/post/shibboleth/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +1808</pubDate>
       
-      <guid>//localhost:1313/post/shibboleth/</guid>
+      <guid>/post/shibboleth/</guid>
       <description>&lt;p&gt;In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Secret Hackthebox writeup</title>
-      <link>//localhost:1313/post/secret/</link>
+      <link>/post/secret/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/post/secret/</guid>
+      <guid>/post/secret/</guid>
       <description>&lt;p&gt;In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has &lt;code&gt;PR_SET_DUMPABLE&lt;/code&gt; so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Devzat Hackthebox writeup</title>
-      <link>//localhost:1313/post/devzat/</link>
+      <link>/post/devzat/</link>
       <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate>
       
-      <guid>//localhost:1313/post/devzat/</guid>
+      <guid>/post/devzat/</guid>
       <description>&lt;p&gt;In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Driver Hackthebox writeup</title>
-      <link>//localhost:1313/post/driver/</link>
+      <link>/post/driver/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/post/driver/</guid>
+      <guid>/post/driver/</guid>
       <description>&lt;p&gt;In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
 the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
 except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.&lt;/p&gt;</description>
@@ -114,37 +114,37 @@ except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to g
     
     <item>
       <title>Bolt Hackthebox writeup</title>
-      <link>//localhost:1313/post/bolt/</link>
+      <link>/post/bolt/</link>
       <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
       
-      <guid>//localhost:1313/post/bolt/</guid>
+      <guid>/post/bolt/</guid>
       <description>&lt;p&gt;In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &amp;ldquo;demo&amp;rdquo; which has some functions aren&amp;rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Horizontall Hackthebox writeup</title>
-      <link>//localhost:1313/post/horizontall/</link>
+      <link>/post/horizontall/</link>
       <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
       
-      <guid>//localhost:1313/post/horizontall/</guid>
+      <guid>/post/horizontall/</guid>
       <description>&lt;p&gt;we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Forge Hackthebox writeup</title>
-      <link>//localhost:1313/post/forge/</link>
+      <link>/post/forge/</link>
       <pubDate>Thu, 27 Jan 2022 00:45:09 +0200</pubDate>
       
-      <guid>//localhost:1313/post/forge/</guid>
+      <guid>/post/forge/</guid>
       <description>&lt;p&gt;detailed writeup for retired machine Forge From Hackthebox&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Previse Hackthebox writeup</title>
-      <link>//localhost:1313/post/previse/</link>
+      <link>/post/previse/</link>
       <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/post/previse/</guid>
+      <guid>/post/previse/</guid>
       <description>&lt;p&gt;In this Writeup you will find walkthrough of the retired machine previse From Hackthebox&lt;/p&gt;</description>
     </item>
     

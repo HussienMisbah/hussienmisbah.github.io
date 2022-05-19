@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Waste on 0xMesbaha</title>
-    <link>//localhost:1313/tags/waste/</link>
+    <link>/tags/waste/</link>
     <description>Recent content in Waste on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sat, 23 Apr 2022 00:51:12 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/waste/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Apr 2022 00:51:12 +0200</lastBuildDate><atom:link href="/tags/waste/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Backdoor Hackthebox writeup</title>
-      <link>//localhost:1313/post/backdoor/</link>
+      <link>/post/backdoor/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/post/backdoor/</guid>
+      <guid>/post/backdoor/</guid>
       <description>&lt;p&gt;In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.&lt;/p&gt;</description>
     </item>
     
