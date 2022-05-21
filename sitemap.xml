@@ -6,7 +6,28 @@
     <lastmod>2022-02-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/</loc>
-    <lastmod>2022-05-19T12:49:18+34:08</lastmod>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/tags/hackthebox/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/post/pandora/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/tags/path-poisoning/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/tags/port-forwarding/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/tags/snmp/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
   </url><url>
     <loc>/tags/ctf/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
@@ -17,12 +38,6 @@
     <loc>/post/kryptos-support/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/post/</loc>
-    <lastmod>2022-05-19T12:49:18+34:08</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
-    <lastmod>2022-05-19T12:49:18+34:08</lastmod>
-  </url><url>
     <loc>/tags/xss/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
@@ -30,9 +45,6 @@
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
     <loc>/tags/directory-traversal/</loc>
-    <lastmod>2022-05-07T12:49:13+10:00</lastmod>
-  </url><url>
-    <loc>/tags/hackthebox/</loc>
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
     <loc>/tags/jwt/</loc>
@@ -110,9 +122,6 @@
     <loc>/post/devzat/</loc>
     <lastmod>2022-03-11T00:45:12+09:00</lastmod>
   </url><url>
-    <loc>/tags/port-forwarding/</loc>
-    <lastmod>2022-03-11T00:45:12+09:00</lastmod>
-  </url><url>
     <loc>/tags/rce/</loc>
     <lastmod>2022-03-11T00:45:12+09:00</lastmod>
   </url><url>
@@ -145,9 +154,6 @@
   </url><url>
     <loc>/post/forge/</loc>
     <lastmod>2022-01-27T00:45:09+02:00</lastmod>
-  </url><url>
-    <loc>/tags/path-poisoning/</loc>
-    <lastmod>2022-01-27T00:45:08+02:00</lastmod>
   </url><url>
     <loc>/post/previse/</loc>
     <lastmod>2022-01-27T00:45:08+02:00</lastmod>

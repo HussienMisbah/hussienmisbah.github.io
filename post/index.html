@@ -198,6 +198,22 @@
       
         <article class="post-entry">
   <header class="post-header">
+    <h3 class="post-title"><a href="/post/pandora/" class="post-link">Pandora Hackthebox writeup</a></h3>
+    <p class="post-meta">@0xMesbaha · May 21, 2022 · 4 min read</p>
+  </header>
+  
+    <img class="post-cover" src="/media/pandora/20220120210059.png" alt="Pandora Hackthebox writeup" lazyload="on">
+  
+  <p class="post-summary">In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access
+</p>
+  <footer class="post-footer">
+    <a class="read-more" href="/post/pandora/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
     <h3 class="post-title"><a href="/post/kryptos-support/" class="post-link">Kryptos Support challenge Writeup</a></h3>
     <p class="post-meta">@0xMesbaha · May 19, 2022 · 3 min read</p>
   </header>
@@ -336,22 +352,6 @@
 </p>
   <footer class="post-footer">
     <a class="read-more" href="/post/devzat/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="/post/driver/" class="post-link">Driver Hackthebox writeup</a></h3>
-    <p class="post-meta">@0xMesbaha · Feb 25, 2022 · 5 min read</p>
-  </header>
-  
-    <img class="post-cover" src="/media/Driver/20220226105919.png" alt="Driver Hackthebox writeup" lazyload="on">
-  
-  <p class="post-summary">In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren’t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service “spooler” and add a user in the administrator group.
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="/post/driver/">Read More →</a>
   </footer>
 </article>
 
