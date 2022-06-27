@@ -7,7 +7,43 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sat, 21 May 2022 00:51:12 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 27 Jun 2022 00:45:19 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>phishing</title>
+      <link>/tags/phishing/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
+      
+      <guid>/tags/phishing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tab-nabbing</title>
+      <link>/tags/tab-nabbing/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
+      
+      <guid>/tags/tab-nabbing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
+      <link>/tags/vim/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
+      
+      <guid>/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vulnhub</title>
+      <link>/tags/vulnhub/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
+      
+      <guid>/tags/vulnhub/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Hackthebox</title>
       <link>/tags/hackthebox/</link>
