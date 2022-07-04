@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Mon, 27 Jun 2022 00:45:19 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 Jul 2022 00:51:12 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>/about/</link>
@@ -18,6 +18,15 @@
 Interested in the red teaming side, looking forward to sharpening my skills and satisfying my endless curiosity.
 I am really happy you are in my blog reading stuff , Feel free to contact me on My LinkedIn.
 Thanks !</description>
+    </item>
+    
+    <item>
+      <title>Alfred tryhackme writeup</title>
+      <link>/post/alfred/</link>
+      <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/post/alfred/</guid>
+      <description>&lt;p&gt;In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.&lt;/p&gt;</description>
     </item>
     
     <item>

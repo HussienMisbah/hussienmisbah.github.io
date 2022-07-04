@@ -7,7 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Mon, 27 Jun 2022 00:45:19 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 Jul 2022 00:51:12 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jenkins</title>
+      <link>/tags/jenkins/</link>
+      <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tryhackme</title>
+      <link>/tags/tryhackme/</link>
+      <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/tryhackme/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>windows</title>
+      <link>/tags/windows/</link>
+      <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
+      
+      <guid>/tags/windows/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>phishing</title>
       <link>/tags/phishing/</link>
@@ -149,15 +176,6 @@
       <pubDate>Mon, 02 May 2022 12:49:18 +3408</pubDate>
       
       <guid>/tags/ssrf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>TryHackme</title>
-      <link>/tags/tryhackme/</link>
-      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
-      
-      <guid>/tags/tryhackme/</guid>
       <description></description>
     </item>
     

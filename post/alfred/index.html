@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Alfred tryhackme writeup</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  
+  
+
+  
+
+  
+  <meta name="author" content="0xMesbaha">
+  <meta name="description" content="In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@gohugoio">
+    <meta name="twitter:title" content="Alfred tryhackme writeup">
+    <meta name="twitter:description" content="In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.
+">
+    <meta name="twitter:image" content="/media/Alfred/alferd.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Alfred tryhackme writeup">
+  <meta property="og:description" content="In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.
+">
+  <meta property="og:url" content="/post/alfred/">
+  <meta property="og:image" content="/media/Alfred/alferd.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.86.1">
+
+
+<link rel="canonical" href="/post/alfred/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="msapplication-tooltip" content="0xMesbaha">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/test.jpg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  
+  <p class="subtitle" style="color:#00ab6b">&gt; Hello Friend </p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/">Posts</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="//github.com/hussienMisbah" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//medium.com/@mesbaha" rel="me" title="Medium" aria-label="Medium">
+            <span class="icon icon-medium" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/hussien-6331151b2" rel="me" title="LinkedIn" aria-label="LinkedIn">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Alfred tryhackme writeup</h1>
+      <p class="post-meta">@0xMesbaha · Jul 4, 2022 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>In this room, we&rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&rsquo;ll use an interesting privilege escalation method to get full system access.</p>
+<h1 id="scanning">Scanning</h1>
+<p>we can start with this scan providing the <code>-Pn</code> as it is a windows machine and may not respond ICMP</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -Pn -A -T4 $IP -oN nmap.intial
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">PORT     STATE SERVICE            VERSION
+80/tcp   open  http               Microsoft IIS httpd 7.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/7.5
+|_http-title: Site doesn&#39;t have a title (text/html).
+3389/tcp open  ssl/ms-wbt-server?
+| ssl-cert: Subject: commonName=alfred
+| Not valid before: 2022-07-03T14:01:24
+|_Not valid after:  2023-01-02T14:01:24
+|_ssl-date: 2022-07-04T14:03:22+00:00; 0s from scanner time.
+8080/tcp open  http               Jetty 9.4.z-SNAPSHOT
+| http-robots.txt: 1 disallowed entry 
+|_/
+|_http-server-header: Jetty(9.4.z-SNAPSHOT)
+|_http-title: Site doesn&#39;t have a title (text/html;charset=utf-8).
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+</code></pre></div><p>we have 2 web services running on ports 80 and 8080 respectively and the 3389 RDP port is open which can be used latter</p>
+<h1 id="enumeration">Enumeration</h1>
+<p>i started visiting the web applications at ports 80 and 8080 . at port 8080 we can see it is a Jenkins service running</p>
+<p><img src="/media/Alfred/20220704160742.png" alt="error"></p>
+<p>and Jenkins is known for the ability to execute system commands . so we can focus on it for now and if we get stuck we can get back to the web application at port 80.</p>
+<p>Trying default credentials <code>admin:admin</code> we are in already !</p>
+<p><img src="/media/Alfred/20220704160909.png" alt="error"></p>
+<p>we can now try to execute commands on the server.</p>
+<ul>
+<li>choose <code>New Item </code> from the left bar. choose any name then choose <code>Freesytle Project</code> then <code>Ok</code></li>
+</ul>
+<p><img src="/media/Alfred/20220704161453.png" alt="error"></p>
+<p>under the Build we can choose what we want which is <code>Execute windows batch command</code></p>
+<p><img src="/media/Alfred/20220704161557.png" alt="error"></p>
+<p>specify the command we want</p>
+<p><img src="/media/Alfred/20220704161702.png" alt="error"></p>
+<p>save it then choose <code>build now</code></p>
+<p><img src="/media/Alfred/20220704161753.png" alt="error"></p>
+<p>when the build is done you will something like this</p>
+<p><img src="/media/Alfred/20220704161907.png" alt="error"></p>
+<p>click on it then choose the <code>Console output</code> From the left bar</p>
+<p><img src="/media/Alfred/20220704161947.png" alt="error"></p>
+<p>and we can execute commands indeed !</p>
+<h1 id="foothold">Foothold</h1>
+<p>There are a lot of ways we can use to get a reverse connection back like powershell empire, metasploit frameworks or others. i will change the user password and RDP into then we can get reverse shells if we need.
+To change the command in the new item we made we need to select <code>configure</code></p>
+<p><img src="/media/Alfred/20220704162829.png" alt="error"></p>
+<p>then replace the previous command with <code>net user bruce secret123</code> to change the user password</p>
+<p><img src="/media/Alfred/20220704162902.png" alt="error"></p>
+<p>save the setting and choose build now , it should be changed . to trace if error occurred you can choose the <code>Console outout</code> as previous</p>
+<p>i will use Remmina rdp application on Linux to connect to it</p>
+<p><img src="/media/Alfred/20220704163146.png" alt="error"></p>
+<p>and we are in</p>
+<p><img src="/media/Alfred/20220704163246.png" alt="error"></p>
+<h1 id="privilege-escalation">privilege escalation</h1>
+<p>if we run <code>net user bruce</code> output is</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">User name                    bruce
+Full Name                    
+Comment                      
+User&#39;s comment               
+Country code                 000 (System Default)
+Account active               Yes
+Account expires              Never
+Password last set            7/4/2022 3:23:38 PM
+Password expires             Never
+Password changeable          7/4/2022 3:23:38 PM
+Password required            No
+User may change password     Yes
+Workstations allowed         All
+Logon script                 
+User profile                 
+Home directory               
+Last logon                   7/4/2022 3:26:17 PM
+Logon hours allowed          All
+Local Group Memberships      *Administrators       
+Global Group memberships     *None                 
+The command completed successfully.
+</code></pre></div><p>the user bruce is in the administrators group . hence we have already rdp connection we can run as <code>administrator</code>  the <code>cmd.exe</code> and we can now see the flag</p>
+<p><img src="/media/Alfred/20220704164840.png" alt="error"></p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/tryhackme"><span class="tag">Tryhackme</span></a></li>
+        
+          <li><a href="/tags/jenkins"><span class="tag">Jenkins</span></a></li>
+        
+          <li><a href="/tags/windows"><span class="tag">Windows</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © all rights reserved for 0xMesbaha.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2022 0xMesbaha</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

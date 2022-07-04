@@ -198,6 +198,22 @@
       
         <article class="post-entry">
   <header class="post-header">
+    <h3 class="post-title"><a href="/post/secret/" class="post-link">Secret Hackthebox writeup</a></h3>
+    <p class="post-meta">@0xMesbaha · Mar 26, 2022 · 5 min read</p>
+  </header>
+  
+    <img class="post-cover" src="/media/secret/20220326104620.png" alt="Secret Hackthebox writeup" lazyload="on">
+  
+  <p class="post-summary">In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has PR_SET_DUMPABLE so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root
+</p>
+  <footer class="post-footer">
+    <a class="read-more" href="/post/secret/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
     <h3 class="post-title"><a href="/post/devzat/" class="post-link">Devzat Hackthebox writeup</a></h3>
     <p class="post-meta">@0xMesbaha · Mar 11, 2022 · 6 min read</p>
   </header>
