@@ -2,387 +2,387 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on 0xMesbaha</title>
-    <link>//localhost:1313/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sat, 09 Jul 2022 00:51:12 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 09 Jul 2022 00:51:12 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>adb</title>
-      <link>//localhost:1313/tags/adb/</link>
+      <link>/tags/adb/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/adb/</guid>
+      <guid>/tags/adb/</guid>
       <description></description>
     </item>
     
     <item>
       <title>apk</title>
-      <link>//localhost:1313/tags/apk/</link>
+      <link>/tags/apk/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/apk/</guid>
+      <guid>/tags/apk/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hackthebox</title>
-      <link>//localhost:1313/tags/hackthebox/</link>
+      <link>/tags/hackthebox/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/hackthebox/</guid>
+      <guid>/tags/hackthebox/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sudo-exploit</title>
-      <link>//localhost:1313/tags/sudo-exploit/</link>
+      <link>/tags/sudo-exploit/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/sudo-exploit/</guid>
+      <guid>/tags/sudo-exploit/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Jenkins</title>
-      <link>//localhost:1313/tags/jenkins/</link>
+      <link>/tags/jenkins/</link>
       <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/jenkins/</guid>
+      <guid>/tags/jenkins/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tryhackme</title>
-      <link>//localhost:1313/tags/tryhackme/</link>
+      <link>/tags/tryhackme/</link>
       <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/tryhackme/</guid>
+      <guid>/tags/tryhackme/</guid>
       <description></description>
     </item>
     
     <item>
       <title>windows</title>
-      <link>//localhost:1313/tags/windows/</link>
+      <link>/tags/windows/</link>
       <pubDate>Mon, 04 Jul 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/windows/</guid>
+      <guid>/tags/windows/</guid>
       <description></description>
     </item>
     
     <item>
       <title>phishing</title>
-      <link>//localhost:1313/tags/phishing/</link>
+      <link>/tags/phishing/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/phishing/</guid>
+      <guid>/tags/phishing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tab-nabbing</title>
-      <link>//localhost:1313/tags/tab-nabbing/</link>
+      <link>/tags/tab-nabbing/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/tab-nabbing/</guid>
+      <guid>/tags/tab-nabbing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>vim</title>
-      <link>//localhost:1313/tags/vim/</link>
+      <link>/tags/vim/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/vim/</guid>
+      <guid>/tags/vim/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Vulnhub</title>
-      <link>//localhost:1313/tags/vulnhub/</link>
+      <link>/tags/vulnhub/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/vulnhub/</guid>
+      <guid>/tags/vulnhub/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Path-Poisoning</title>
-      <link>//localhost:1313/tags/path-poisoning/</link>
+      <link>/tags/path-poisoning/</link>
       <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/path-poisoning/</guid>
+      <guid>/tags/path-poisoning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Port forwarding</title>
-      <link>//localhost:1313/tags/port-forwarding/</link>
+      <link>/tags/port-forwarding/</link>
       <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/port-forwarding/</guid>
+      <guid>/tags/port-forwarding/</guid>
       <description></description>
     </item>
     
     <item>
       <title>snmp</title>
-      <link>//localhost:1313/tags/snmp/</link>
+      <link>/tags/snmp/</link>
       <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/snmp/</guid>
+      <guid>/tags/snmp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CTF</title>
-      <link>//localhost:1313/tags/ctf/</link>
+      <link>/tags/ctf/</link>
       <pubDate>Thu, 19 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/ctf/</guid>
+      <guid>/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>IDOR</title>
-      <link>//localhost:1313/tags/idor/</link>
+      <link>/tags/idor/</link>
       <pubDate>Thu, 19 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/idor/</guid>
+      <guid>/tags/idor/</guid>
       <description></description>
     </item>
     
     <item>
       <title>XSS</title>
-      <link>//localhost:1313/tags/xss/</link>
+      <link>/tags/xss/</link>
       <pubDate>Thu, 19 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/xss/</guid>
+      <guid>/tags/xss/</guid>
       <description></description>
     </item>
     
     <item>
       <title>decompile-binary</title>
-      <link>//localhost:1313/tags/decompile-binary/</link>
+      <link>/tags/decompile-binary/</link>
       <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
       
-      <guid>//localhost:1313/tags/decompile-binary/</guid>
+      <guid>/tags/decompile-binary/</guid>
       <description></description>
     </item>
     
     <item>
       <title>directory Traversal</title>
-      <link>//localhost:1313/tags/directory-traversal/</link>
+      <link>/tags/directory-traversal/</link>
       <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
       
-      <guid>//localhost:1313/tags/directory-traversal/</guid>
+      <guid>/tags/directory-traversal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>JWT</title>
-      <link>//localhost:1313/tags/jwt/</link>
+      <link>/tags/jwt/</link>
       <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
       
-      <guid>//localhost:1313/tags/jwt/</guid>
+      <guid>/tags/jwt/</guid>
       <description></description>
     </item>
     
     <item>
       <title>html injection</title>
-      <link>//localhost:1313/tags/html-injection/</link>
+      <link>/tags/html-injection/</link>
       <pubDate>Mon, 02 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/html-injection/</guid>
+      <guid>/tags/html-injection/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SSRF</title>
-      <link>//localhost:1313/tags/ssrf/</link>
+      <link>/tags/ssrf/</link>
       <pubDate>Mon, 02 May 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/ssrf/</guid>
+      <guid>/tags/ssrf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>windows-privesc</title>
-      <link>//localhost:1313/tags/windows-privesc/</link>
+      <link>/tags/windows-privesc/</link>
       <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/windows-privesc/</guid>
+      <guid>/tags/windows-privesc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>gdb server</title>
-      <link>//localhost:1313/tags/gdb-server/</link>
+      <link>/tags/gdb-server/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/gdb-server/</guid>
+      <guid>/tags/gdb-server/</guid>
       <description></description>
     </item>
     
     <item>
       <title>screen</title>
-      <link>//localhost:1313/tags/screen/</link>
+      <link>/tags/screen/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/screen/</guid>
+      <guid>/tags/screen/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Waste</title>
-      <link>//localhost:1313/tags/waste/</link>
+      <link>/tags/waste/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/waste/</guid>
+      <guid>/tags/waste/</guid>
       <description></description>
     </item>
     
     <item>
       <title>wordpress</title>
-      <link>//localhost:1313/tags/wordpress/</link>
+      <link>/tags/wordpress/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/wordpress/</guid>
+      <guid>/tags/wordpress/</guid>
       <description></description>
     </item>
     
     <item>
       <title>python</title>
-      <link>//localhost:1313/tags/python/</link>
+      <link>/tags/python/</link>
       <pubDate>Sun, 17 Apr 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/python/</guid>
+      <guid>/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SQL injection</title>
-      <link>//localhost:1313/tags/sql-injection/</link>
+      <link>/tags/sql-injection/</link>
       <pubDate>Sun, 17 Apr 2022 12:49:18 +3408</pubDate>
       
-      <guid>//localhost:1313/tags/sql-injection/</guid>
+      <guid>/tags/sql-injection/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ipmi</title>
-      <link>//localhost:1313/tags/ipmi/</link>
+      <link>/tags/ipmi/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +1808</pubDate>
       
-      <guid>//localhost:1313/tags/ipmi/</guid>
+      <guid>/tags/ipmi/</guid>
       <description></description>
     </item>
     
     <item>
       <title>maria-DB</title>
-      <link>//localhost:1313/tags/maria-db/</link>
+      <link>/tags/maria-db/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +1808</pubDate>
       
-      <guid>//localhost:1313/tags/maria-db/</guid>
+      <guid>/tags/maria-db/</guid>
       <description></description>
     </item>
     
     <item>
       <title>zabbix</title>
-      <link>//localhost:1313/tags/zabbix/</link>
+      <link>/tags/zabbix/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +1808</pubDate>
       
-      <guid>//localhost:1313/tags/zabbix/</guid>
+      <guid>/tags/zabbix/</guid>
       <description></description>
     </item>
     
     <item>
       <title>API</title>
-      <link>//localhost:1313/tags/api/</link>
+      <link>/tags/api/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/api/</guid>
+      <guid>/tags/api/</guid>
       <description></description>
     </item>
     
     <item>
       <title>core-dump</title>
-      <link>//localhost:1313/tags/core-dump/</link>
+      <link>/tags/core-dump/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/core-dump/</guid>
+      <guid>/tags/core-dump/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SUID</title>
-      <link>//localhost:1313/tags/suid/</link>
+      <link>/tags/suid/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/suid/</guid>
+      <guid>/tags/suid/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rce</title>
-      <link>//localhost:1313/tags/rce/</link>
+      <link>/tags/rce/</link>
       <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate>
       
-      <guid>//localhost:1313/tags/rce/</guid>
+      <guid>/tags/rce/</guid>
       <description></description>
     </item>
     
     <item>
       <title>evil-winrm</title>
-      <link>//localhost:1313/tags/evil-winrm/</link>
+      <link>/tags/evil-winrm/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/evil-winrm/</guid>
+      <guid>/tags/evil-winrm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>print nigthmare</title>
-      <link>//localhost:1313/tags/print-nigthmare/</link>
+      <link>/tags/print-nigthmare/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/print-nigthmare/</guid>
+      <guid>/tags/print-nigthmare/</guid>
       <description></description>
     </item>
     
     <item>
       <title>scf attacks</title>
-      <link>//localhost:1313/tags/scf-attacks/</link>
+      <link>/tags/scf-attacks/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/scf-attacks/</guid>
+      <guid>/tags/scf-attacks/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PGP Decrypting</title>
-      <link>//localhost:1313/tags/pgp-decrypting/</link>
+      <link>/tags/pgp-decrypting/</link>
       <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/pgp-decrypting/</guid>
+      <guid>/tags/pgp-decrypting/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SSTI</title>
-      <link>//localhost:1313/tags/ssti/</link>
+      <link>/tags/ssti/</link>
       <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/ssti/</guid>
+      <guid>/tags/ssti/</guid>
       <description></description>
     </item>
     
     <item>
       <title>chisel</title>
-      <link>//localhost:1313/tags/chisel/</link>
+      <link>/tags/chisel/</link>
       <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
       
-      <guid>//localhost:1313/tags/chisel/</guid>
+      <guid>/tags/chisel/</guid>
       <description></description>
     </item>
     

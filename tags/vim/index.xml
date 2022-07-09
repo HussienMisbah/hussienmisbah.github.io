@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>vim on 0xMesbaha</title>
-    <link>//localhost:1313/tags/vim/</link>
+    <link>/tags/vim/</link>
     <description>Recent content in vim on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Mon, 27 Jun 2022 00:45:19 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 27 Jun 2022 00:45:19 +0200</lastBuildDate><atom:link href="/tags/vim/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>napping 1.0.1 vulnhub writeup</title>
-      <link>//localhost:1313/post/napping/</link>
+      <link>/post/napping/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       
-      <guid>//localhost:1313/post/napping/</guid>
+      <guid>/post/napping/</guid>
       <description>&lt;p&gt;In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.&lt;/p&gt;
 &lt;p&gt;you can download the machine from &lt;a href=&#34;https://www.vulnhub.com/entry/napping-101,752/&#34;&gt;here&lt;/a&gt; we have the description :&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Even Admins can fall asleep on the job&lt;/em&gt;&lt;/p&gt;

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>print nigthmare on 0xMesbaha</title>
-    <link>//localhost:1313/tags/print-nigthmare/</link>
+    <link>/tags/print-nigthmare/</link>
     <description>Recent content in print nigthmare on 0xMesbaha</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Fri, 25 Feb 2022 00:45:08 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/print-nigthmare/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Feb 2022 00:45:08 +0200</lastBuildDate><atom:link href="/tags/print-nigthmare/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Driver Hackthebox writeup</title>
-      <link>//localhost:1313/post/driver/</link>
+      <link>/post/driver/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       
-      <guid>//localhost:1313/post/driver/</guid>
+      <guid>/post/driver/</guid>
       <description>&lt;p&gt;In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
 the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
 except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.&lt;/p&gt;</description>

