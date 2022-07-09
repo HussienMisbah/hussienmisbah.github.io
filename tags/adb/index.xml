@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>adb on 0xMesbaha</title>
+    <link>//localhost:1313/tags/adb/</link>
+    <description>Recent content in adb on 0xMesbaha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© all rights reserved for 0xMesbaha.</copyright>
+    <lastBuildDate>Sat, 09 Jul 2022 00:51:12 +0200</lastBuildDate><atom:link href="//localhost:1313/tags/adb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Routerspace Hackthebox writeup</title>
+      <link>//localhost:1313/post/routerspace/</link>
+      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
+      
+      <guid>//localhost:1313/post/routerspace/</guid>
+      <description>&lt;p&gt;In this Box we are going to examine an android appliacation (apk) , and monitroing the requests by placing a proxy we will notice a request which we can manipulate to get a remote code exection. this box has a lot of iptables rules which restrict us from getting a reverse shell in the usual way. so we will login via ssh by placing our public key at paul&amp;rsquo;s. from that we will gain root access by exploiting sudo itself.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

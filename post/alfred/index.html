@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Alfred tryhackme writeup">
     <meta name="twitter:description" content="In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.
 ">
-    <meta name="twitter:image" content="/media/Alfred/alferd.png">
+    <meta name="twitter:image" content="//localhost:1313/media/Alfred/alferd.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Alfred tryhackme writeup">
   <meta property="og:description" content="In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.
 ">
-  <meta property="og:url" content="/post/alfred/">
-  <meta property="og:image" content="/media/Alfred/alferd.png">
+  <meta property="og:url" content="//localhost:1313/post/alfred/">
+  <meta property="og:image" content="//localhost:1313/media/Alfred/alferd.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/post/alfred/">
+<link rel="canonical" href="//localhost:1313/post/alfred/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="//localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
+<link rel="manifest" href="//localhost:1313/manifest.json">
 
 
-<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.gif" as="image">
-<link rel="preload" href="/images/test.jpg" as="image">
+<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
+<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main-rendered.min.css">
+<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
   
   <p class="subtitle" style="color:#00ab6b">&gt; Hello Friend </p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="/">Posts</a>
+          <a href="//localhost:1313/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="//localhost:1313/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/about/">About</a>
+          <a href="//localhost:1313/about/">About</a>
         </li>
       
     </ul>
@@ -226,37 +226,37 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 </code></pre></div><p>we have 2 web services running on ports 80 and 8080 respectively and the 3389 RDP port is open which can be used latter</p>
 <h1 id="enumeration">Enumeration</h1>
 <p>i started visiting the web applications at ports 80 and 8080 . at port 8080 we can see it is a Jenkins service running</p>
-<p><img src="/media/Alfred/20220704160742.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704160742.png" alt="error"></p>
 <p>and Jenkins is known for the ability to execute system commands . so we can focus on it for now and if we get stuck we can get back to the web application at port 80.</p>
 <p>Trying default credentials <code>admin:admin</code> we are in already !</p>
-<p><img src="/media/Alfred/20220704160909.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704160909.png" alt="error"></p>
 <p>we can now try to execute commands on the server.</p>
 <ul>
 <li>choose <code>New Item </code> from the left bar. choose any name then choose <code>Freesytle Project</code> then <code>Ok</code></li>
 </ul>
-<p><img src="/media/Alfred/20220704161453.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704161453.png" alt="error"></p>
 <p>under the Build we can choose what we want which is <code>Execute windows batch command</code></p>
-<p><img src="/media/Alfred/20220704161557.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704161557.png" alt="error"></p>
 <p>specify the command we want</p>
-<p><img src="/media/Alfred/20220704161702.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704161702.png" alt="error"></p>
 <p>save it then choose <code>build now</code></p>
-<p><img src="/media/Alfred/20220704161753.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704161753.png" alt="error"></p>
 <p>when the build is done you will something like this</p>
-<p><img src="/media/Alfred/20220704161907.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704161907.png" alt="error"></p>
 <p>click on it then choose the <code>Console output</code> From the left bar</p>
-<p><img src="/media/Alfred/20220704161947.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704161947.png" alt="error"></p>
 <p>and we can execute commands indeed !</p>
 <h1 id="foothold">Foothold</h1>
 <p>There are a lot of ways we can use to get a reverse connection back like powershell empire, metasploit frameworks or others. i will change the user password and RDP into then we can get reverse shells if we need.
 To change the command in the new item we made we need to select <code>configure</code></p>
-<p><img src="/media/Alfred/20220704162829.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704162829.png" alt="error"></p>
 <p>then replace the previous command with <code>net user bruce secret123</code> to change the user password</p>
-<p><img src="/media/Alfred/20220704162902.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704162902.png" alt="error"></p>
 <p>save the setting and choose build now , it should be changed . to trace if error occurred you can choose the <code>Console outout</code> as previous</p>
 <p>i will use Remmina rdp application on Linux to connect to it</p>
-<p><img src="/media/Alfred/20220704163146.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704163146.png" alt="error"></p>
 <p>and we are in</p>
-<p><img src="/media/Alfred/20220704163246.png" alt="error"></p>
+<p><img src="//localhost:1313/media/Alfred/20220704163246.png" alt="error"></p>
 <h1 id="privilege-escalation">privilege escalation</h1>
 <p>if we run <code>net user bruce</code> output is</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">User name                    bruce
@@ -281,16 +281,16 @@ Local Group Memberships      *Administrators
 Global Group memberships     *None                 
 The command completed successfully.
 </code></pre></div><p>the user bruce is in the administrators group . hence we have already rdp connection we can run as <code>administrator</code>  the <code>cmd.exe</code> and we can now see the flag</p>
-<p><img src="/media/Alfred/20220704164840.png" alt="error"></p></article>
+<p><img src="//localhost:1313/media/Alfred/20220704164840.png" alt="error"></p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="/tags/tryhackme"><span class="tag">Tryhackme</span></a></li>
+          <li><a href="//localhost:1313/tags/tryhackme"><span class="tag">Tryhackme</span></a></li>
         
-          <li><a href="/tags/jenkins"><span class="tag">Jenkins</span></a></li>
+          <li><a href="//localhost:1313/tags/jenkins"><span class="tag">Jenkins</span></a></li>
         
-          <li><a href="/tags/windows"><span class="tag">Windows</span></a></li>
+          <li><a href="//localhost:1313/tags/windows"><span class="tag">Windows</span></a></li>
         
       </ul>
       
@@ -344,7 +344,7 @@ The command completed successfully.
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="//localhost:1313/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

