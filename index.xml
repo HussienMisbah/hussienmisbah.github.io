@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© all rights reserved for 0xMesbaha.</copyright>
-    <lastBuildDate>Sat, 09 Jul 2022 00:51:12 +0200</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Jul 2022 12:49:18 +3408</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>/about/</link>
@@ -18,6 +18,15 @@
 Interested in the red teaming side, looking forward to sharpening my skills and satisfying my endless curiosity.
 I am really happy you are in my blog reading stuff , Feel free to contact me on My LinkedIn.
 Thanks !</description>
+    </item>
+    
+    <item>
+      <title>Flushed Emoji challenge Writeup</title>
+      <link>/post/flused-emoji/</link>
+      <pubDate>Mon, 25 Jul 2022 12:49:18 +3408</pubDate>
+      
+      <guid>/post/flused-emoji/</guid>
+      <description>&lt;p&gt;Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.&lt;/p&gt;</description>
     </item>
     
     <item>

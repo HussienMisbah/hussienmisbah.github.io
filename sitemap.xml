@@ -6,7 +6,25 @@
     <lastmod>2022-02-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/</loc>
-    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/tags/ctf/</loc>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/post/flused-emoji/</loc>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/tags/sql-injection/</loc>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/tags/ssti/</loc>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2022-07-25T12:49:18+34:08</lastmod>
   </url><url>
     <loc>/tags/adb/</loc>
     <lastmod>2022-07-09T00:51:12+02:00</lastmod>
@@ -17,16 +35,10 @@
     <loc>/tags/hackthebox/</loc>
     <lastmod>2022-07-09T00:51:12+02:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
-    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
-  </url><url>
     <loc>/post/routerspace/</loc>
     <lastmod>2022-07-09T00:51:12+02:00</lastmod>
   </url><url>
     <loc>/tags/sudo-exploit/</loc>
-    <lastmod>2022-07-09T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2022-07-09T00:51:12+02:00</lastmod>
   </url><url>
     <loc>/post/alfred/</loc>
@@ -67,9 +79,6 @@
   </url><url>
     <loc>/tags/snmp/</loc>
     <lastmod>2022-05-21T00:51:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/ctf/</loc>
-    <lastmod>2022-05-19T12:49:18+34:08</lastmod>
   </url><url>
     <loc>/tags/idor/</loc>
     <lastmod>2022-05-19T12:49:18+34:08</lastmod>
@@ -125,9 +134,6 @@
     <loc>/tags/python/</loc>
     <lastmod>2022-04-17T12:49:18+34:08</lastmod>
   </url><url>
-    <loc>/tags/sql-injection/</loc>
-    <lastmod>2022-04-17T12:49:18+34:08</lastmod>
-  </url><url>
     <loc>/post/sql-tutor/</loc>
     <lastmod>2022-04-17T12:49:18+34:08</lastmod>
   </url><url>
@@ -177,9 +183,6 @@
     <lastmod>2022-02-18T00:45:12+02:00</lastmod>
   </url><url>
     <loc>/tags/pgp-decrypting/</loc>
-    <lastmod>2022-02-18T00:45:12+02:00</lastmod>
-  </url><url>
-    <loc>/tags/ssti/</loc>
     <lastmod>2022-02-18T00:45:12+02:00</lastmod>
   </url><url>
     <loc>/tags/chisel/</loc>
