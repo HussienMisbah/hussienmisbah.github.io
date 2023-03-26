@@ -3,7 +3,7 @@ title: "Windows-PrivEsc-Arena TryHackMe writeup"
 date: 2022-04-26T00:52:13+02:00
 
 categories:
-  - blog
+  - windows
 tags:
   - TryHackme
   - windows-privesc

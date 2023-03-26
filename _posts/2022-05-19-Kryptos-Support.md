@@ -4,6 +4,8 @@ author: "0xMesbaha"
 cover: "/media/CTFs/Flag.png"
 tags: ["CTF", "XSS", "IDOR"]
 date: 2022-05-19T12:49:18+34:08
+categories:
+  - web
 draft: false
 ---
 

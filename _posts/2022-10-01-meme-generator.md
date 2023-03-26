@@ -5,6 +5,8 @@ cover: "/media/CTFs/black-notes/cover.png"
 tags: ["CTF", "SSRF"]
 date: 2022-10-01T12:49:18+34:08
 draft: false
+categories:
+  - web
 ---
 
 This challenge was in Blackhat CTF Qualifications 2022 and we have participated under the team 0xCha0s, we have managed to solve multiple challenges. this challenge was ranked medium for 250 pts .
