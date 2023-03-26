@@ -1,11 +1,14 @@
 ---
 title: "Windows-PrivEsc-Arena TryHackMe writeup"
-author: "0xMesbaha"
-cover: "/media/windowsprivescarena/1634049883614.jpg"
-tags: ["TryHackme", "windows-privesc"]
 date: 2022-04-26T00:52:13+02:00
-draft: false
+
+categories:
+  - blog
+tags:
+  - TryHackme
+  - windows-privesc
 ---
+
 
 During studying the [TCM windows privilege escalation course](https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners) this is the [Lab](https://tryhackme.com/room/windowsprivescarena) designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist 
 
