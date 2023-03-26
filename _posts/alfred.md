@@ -1,0 +1,130 @@
+---
+title: "Alfred tryhackme writeup"
+author: "0xMesbaha"
+cover: "/media/Alfred/alferd.png"
+tags: ["tryhackme", "Jenkins" , "windows"]
+date: 2022-07-04T00:51:12+02:00
+draft: false
+---
+
+In this room, we'll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we'll use an interesting privilege escalation method to get full system access.
+<!--more-->
+
+# Scanning 
+we can start with this scan providing the ``-Pn`` as it is a windows machine and may not respond ICMP
+```bash
+nmap -Pn -A -T4 $IP -oN nmap.intial
+```
+```cmd
+PORT     STATE SERVICE            VERSION
+80/tcp   open  http               Microsoft IIS httpd 7.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/7.5
+|_http-title: Site doesn't have a title (text/html).
+3389/tcp open  ssl/ms-wbt-server?
+| ssl-cert: Subject: commonName=alfred
+| Not valid before: 2022-07-03T14:01:24
+|_Not valid after:  2023-01-02T14:01:24
+|_ssl-date: 2022-07-04T14:03:22+00:00; 0s from scanner time.
+8080/tcp open  http               Jetty 9.4.z-SNAPSHOT
+| http-robots.txt: 1 disallowed entry 
+|_/
+|_http-server-header: Jetty(9.4.z-SNAPSHOT)
+|_http-title: Site doesn't have a title (text/html;charset=utf-8).
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+```
+
+we have 2 web services running on ports 80 and 8080 respectively and the 3389 RDP port is open which can be used latter
+# Enumeration
+
+i started visiting the web applications at ports 80 and 8080 . at port 8080 we can see it is a Jenkins service running 
+
+![error](/media/Alfred/20220704160742.png)
+
+and Jenkins is known for the ability to execute system commands . so we can focus on it for now and if we get stuck we can get back to the web application at port 80. 
+
+Trying default credentials ``admin:admin`` we are in already !
+
+![error](/media/Alfred/20220704160909.png)
+
+we can now try to execute commands on the server.
+
+-  choose ``New Item `` from the left bar. choose any name then choose ``Freesytle Project`` then ``Ok``
+
+![error](/media/Alfred/20220704161453.png)
+
+under the Build we can choose what we want which is ``Execute windows batch command``
+
+![error](/media/Alfred/20220704161557.png)
+
+specify the command we want 
+
+![error](/media/Alfred/20220704161702.png)
+
+save it then choose ``build now``
+
+![error](/media/Alfred/20220704161753.png)
+
+when the build is done you will something like this 
+
+![error](/media/Alfred/20220704161907.png)
+
+click on it then choose the ``Console output`` From the left bar
+
+![error](/media/Alfred/20220704161947.png)
+
+
+and we can execute commands indeed ! 
+# Foothold
+
+There are a lot of ways we can use to get a reverse connection back like powershell empire, metasploit frameworks or others. i will change the user password and RDP into then we can get reverse shells if we need. 
+To change the command in the new item we made we need to select ``configure``
+
+![error](/media/Alfred/20220704162829.png)
+
+then replace the previous command with ``net user bruce secret123`` to change the user password
+
+![error](/media/Alfred/20220704162902.png)
+
+save the setting and choose build now , it should be changed . to trace if error occurred you can choose the ``Console outout`` as previous
+
+i will use Remmina rdp application on Linux to connect to it 
+
+![error](/media/Alfred/20220704163146.png)
+
+and we are in 
+
+![error](/media/Alfred/20220704163246.png)
+# privilege escalation
+
+if we run ``net user bruce`` output is 
+```cmd
+User name                    bruce
+Full Name                    
+Comment                      
+User's comment               
+Country code                 000 (System Default)
+Account active               Yes
+Account expires              Never
+Password last set            7/4/2022 3:23:38 PM
+Password expires             Never
+Password changeable          7/4/2022 3:23:38 PM
+Password required            No
+User may change password     Yes
+Workstations allowed         All
+Logon script                 
+User profile                 
+Home directory               
+Last logon                   7/4/2022 3:26:17 PM
+Logon hours allowed          All
+Local Group Memberships      *Administrators       
+Global Group memberships     *None                 
+The command completed successfully.
+```
+
+the user bruce is in the administrators group . hence we have already rdp connection we can run as ``administrator``  the ``cmd.exe`` and we can now see the flag 
+
+![error](/media/Alfred/20220704164840.png)
+

