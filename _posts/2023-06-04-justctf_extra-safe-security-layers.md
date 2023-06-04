@@ -148,8 +148,8 @@ app.use((req, res, next) => {
     res.user = { ...res.user, ...req.query }; 
   }
 ```
- it then checks if the request has the text parameter set , if so it will execute this line , <span style="background-color: #FFFF00">the three dots operator can be used for concatenating</span>  [source](https://www.freecodecamp.org/news/three-dots-operator-in-javascript/#:~:text=How%20to%20Concatenate%20or%20Merge%20Arrays%20With%20the%20Spread%20Operator) which makes this part very interesting. it concatenates all the values of the query to the ``res.user`` object. let's keep that in mind 
- 
+ it then checks if the request has the text parameter set , if so it will execute this line , <span style="background-color: #E5E544">the three dots operator can be used for concatenating</span>  [source](https://www.freecodecamp.org/news/three-dots-operator-in-javascript/#:~:text=How%20to%20Concatenate%20or%20Merge%20Arrays%20With%20the%20Spread%20Operator) which makes this part very interesting. it concatenates all the values of the query to the ``res.user`` object. let's keep that in mind 
+
 ```js
 res.user = { ...res.user, ...req.query }; 
 ```
