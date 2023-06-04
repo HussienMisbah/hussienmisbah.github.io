@@ -1,9 +1,9 @@
 ---
-title: "SQL Tutor challenge writeup"
+title: "JustCTF Extra Safe Security Layers writeup"
 author: "0xMesbaha"
 cover: "/media/CTFs/Flag.png"
-tags: ["CTF", "SQL injection", "python"]
-date: 2022-04-17T12:49:18+34:08
+tags: ["CTF", "XSS", "CSP"]
+date: 2023-06-04T12:49:18+34:08
 draft: false
 categories:
   - web
