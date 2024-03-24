@@ -3,6 +3,8 @@ title: "Horizontall Hackthebox writeup"
 author: "0xMesbaha"
 cover: "/media/Horizontall/start.png"
 tags: ["Hackthebox", "Port forwarding", "chisel"]
+categories:
+  - Linux Machines
 date: 2022-02-04T00:45:09+02:00
 draft: false
 ---
