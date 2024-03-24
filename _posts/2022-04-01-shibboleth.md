@@ -3,6 +3,8 @@ title: "Shibboleth Hackthebox writeup"
 author: "0xMesbaha"
 cover: "/media/shibboleth/20220401204521.png"
 tags: ["Hackthebox", "ipmi", "maria-DB", "zabbix"]
+categories:
+  - Linux Machines
 date: 2022-04-01T00:49:18+18:08
 draft: false
 ---
