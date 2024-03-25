@@ -6,7 +6,7 @@ tags: ["Hackthebox", "Active-directory", "LAPS", "pfx"]
 date: 2022-08-20T00:49:18+18:08
 draft: false
 categories:
-  - windows
+  - Windows Machines
 ---
 
 In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text
