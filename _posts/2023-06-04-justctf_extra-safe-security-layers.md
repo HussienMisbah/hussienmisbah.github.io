@@ -6,7 +6,7 @@ tags: ["CTF", "XSS", "CSP"]
 date: 2023-06-04T12:49:18+34:08
 draft: false
 categories:
-  - web
+  - Web Exploitation 
 ---
 
 This Challenge is about exploiting cross site scripting with a strict CSP in place along with XSS Santizer and other restrictions , the interesting part in this blog is about learning the root cause and idenfiy exploit points. the challenge may seem very easy and it is easy and fun indeed.

@@ -3,6 +3,8 @@ title: "Open Source HackTheBox Writeup"
 author: "0xMesbaha"
 cover: "/media/open-source/20220522230256.png"
 tags: ["Hackthebox", "git", "docker", "port-forwarding"]
+categories:
+  - Linux Machines
 date: 2022-10-08T00:45:19+02:00
 draft: false
 ---
