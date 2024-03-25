@@ -6,7 +6,7 @@ tags: ["CTF", "ssti", "sql-injection"]
 date: 2022-07-25T12:49:18+34:08
 draft: false
 categories:
-  - web
+  - Web Exploitation 
 ---
 
 Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.
