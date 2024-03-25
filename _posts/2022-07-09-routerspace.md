@@ -3,6 +3,8 @@ title: "Routerspace Hackthebox writeup"
 author: "0xMesbaha"
 cover: "/media/routerspace/20220707205351.png"
 tags: ["Hackthebox", "apk", "adb", "sudo-exploit"]
+categories:
+  - Android Pentesting
 date: 2022-07-09T00:51:12+02:00
 draft: false
 ---
