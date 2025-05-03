@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "mint" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "dirt" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -104,7 +104,7 @@ analytics:
 author:
   name             : "Hussien Misbah"
   avatar           : /assets/images/avatar.gif # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Cybersecurity consultant & Wannabe red teamer"
+  bio              : "Cybersecurity consultant"
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
