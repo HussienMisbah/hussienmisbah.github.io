@@ -183,7 +183,7 @@ git show be4da71987bbbc8fae7c961fb2de01ebd0be1997
 
 ![error](/assets/images/open-source/20220522214205.png)
 
-```cmd
+```bash
 # seems like a credintials
 dev01:Soulless_Developer#2022
 ```
