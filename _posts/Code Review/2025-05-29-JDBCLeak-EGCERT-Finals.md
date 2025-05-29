@@ -4,7 +4,7 @@ header:
   teaser: "/assets/images/CTFs/MISC/cert_header.jpg"
 classes: wide
 tags: ["CTF", "Java-Deserialization", "RCE"]
-date: 2024-05-05T12:49:18+34:08
+date: 2025-05-29T12:49:18+34:08
 toc: true
 draft: false
 categories:
@@ -74,17 +74,17 @@ The code base is not really that big and can easily identify the `readObject` fu
                     // Some command to process ?
                     if(method.equals(ServletCommandSinkIdentifier.PROCESS_COMMAND)) {
                         // Read parameter objects
-                        Long connuid = (Long) ois.readObject();
-                        Long uid = (Long) ois.readObject();
-                        Command cmd = (Command) ois.readObject();
-                        CallingContext ctx = (CallingContext) ois.readObject();
+                        Long connuid = (Long) ois.readObject(); // BUG
+                        Long uid = (Long) ois.readObject(); // BUG
+                        Command cmd = (Command) ois.readObject(); // BUG
+                        CallingContext ctx = (CallingContext) ois.readObject(); // BUG
                         // Delegate execution to the CommandProcessor
                         objectToReturn = _processor.process(connuid, uid, cmd, ctx);
                     } else if(method.equals(ServletCommandSinkIdentifier.CONNECT_COMMAND)) {
                         String url = ois.readUTF();
-                        Properties props = (Properties) ois.readObject();
-                        Properties clientInfo = (Properties) ois.readObject();
-                        CallingContext ctx = (CallingContext) ois.readObject();
+                        Properties props = (Properties) ois.readObject(); // BUG
+                        Properties clientInfo = (Properties) ois.readObject(); // BUG
+                        CallingContext ctx = (CallingContext) ois.readObject(); // BUG
 ```
 
 As shown we have to pass the check `if(method.equals(ServletCommandSinkIdentifier.PROCESS_COMMAND))` to send our serialized object raw format to be deserilaized. 
@@ -182,7 +182,7 @@ then run the script will get a call back , now to get the flag.txt content tried
 
 ### Generate a payload
 
-```C
+```C++
 #include <stdlib.h>
 
 int main() {
