@@ -4,7 +4,7 @@ header:
   teaser: "/assets/images/CTFs/MISC/cert_header.jpg"
 classes: wide
 tags: ["CTF", "Java-Deserialization", "RCE"]
-date: 2025-05-29T12:49:18+34:08
+date: 2025-05-28T12:49:18+34:08
 toc: true
 draft: false
 categories:
