@@ -31,6 +31,11 @@
 
   <div class="post-description">
     <h2><a href="{{ post.url | relative_url }}">{{ title }}</a></h2>
+    {% if post.description %}
+      <p>{{ post.description | truncate: 160 }}</p>
+    {% elsif post.excerpt %}
+      <p>{{ post.excerpt | markdownify | strip_html | truncate: 160 }}</p>
+    {% endif %}
     <p class="post-date page__meta">{{ post.date | date_to_string }}</p>
     {% if post.read_time %}
       <p class="post-time page__meta"><i class="far fa-clock" aria-hidden="true"></i> {% include read-time.html %}</p>
