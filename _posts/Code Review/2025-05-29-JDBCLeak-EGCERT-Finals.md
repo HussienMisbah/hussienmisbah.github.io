@@ -1,5 +1,7 @@
 ---
 title: "EGCERT-CTF JDBCLeak Exploit"
+header:
+  teaser: "/assets/images/CTFs/Flag.png"
 classes: wide
 tags: ["CTF", "Java-Deserialization", "RCE"]
 date: 2025-05-28T12:49:18+34:08
@@ -7,6 +9,7 @@ toc: true
 draft: false
 categories:
   - Code Review
+ribbon: pink
 ---
 
 *JDBCLeak Leak was a challenge introducted in EGCERT CTF Finals 2025 under the category R&D , tbh i didn't even look at the challenge during CTF Time , didn't expect this category to introduce such good example of a real case code review challenge , however after reading the author's blog [here](https://bitthebyte.medium.com/here-is-what-you-missed-during-the-egcert-ctf-2025-finals-927297143d9a) about the category and challenge i thought of trying it myself and create a POC for it to get rce reading /flag.txt , we got 3rd place btw :"D*
