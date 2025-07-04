@@ -1,9 +1,7 @@
 # main links
 main:
-  - title: "Web Exploitation"
-    url: /categories/#web-exploitation
-  - title: "Machines Exploitation"
-    url: /categories/#windows-machines
+  - title: "tags"
+    url: /tags/
   - title: "Categories"
     url: /categories/
   - title: "about"
