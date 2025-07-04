@@ -7,6 +7,7 @@ Hello there , I am Hussein Misbah AKA 0xMesbaha a Cybersecurity Engineer @Cyshie
 
 
 - Currently interested in Applications Pentesting and Malware Development
+- [Offensive Security Web Expert (OSWE)](https://pdf.credential.net/5lvp1k5r_1750947804589.pdf)
 - [Offensive Security certified professional (OSCP)](https://pdf.credential.net/qlz2m33o_1703669862564.pdf)
 - [Certified red team expert (CRTE)](https://www.credential.net/45763e47-9443-43d1-9a0f-086f6307ae89)
 - [Certified red team professional (CRTP)](https://www.credential.net/b84d42f5-9f25-4c49-b7c8-d003c7316f5a#gs.gwz7ch)
@@ -20,6 +21,7 @@ Hello there , I am Hussein Misbah AKA 0xMesbaha a Cybersecurity Engineer @Cyshie
 - Rasta labs , Zephyr labs HTB
 - [Code Review Badge pentesterlab](https://pentesterlab.com/certs/6f3870fead5e0d09961b2ebe6a7baf)
 - CTF Player & Author in multiple international CTFs
+- Ranked 3rd at EGCERT CTF 2025
 - Ranked 2nd at Arab Security war games Finals 2024
 - Ranked 1st at IwCon CTF 2023
 - Ranked 1st at Bsides albuquerqu CTF 2023

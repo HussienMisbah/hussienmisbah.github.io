@@ -1,9 +1,9 @@
 # main links
 main:
-  - title: "tags"
-    url: /tags/
   - title: "Categories"
     url: /categories/
+  - title: "Tags"
+    url: /tags/    
   - title: "about"
     url: /about
   # - title: "Sample Posts"
