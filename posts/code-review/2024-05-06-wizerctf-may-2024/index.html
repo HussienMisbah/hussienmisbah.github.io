@@ -143,7 +143,7 @@
 The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&rsquo;ve got it right. You can actually execute your payload right there on the game page. If you manage to successfully exploit the vulnerabilities, you&rsquo;ll earn yourself a flag and a well-deserved spot on leaderboard , The main focus area is web exploitation and the ctf event is held every quarter , this writeup discusses 5 challenges out of 6.</em></p>
 <h2 id="1--login-as-an-admin-sqli">1- Login as an Admin (SQLi)</h2>
 <p>The first challenge is a typicall sql injection challenge however it checks if the password we enter is the same returning from the table which makes it a bit tricky , also the name of admin was given &ldquo;fitzh&rdquo;</p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-js">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
@@ -168,7 +168,7 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">[];</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></div></div>
 <p>this challenge can be solved blind time based as following (time consuming , not smart , not intended)</p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-python">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
@@ -291,7 +291,7 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
         title="image" /></p>
 <h2 id="3--hack-the-menu-xss">3- Hack the Menu (XSS)</h2>
 <p>The challenge is a clear open redirect challenge to trigger XSS via the javascript scheme , however the scheme is blocked in all cases as shown</p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-javascript">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
@@ -559,7 +559,7 @@ Returns a string representing the source code of the function. Overrides the Obj
         alt="/assets/images/CTFs/wizerCTF2024/6_3.png"
         title="image" /></p>
 <p>now using following page we can re-produce same signature in the login request</p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-js">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
@@ -581,7 +581,7 @@ Returns a string representing the source code of the function. Overrides the Obj
 </span></span><span class="line"><span class="cl"><span class="c1">// output : 9c04251d39d1578eb2b04526b7a1c87367598779ae68a627b5ec64fbf1272356
 </span></span></span></code></pre></div></div>
 <p>to generate a signature for the flag we can use same page but modify the url and add a parameter <code>id</code> as exepceted in the code above , get signature from below script , get new cookie after a fresh login add both and get the flag</p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-js">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
@@ -642,5 +642,5 @@ Returns a string representing the source code of the function. Overrides the Obj
         <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
 </html>
