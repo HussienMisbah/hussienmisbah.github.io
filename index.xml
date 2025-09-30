@@ -1,453 +1,138 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>0xMesbaha</title>
-    <link>https://hussienmisbah.github.io/</link>
-    <description>Recent content on 0xMesbaha</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <lastBuildDate>Tue, 30 Sep 2025 12:49:18 +0200</lastBuildDate>
-    <atom:link href="https://hussienmisbah.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Categories/Exploitation</title>
-      <link>https://hussienmisbah.github.io/categories/exploitation/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/exploitation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/CVE</title>
-      <link>https://hussienmisbah.github.io/tags/cve/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/cve/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Exploitation</title>
-      <link>https://hussienmisbah.github.io/tags/exploitation/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/exploitation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Firmware-Analysis</title>
-      <link>https://hussienmisbah.github.io/tags/firmware-analysis/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/firmware-analysis/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Code Review</title>
-      <link>https://hussienmisbah.github.io/categories/code-review/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/code-review/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CTF</title>
-      <link>https://hussienmisbah.github.io/tags/ctf/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/ctf/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Rce</title>
-      <link>https://hussienmisbah.github.io/tags/rce/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/rce/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Java-Deserialization</title>
-      <link>https://hussienmisbah.github.io/tags/java-deserialization/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/java-deserialization/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Categories/OSINT</title>
-      <link>https://hussienmisbah.github.io/categories/osint/</link>
-      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/osint/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/OSINT</title>
-      <link>https://hussienmisbah.github.io/tags/osint/</link>
-      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/osint/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Nodejs</title>
-      <link>https://hussienmisbah.github.io/tags/nodejs/</link>
-      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/nodejs/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/React</title>
-      <link>https://hussienmisbah.github.io/tags/react/</link>
-      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/react/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/SQLi</title>
-      <link>https://hussienmisbah.github.io/tags/sqli/</link>
-      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/sqli/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>XSS</title>
-      <link>https://hussienmisbah.github.io/tags/xss/</link>
-      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/xss/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/CSP</title>
-      <link>https://hussienmisbah.github.io/tags/csp/</link>
-      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/csp/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Web Exploitation</title>
-      <link>https://hussienmisbah.github.io/categories/web-exploitation/</link>
-      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/web-exploitation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Hackthebox</title>
-      <link>https://hussienmisbah.github.io/tags/hackthebox/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/hackthebox/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Linux Machines</title>
-      <link>https://hussienmisbah.github.io/categories/linux-machines/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/linux-machines/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Port-Forwarding</title>
-      <link>https://hussienmisbah.github.io/tags/port-forwarding/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/port-forwarding/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Docker</title>
-      <link>https://hussienmisbah.github.io/tags/docker/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/docker/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Git</title>
-      <link>https://hussienmisbah.github.io/tags/git/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/git/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>SSRF</title>
-      <link>https://hussienmisbah.github.io/tags/ssrf/</link>
-      <pubDate>Sat, 01 Oct 2022 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/ssrf/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Active-Directory</title>
-      <link>https://hussienmisbah.github.io/tags/active-directory/</link>
-      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/active-directory/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/LAPS</title>
-      <link>https://hussienmisbah.github.io/tags/laps/</link>
-      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/laps/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Pfx</title>
-      <link>https://hussienmisbah.github.io/tags/pfx/</link>
-      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/pfx/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Windows Machines</title>
-      <link>https://hussienmisbah.github.io/categories/windows-machines/</link>
-      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/windows-machines/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Sql-Injection</title>
-      <link>https://hussienmisbah.github.io/tags/sql-injection/</link>
-      <pubDate>Sat, 06 Aug 2022 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/sql-injection/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ssti</title>
-      <link>https://hussienmisbah.github.io/tags/ssti/</link>
-      <pubDate>Mon, 25 Jul 2022 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/ssti/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Categories/Android Pentesting</title>
-      <link>https://hussienmisbah.github.io/categories/android-pentesting/</link>
-      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/android-pentesting/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Adb</title>
-      <link>https://hussienmisbah.github.io/tags/adb/</link>
-      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/adb/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Apk</title>
-      <link>https://hussienmisbah.github.io/tags/apk/</link>
-      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/apk/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Sudo-Exploit</title>
-      <link>https://hussienmisbah.github.io/tags/sudo-exploit/</link>
-      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/sudo-exploit/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Phishing</title>
-      <link>https://hussienmisbah.github.io/tags/phishing/</link>
-      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/phishing/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Tab-Nabbing</title>
-      <link>https://hussienmisbah.github.io/tags/tab-nabbing/</link>
-      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/tab-nabbing/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Vim</title>
-      <link>https://hussienmisbah.github.io/tags/vim/</link>
-      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/vim/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Vulnhub</title>
-      <link>https://hussienmisbah.github.io/tags/vulnhub/</link>
-      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/vulnhub/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Path-Poisoning</title>
-      <link>https://hussienmisbah.github.io/tags/path-poisoning/</link>
-      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/path-poisoning/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Snmp</title>
-      <link>https://hussienmisbah.github.io/tags/snmp/</link>
-      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/snmp/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/IDOR</title>
-      <link>https://hussienmisbah.github.io/tags/idor/</link>
-      <pubDate>Thu, 19 May 2022 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/idor/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Directory-Traversal</title>
-      <link>https://hussienmisbah.github.io/tags/directory-traversal/</link>
-      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/directory-traversal/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>JWT</title>
-      <link>https://hussienmisbah.github.io/tags/jwt/</link>
-      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/jwt/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Decompile-Binary</title>
-      <link>https://hussienmisbah.github.io/tags/decompile-binary/</link>
-      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/decompile-binary/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Html Injection</title>
-      <link>https://hussienmisbah.github.io/tags/html-injection/</link>
-      <pubDate>Mon, 02 May 2022 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/html-injection/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/TryHackme</title>
-      <link>https://hussienmisbah.github.io/tags/tryhackme/</link>
-      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/tryhackme/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Windows-Privesc</title>
-      <link>https://hussienmisbah.github.io/tags/windows-privesc/</link>
-      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/windows-privesc/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Gdb Server</title>
-      <link>https://hussienmisbah.github.io/tags/gdb-server/</link>
-      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/gdb-server/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Screen</title>
-      <link>https://hussienmisbah.github.io/tags/screen/</link>
-      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/screen/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Waste</title>
-      <link>https://hussienmisbah.github.io/tags/waste/</link>
-      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/waste/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Wordpress</title>
-      <link>https://hussienmisbah.github.io/tags/wordpress/</link>
-      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/wordpress/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Python</title>
-      <link>https://hussienmisbah.github.io/tags/python/</link>
-      <pubDate>Sun, 17 Apr 2022 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Ipmi</title>
-      <link>https://hussienmisbah.github.io/tags/ipmi/</link>
-      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/ipmi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Maria-DB</title>
-      <link>https://hussienmisbah.github.io/tags/maria-db/</link>
-      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/maria-db/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Zabbix</title>
-      <link>https://hussienmisbah.github.io/tags/zabbix/</link>
-      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/zabbix/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/API</title>
-      <link>https://hussienmisbah.github.io/tags/api/</link>
-      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/api/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Core-Dump</title>
-      <link>https://hussienmisbah.github.io/tags/core-dump/</link>
-      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/core-dump/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/SUID</title>
-      <link>https://hussienmisbah.github.io/tags/suid/</link>
-      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/suid/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Evil-Winrm</title>
-      <link>https://hussienmisbah.github.io/tags/evil-winrm/</link>
-      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/evil-winrm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Print Nigthmare</title>
-      <link>https://hussienmisbah.github.io/tags/print-nigthmare/</link>
-      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/print-nigthmare/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Scf Attacks</title>
-      <link>https://hussienmisbah.github.io/tags/scf-attacks/</link>
-      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/scf-attacks/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/PGP Decrypting</title>
-      <link>https://hussienmisbah.github.io/tags/pgp-decrypting/</link>
-      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/pgp-decrypting/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Chisel</title>
-      <link>https://hussienmisbah.github.io/tags/chisel/</link>
-      <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/chisel/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Jekyll</title>
-      <link>https://hussienmisbah.github.io/tags/jekyll/</link>
-      <pubDate>Tue, 18 Jan 2022 15:34:30 -0400</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/jekyll/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Posts</title>
-      <link>https://hussienmisbah.github.io/posts/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://hussienmisbah.github.io/posts/</guid>
-      <description></description>
-    </item>
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>0xMesbaha</title>
+        <link>https://hussienmisbah.github.io/</link>
+        <description>This is 0xMesbaha</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</lastBuildDate>
+            <atom:link href="https://hussienmisbah.github.io/index.xml" rel="self" type="application/rss+xml" />
+        <item>
+    <title>CVE-2022-0650 Analysis &amp; POC</title>
+    <link>https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</link>
+    <pubDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</guid>
+    <description><![CDATA[<p>Recently i was exploring Firmware analysis and iot exploitation domain out  of curiosity , and it turned out to be very interesting to me. i spent a while studying Exploitation Basics , Solving Basic PWN &amp; Reverse Engineering Challanges and Checking IOT Pentesting Course From <a href="https://fahemsec.com/course/7" target="_blank" rel="noopener noreffer ">FahemSec</a>. I Spent days analyzing firmware and binaries in Ghidra and GDB and Finally I was able to reproduce couple of CVEs on TpLink Routers and even discover new ones!</p>]]></description>
+</item>
+<item>
+    <title>EGCERT-CTF JDBCLeak Exploit</title>
+    <link>https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</link>
+    <pubDate>Wed, 28 May 2025 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</guid>
+    <description><![CDATA[<p><em>JDBCLeak Leak was a challenge introducted in EGCERT CTF Finals 2025 under the category R&amp;D , tbh i didn&rsquo;t even look at the challenge during CTF Time , didn&rsquo;t expect this category to introduce such good example of a real case code review challenge , however after reading the author&rsquo;s blog <a href="https://bitthebyte.medium.com/here-is-what-you-missed-during-the-egcert-ctf-2025-finals-927297143d9a" target="_blank" rel="noopener noreffer ">here</a> about the category and challenge i thought of trying it myself and create a POC for it to get rce reading /flag.txt , we got 3rd place btw :&ldquo;D</em></p>]]></description>
+</item>
+<item>
+    <title>CyCTF 2024 Finals OSINT Writeups</title>
+    <link>https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</link>
+    <pubDate>Sat, 30 Nov 2024 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</guid>
+    <description><![CDATA[<p>CyCTF is organized by <a href="https://www.cyshield.com/" target="_blank" rel="noopener noreffer ">Cyshield</a>&rsquo;s cysec team every year , demonstrating new ideas and techniques in different categories (web exploitation , cryptography ,reverse and malware analysis , pwn , osint , mobile). it was my pleasure to be the author of SMS and vengeance challenges in web exploitation category and for the osint category in qualifcation and finals. this blog post will be about the solutions for the osint category in the finals round. My approach for creating the challenges was to not make it sherlock/yandex style ones and to introduce new ideas/techniques that can be used in real life scenarios.</p>]]></description>
+</item>
+<item>
+    <title>WizerCTF-May2024</title>
+    <link>https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/</link>
+    <pubDate>Sun, 05 May 2024 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/</guid>
+    <description><![CDATA[<p><em>Wizer CTF is an exciting game designed specifically for developers . It&rsquo;s all about putting your skills to the test and seeing if you can identify and exploit vulnerabilities while honing your secure coding abilities. The game kicks off with a snappy code snippet that comes with some tricky vulnerabilities. Your goal? Spot those vulnerabilities and figure out how to exploit them.
+The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&rsquo;ve got it right. You can actually execute your payload right there on the game page. If you manage to successfully exploit the vulnerabilities, you&rsquo;ll earn yourself a flag and a well-deserved spot on leaderboard , The main focus area is web exploitation and the ctf event is held every quarter , this writeup discusses 5 challenges out of 6.</em></p>]]></description>
+</item>
+<item>
+    <title>JustCTF Extra Safe Security Layers writeup</title>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
+    <pubDate>Sun, 04 Jun 2023 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
+    <description><![CDATA[<p>This Challenge is about exploiting cross site scripting with a strict CSP in place along with XSS Santizer and other restrictions , the interesting part in this blog is about learning the root cause and idenfiy exploit points. the challenge may seem very easy and it is easy and fun indeed.</p>]]></description>
+</item>
+<item>
+    <title>Open Source HackTheBox Writeup</title>
+    <link>https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/</link>
+    <pubDate>Sat, 08 Oct 2022 00:45:19 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/</guid>
+    <description><![CDATA[<p>In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git</p>]]></description>
+</item>
+<item>
+    <title>meme generator challenge writeup</title>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/</link>
+    <pubDate>Sat, 01 Oct 2022 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/</guid>
+    <description><![CDATA[<p>This challenge was in Blackhat CTF Qualifications 2022 and we have participated under the team 0xCha0s, we have managed to solve multiple challenges. this challenge was ranked medium for 250 pts .</p>]]></description>
+</item>
+<item>
+    <title>Timelapse Hackthebox writeup</title>
+    <link>https://hussienmisbah.github.io/posts/windows-machines/2022-08-20-timelapse/</link>
+    <pubDate>Sat, 20 Aug 2022 00:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/windows-machines/2022-08-20-timelapse/</guid>
+    <description><![CDATA[<p>In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text</p>]]></description>
+</item>
+<item>
+    <title>kenzy challenge Writeup</title>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-08-06-kenzy/</link>
+    <pubDate>Sat, 06 Aug 2022 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-08-06-kenzy/</guid>
+    <description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>CTF name</td>
+          <td><a href="https://www.ascyberwargames.com/" target="_blank" rel="noopener noreffer ">AWG 2022</a></td>
+      </tr>
+      <tr>
+          <td>challenge</td>
+          <td>kenzy</td>
+      </tr>
+      <tr>
+          <td>category</td>
+          <td>web</td>
+      </tr>
+      <tr>
+          <td>about</td>
+          <td>SQL injection</td>
+      </tr>
+      <tr>
+          <td>description</td>
+          <td>captcha is not that secure</td>
+      </tr>
+      <tr>
+          <td>points</td>
+          <td>900</td>
+      </tr>
+      <tr>
+          <td>team</td>
+          <td><a href="https://ctftime.org/team/168238" target="_blank" rel="noopener noreffer ">0xCha0s</a></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="discovery">Discovery</h2>
+<p>we are introduced with this page which takes username ,password and the Captcha</p>
+<p></p>
+<p>If we check the source code we can notice this comment</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">        <span class="p">&lt;</span>!-- Username =====<span class="p">&gt;</span> admin --&gt;</span></span></code></pre></div></div>
+<p>we can also find the endpoint which generates the captcha each time we request it different captcha is assigned</p>]]></description>
+</item>
+<item>
+    <title>Flushed Emoji challenge Writeup</title>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-07-25-flused-emoji/</link>
+    <pubDate>Mon, 25 Jul 2022 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-07-25-flused-emoji/</guid>
+    <description><![CDATA[<p>Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.</p>]]></description>
+</item>
+</channel>
 </rss>

@@ -9,21 +9,21 @@
     <lastBuildDate>Tue, 30 Sep 2025 12:49:18 +0200</lastBuildDate>
     <atom:link href="https://hussienmisbah.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Tags/CVE</title>
+      <title>CVE</title>
       <link>https://hussienmisbah.github.io/tags/cve/</link>
       <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/cve/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Exploitation</title>
+      <title>Exploitation</title>
       <link>https://hussienmisbah.github.io/tags/exploitation/</link>
       <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/exploitation/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Firmware-Analysis</title>
+      <title>Firmware-Analysis</title>
       <link>https://hussienmisbah.github.io/tags/firmware-analysis/</link>
       <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/firmware-analysis/</guid>
@@ -37,6 +37,13 @@
       <description></description>
     </item>
     <item>
+      <title>Java-Deserialization</title>
+      <link>https://hussienmisbah.github.io/tags/java-deserialization/</link>
+      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/tags/java-deserialization/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Rce</title>
       <link>https://hussienmisbah.github.io/tags/rce/</link>
       <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
@@ -44,35 +51,28 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/Java-Deserialization</title>
-      <link>https://hussienmisbah.github.io/tags/java-deserialization/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/java-deserialization/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/OSINT</title>
+      <title>OSINT</title>
       <link>https://hussienmisbah.github.io/tags/osint/</link>
       <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/osint/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Nodejs</title>
+      <title>Nodejs</title>
       <link>https://hussienmisbah.github.io/tags/nodejs/</link>
       <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/nodejs/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/React</title>
+      <title>React</title>
       <link>https://hussienmisbah.github.io/tags/react/</link>
       <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/react/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/SQLi</title>
+      <title>SQLi</title>
       <link>https://hussienmisbah.github.io/tags/sqli/</link>
       <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/sqli/</guid>
@@ -86,10 +86,24 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/CSP</title>
+      <title>CSP</title>
       <link>https://hussienmisbah.github.io/tags/csp/</link>
       <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/csp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker</title>
+      <link>https://hussienmisbah.github.io/tags/docker/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Git</title>
+      <link>https://hussienmisbah.github.io/tags/git/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/tags/git/</guid>
       <description></description>
     </item>
     <item>
@@ -107,20 +121,6 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/Docker</title>
-      <link>https://hussienmisbah.github.io/tags/docker/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/docker/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Git</title>
-      <link>https://hussienmisbah.github.io/tags/git/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/git/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>SSRF</title>
       <link>https://hussienmisbah.github.io/tags/ssrf/</link>
       <pubDate>Sat, 01 Oct 2022 12:49:18 +0200</pubDate>
@@ -128,21 +128,21 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/Active-Directory</title>
+      <title>Active-Directory</title>
       <link>https://hussienmisbah.github.io/tags/active-directory/</link>
       <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/active-directory/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/LAPS</title>
+      <title>LAPS</title>
       <link>https://hussienmisbah.github.io/tags/laps/</link>
       <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/laps/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Pfx</title>
+      <title>Pfx</title>
       <link>https://hussienmisbah.github.io/tags/pfx/</link>
       <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/pfx/</guid>
@@ -163,49 +163,49 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/Adb</title>
+      <title>Adb</title>
       <link>https://hussienmisbah.github.io/tags/adb/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/adb/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Apk</title>
+      <title>Apk</title>
       <link>https://hussienmisbah.github.io/tags/apk/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/apk/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Sudo-Exploit</title>
+      <title>Sudo-Exploit</title>
       <link>https://hussienmisbah.github.io/tags/sudo-exploit/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/sudo-exploit/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Phishing</title>
+      <title>Phishing</title>
       <link>https://hussienmisbah.github.io/tags/phishing/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/phishing/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Tab-Nabbing</title>
+      <title>Tab-Nabbing</title>
       <link>https://hussienmisbah.github.io/tags/tab-nabbing/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/tab-nabbing/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Vim</title>
+      <title>Vim</title>
       <link>https://hussienmisbah.github.io/tags/vim/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/vim/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Vulnhub</title>
+      <title>Vulnhub</title>
       <link>https://hussienmisbah.github.io/tags/vulnhub/</link>
       <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/vulnhub/</guid>
@@ -219,17 +219,24 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/Snmp</title>
+      <title>Snmp</title>
       <link>https://hussienmisbah.github.io/tags/snmp/</link>
       <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/snmp/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/IDOR</title>
+      <title>IDOR</title>
       <link>https://hussienmisbah.github.io/tags/idor/</link>
       <pubDate>Thu, 19 May 2022 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/idor/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Decompile-Binary</title>
+      <link>https://hussienmisbah.github.io/tags/decompile-binary/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
+      <guid>https://hussienmisbah.github.io/tags/decompile-binary/</guid>
       <description></description>
     </item>
     <item>
@@ -247,147 +254,140 @@
       <description></description>
     </item>
     <item>
-      <title>Tags/Decompile-Binary</title>
-      <link>https://hussienmisbah.github.io/tags/decompile-binary/</link>
-      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate>
-      <guid>https://hussienmisbah.github.io/tags/decompile-binary/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags/Html Injection</title>
+      <title>Html Injection</title>
       <link>https://hussienmisbah.github.io/tags/html-injection/</link>
       <pubDate>Mon, 02 May 2022 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/html-injection/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/TryHackme</title>
+      <title>TryHackme</title>
       <link>https://hussienmisbah.github.io/tags/tryhackme/</link>
       <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/tryhackme/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Windows-Privesc</title>
+      <title>Windows-Privesc</title>
       <link>https://hussienmisbah.github.io/tags/windows-privesc/</link>
       <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/windows-privesc/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Gdb Server</title>
+      <title>Gdb Server</title>
       <link>https://hussienmisbah.github.io/tags/gdb-server/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/gdb-server/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Screen</title>
+      <title>Screen</title>
       <link>https://hussienmisbah.github.io/tags/screen/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/screen/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Waste</title>
+      <title>Waste</title>
       <link>https://hussienmisbah.github.io/tags/waste/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/waste/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Wordpress</title>
+      <title>Wordpress</title>
       <link>https://hussienmisbah.github.io/tags/wordpress/</link>
       <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/wordpress/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Python</title>
+      <title>Python</title>
       <link>https://hussienmisbah.github.io/tags/python/</link>
       <pubDate>Sun, 17 Apr 2022 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/python/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Ipmi</title>
+      <title>Ipmi</title>
       <link>https://hussienmisbah.github.io/tags/ipmi/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/ipmi/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Maria-DB</title>
+      <title>Maria-DB</title>
       <link>https://hussienmisbah.github.io/tags/maria-db/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/maria-db/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Zabbix</title>
+      <title>Zabbix</title>
       <link>https://hussienmisbah.github.io/tags/zabbix/</link>
       <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/zabbix/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/API</title>
+      <title>API</title>
       <link>https://hussienmisbah.github.io/tags/api/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/api/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Core-Dump</title>
+      <title>Core-Dump</title>
       <link>https://hussienmisbah.github.io/tags/core-dump/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/core-dump/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/SUID</title>
+      <title>SUID</title>
       <link>https://hussienmisbah.github.io/tags/suid/</link>
       <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/suid/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Evil-Winrm</title>
+      <title>Evil-Winrm</title>
       <link>https://hussienmisbah.github.io/tags/evil-winrm/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/evil-winrm/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Print Nigthmare</title>
+      <title>Print Nigthmare</title>
       <link>https://hussienmisbah.github.io/tags/print-nigthmare/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/print-nigthmare/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Scf Attacks</title>
+      <title>Scf Attacks</title>
       <link>https://hussienmisbah.github.io/tags/scf-attacks/</link>
       <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/scf-attacks/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/PGP Decrypting</title>
+      <title>PGP Decrypting</title>
       <link>https://hussienmisbah.github.io/tags/pgp-decrypting/</link>
       <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/pgp-decrypting/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Chisel</title>
+      <title>Chisel</title>
       <link>https://hussienmisbah.github.io/tags/chisel/</link>
       <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/tags/chisel/</guid>
       <description></description>
     </item>
     <item>
-      <title>Tags/Jekyll</title>
+      <title>Jekyll</title>
       <link>https://hussienmisbah.github.io/tags/jekyll/</link>
       <pubDate>Tue, 18 Jan 2022 15:34:30 -0400</pubDate>
       <guid>https://hussienmisbah.github.io/tags/jekyll/</guid>
