@@ -9,7 +9,7 @@
     <lastBuildDate>Tue, 30 Sep 2025 12:49:18 +0200</lastBuildDate>
     <atom:link href="https://hussienmisbah.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Exploitation</title>
+      <title>Categories/Exploitation</title>
       <link>https://hussienmisbah.github.io/categories/exploitation/</link>
       <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/categories/exploitation/</guid>
@@ -23,7 +23,7 @@
       <description></description>
     </item>
     <item>
-      <title>OSINT</title>
+      <title>Categories/OSINT</title>
       <link>https://hussienmisbah.github.io/categories/osint/</link>
       <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/categories/osint/</guid>
@@ -51,7 +51,7 @@
       <description></description>
     </item>
     <item>
-      <title>Android Pentesting</title>
+      <title>Categories/Android Pentesting</title>
       <link>https://hussienmisbah.github.io/categories/android-pentesting/</link>
       <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/categories/android-pentesting/</guid>
