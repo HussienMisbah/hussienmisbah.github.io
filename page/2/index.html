@@ -81,6 +81,14 @@
         alt="assets/images/avatar.png"
         title="assets/images/avatar.png" /></a></div><div class="home-subtitle"><div id="id-1" class="typeit"></div></div><div class="links"><a href="https://github.com/HussienMisbah" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github fa-fw" aria-hidden="true"></i></a><a href="https://linkedin.com/in/hussien-6331151b2/" title="LinkedIn" target="_blank" rel="noopener noreffer me"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://x.com/tinkerhell1337" title="X" target="_blank" rel="noopener noreffer me"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="https://medium.com/@mesbaha" title="Medium" target="_blank" rel="noopener noreffer me"><i class="fab fa-medium fa-fw" aria-hidden="true"></i></a><a href="mailto:hussienmisbah11@gmail.com" title="Email" rel="me"><i class="far fa-envelope fa-fw" aria-hidden="true"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/web-exploitation/2022-10-01-meme-generator/">meme generator challenge writeup</a>
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-10-01">2022-10-01</time></span>&nbsp;<span class="post-category">in <a href="/categories/web-exploitation/">Web Exploitation</a></span></div><div class="content"><p>This challenge was in Blackhat CTF Qualifications 2022 and we have participated under the team 0xCha0s, we have managed to solve multiple challenges. this challenge was ranked medium for 250 pts .</p></div><div class="post-footer">
+        <a href="/posts/web-exploitation/2022-10-01-meme-generator/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/ssrf/">SSRF</a></div></div>
+</article>
+
+
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/windows-machines/2022-08-20-timelapse/">Timelapse Hackthebox writeup</a>
     </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-08-20">2022-08-20</time></span>&nbsp;<span class="post-category">in <a href="/categories/windows-machines/">Windows Machines</a></span></div><div class="content"><p>In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text</p></div><div class="post-footer">
         <a href="/posts/windows-machines/2022-08-20-timelapse/">Read More</a><div class="post-tags">
@@ -175,14 +183,6 @@
 <p>it indicates that some admin will make a mistake or something but let&rsquo;s Jump in and see ourselves.</p></div><div class="post-footer">
         <a href="/posts/linux-machines/2022-06-27-napping/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/vulnhub/">Vulnhub</a>,&nbsp;<a href="/tags/tab-nabbing/">Tab-Nabbing</a>,&nbsp;<a href="/tags/phishing/">Phishing</a>,&nbsp;<a href="/tags/vim/">Vim</a></div></div>
-</article>
-
-
-<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/posts/linux-machines/2022-05-21-pandora/">Pandora Hackthebox writeup</a>
-    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-05-21">2022-05-21</time></span>&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div><div class="content"><p>In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access</p></div><div class="post-footer">
-        <a href="/posts/linux-machines/2022-05-21-pandora/">Read More</a><div class="post-tags">
-                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/snmp/">Snmp</a>,&nbsp;<a href="/tags/port-forwarding/">Port-Forwarding</a>,&nbsp;<a href="/tags/path-poisoning/">Path-Poisoning</a></div></div>
 </article>
 
 
