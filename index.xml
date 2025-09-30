@@ -122,7 +122,7 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+        
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">        <span class="p">&lt;</span>!-- Username =====<span class="p">&gt;</span> admin --&gt;</span></span></code></pre></div></div>
 <p>we can also find the endpoint which generates the captcha each time we request it different captcha is assigned</p>]]></description>
 </item>
