@@ -1,8 +1,8 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>All Posts - My New Hugo Site</title>
+        <title>All Posts - 0xMesbaha</title>
         <link>http://example.org/posts/</link>
-        <description>All Posts | My New Hugo Site</description>
+        <description>All Posts | 0xMesbaha</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
             <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster><lastBuildDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</lastBuildDate><atom:link href="http://example.org/posts/" rel="self" type="application/rss+xml" /><item>
     <title>CVE-2022-0650 Analysis &amp; POC</title>

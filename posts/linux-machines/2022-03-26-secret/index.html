@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>Secret Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-03-26-secret/">
-  <meta property="og:site_name" content="My New Hugo Site">
+        <title>Secret Hackthebox writeup - 0xMesbaha</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-03-26-secret/">
+  <meta property="og:site_name" content="0xMesbaha">
   <meta property="og:title" content="Secret Hackthebox writeup">
   <meta property="og:description" content="In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has PR_SET_DUMPABLE so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root">
   <meta property="og:locale" content="en">
@@ -63,7 +63,7 @@
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
         <div class="header-title">
-            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            <a href="/" title="0xMesbaha">0xMesbaha</a>
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
@@ -75,7 +75,7 @@
     <div class="header-container">
         <div class="header-wrapper">
             <div class="header-title">
-                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+                <a href="/" title="0xMesbaha">0xMesbaha</a>
             </div>
             <div class="menu-toggle" id="menu-toggle-mobile">
                 <span></span><span></span><span></span>
