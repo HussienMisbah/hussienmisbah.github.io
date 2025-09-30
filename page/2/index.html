@@ -82,12 +82,15 @@
         title="assets/images/avatar.png" /></a></div><div class="home-subtitle"><div id="id-1" class="typeit"></div></div><div class="links"><a href="https://github.com/HussienMisbah" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github fa-fw" aria-hidden="true"></i></a><a href="https://linkedin.com/in/hussien-6331151b2/" title="LinkedIn" target="_blank" rel="noopener noreffer me"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://x.com/tinkerhell1337" title="X" target="_blank" rel="noopener noreffer me"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="https://medium.com/@mesbaha" title="Medium" target="_blank" rel="noopener noreffer me"><i class="fab fa-medium fa-fw" aria-hidden="true"></i></a><a href="mailto:hussienmisbah11@gmail.com" title="Email" rel="me"><i class="far fa-envelope fa-fw" aria-hidden="true"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/windows-machines/2022-08-20-timelapse/">Timelapse Hackthebox writeup</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-publish">on <time datetime="2022-08-20">2022-08-20</time></span>&nbsp;<span class="post-category"> <a href="/categories/windows-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Windows Machines</a></span></div><div class="content"><p>In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text</p></div><div class="post-footer">
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-08-20">2022-08-20</time></span>&nbsp;<span class="post-category">in <a href="/categories/windows-machines/">Windows Machines</a></span></div><div class="content"><p>In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text</p></div><div class="post-footer">
         <a href="/posts/windows-machines/2022-08-20-timelapse/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/active-directory/">Active-Directory</a>,&nbsp;<a href="/tags/laps/">LAPS</a>,&nbsp;<a href="/tags/pfx/">Pfx</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+</article>
+
+
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/web-exploitation/2022-08-06-kenzy/">kenzy challenge Writeup</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-publish">on <time datetime="2022-08-06">2022-08-06</time></span>&nbsp;<span class="post-category"> <a href="/categories/web-exploitation/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Web Exploitation</a></span></div><div class="content"><table>
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-08-06">2022-08-06</time></span>&nbsp;<span class="post-category">in <a href="/categories/web-exploitation/">Web Exploitation</a></span></div><div class="content"><table>
   <thead>
       <tr>
           <th></th>
@@ -145,30 +148,45 @@
 <p>we can also find the endpoint which generates the captcha each time we request it different captcha is assigned</p></div><div class="post-footer">
         <a href="/posts/web-exploitation/2022-08-06-kenzy/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/sql-injection/">Sql-Injection</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+</article>
+
+
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/web-exploitation/2022-07-25-flused-emoji/">Flushed Emoji challenge Writeup</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-publish">on <time datetime="2022-07-25">2022-07-25</time></span>&nbsp;<span class="post-category"> <a href="/categories/web-exploitation/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Web Exploitation</a></span></div><div class="content"><p>Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.</p></div><div class="post-footer">
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-07-25">2022-07-25</time></span>&nbsp;<span class="post-category">in <a href="/categories/web-exploitation/">Web Exploitation</a></span></div><div class="content"><p>Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.</p></div><div class="post-footer">
         <a href="/posts/web-exploitation/2022-07-25-flused-emoji/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/ssti/">Ssti</a>,&nbsp;<a href="/tags/sql-injection/">Sql-Injection</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+</article>
+
+
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/android-pentesting/2022-07-09-routerspace/">Routerspace Hackthebox writeup</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-publish">on <time datetime="2022-07-09">2022-07-09</time></span>&nbsp;<span class="post-category"> <a href="/categories/android-pentesting/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Android Pentesting</a></span></div><div class="content"><p>In this Box we are going to examine an android appliacation (apk) , and monitroing the requests by placing a proxy we will notice a request which we can manipulate to get a remote code exection. this box has a lot of iptables rules which restrict us from getting a reverse shell in the usual way. so we will login via ssh by placing our public key at paul&rsquo;s. from that we will gain root access by exploiting sudo itself.</p></div><div class="post-footer">
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-07-09">2022-07-09</time></span>&nbsp;<span class="post-category">in <a href="/categories/android-pentesting/">Android Pentesting</a></span></div><div class="content"><p>In this Box we are going to examine an android appliacation (apk) , and monitroing the requests by placing a proxy we will notice a request which we can manipulate to get a remote code exection. this box has a lot of iptables rules which restrict us from getting a reverse shell in the usual way. so we will login via ssh by placing our public key at paul&rsquo;s. from that we will gain root access by exploiting sudo itself.</p></div><div class="post-footer">
         <a href="/posts/android-pentesting/2022-07-09-routerspace/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/apk/">Apk</a>,&nbsp;<a href="/tags/adb/">Adb</a>,&nbsp;<a href="/tags/sudo-exploit/">Sudo-Exploit</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+</article>
+
+
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/linux-machines/2022-06-27-napping/">napping 1.0.1 vulnhub writeup</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-publish">on <time datetime="2022-06-27">2022-06-27</time></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div><div class="content"><p>In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.</p>
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-06-27">2022-06-27</time></span>&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div><div class="content"><p>In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.</p>
 <p>you can download the machine from <a href="https://www.vulnhub.com/entry/napping-101,752/" target="_blank" rel="noopener noreffer ">here</a> we have the description :</p>
 <p><em>Even Admins can fall asleep on the job</em></p>
 <p>it indicates that some admin will make a mistake or something but let&rsquo;s Jump in and see ourselves.</p></div><div class="post-footer">
         <a href="/posts/linux-machines/2022-06-27-napping/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/vulnhub/">Vulnhub</a>,&nbsp;<a href="/tags/tab-nabbing/">Tab-Nabbing</a>,&nbsp;<a href="/tags/phishing/">Phishing</a>,&nbsp;<a href="/tags/vim/">Vim</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+</article>
+
+
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/linux-machines/2022-05-21-pandora/">Pandora Hackthebox writeup</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-publish">on <time datetime="2022-05-21">2022-05-21</time></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div><div class="content"><p>In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access</p></div><div class="post-footer">
+    </h1><div class="post-meta">&nbsp;<span class="post-publish">Published on <time datetime="2022-05-21">2022-05-21</time></span>&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div><div class="content"><p>In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access</p></div><div class="post-footer">
         <a href="/posts/linux-machines/2022-05-21-pandora/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/snmp/">Snmp</a>,&nbsp;<a href="/tags/port-forwarding/">Port-Forwarding</a>,&nbsp;<a href="/tags/path-poisoning/">Path-Poisoning</a></div></div>
-</article><ul class="pagination"><li class="page-item ">
+</article>
+
+
+<ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
                     </span>
@@ -189,11 +207,7 @@
                         <a href="/page/5/">5</a>
                     </span>
                 </li></ul></div></div>
-            </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
-                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
-        </div>
-    </footer></div>
+            </main></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
