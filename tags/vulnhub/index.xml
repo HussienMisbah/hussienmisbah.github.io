@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vulnhub on My New Hugo Site</title>
+    <link>http://example.org/tags/vulnhub/</link>
+    <description>Recent content in Vulnhub on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
+    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
+    <lastBuildDate>Mon, 27 Jun 2022 00:45:19 +0200</lastBuildDate>
+    <atom:link href="http://example.org/tags/vulnhub/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>napping 1.0.1 vulnhub writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-06-27-napping/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-06-27-napping/</guid>
+      <description>&lt;p&gt;In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.&lt;/p&gt;&#xA;&lt;p&gt;you can download the machine from &lt;a href=&#34;https://www.vulnhub.com/entry/napping-101,752/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreffer &#34;&gt;here&lt;/a&gt; we have the description :&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Even Admins can fall asleep on the job&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;it indicates that some admin will make a mistake or something but let&amp;rsquo;s Jump in and see ourselves.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

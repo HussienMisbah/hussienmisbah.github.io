@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Html Injection on My New Hugo Site</title>
+    <link>http://example.org/tags/html-injection/</link>
+    <description>Recent content in Html Injection on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
+    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
+    <lastBuildDate>Mon, 02 May 2022 12:49:18 +0200</lastBuildDate>
+    <atom:link href="http://example.org/tags/html-injection/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hacker Ts challenge writeup</title>
+      <link>http://example.org/posts/web-exploitation/2022-05-02-hacker-ts/</link>
+      <pubDate>Mon, 02 May 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/web-exploitation/2022-05-02-hacker-ts/</guid>
+      <description>&lt;p&gt;Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to document it in this writeup&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

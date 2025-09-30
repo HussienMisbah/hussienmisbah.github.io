@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>CyCTF 2024 Finals OSINT Writeups - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="CyCTF 2024 Finals OSINT Writeups">
+  <meta property="og:description" content="CyCTF is organized by Cyshield’s cysec team every year , demonstrating new ideas and techniques in different categories (web exploitation , cryptography ,reverse and malware analysis , pwn , osint , mobile). it was my pleasure to be the author of SMS and vengeance challenges in web exploitation category and for the osint category in qualifcation and finals. this blog post will be about the solutions for the osint category in the finals round. My approach for creating the challenges was to not make it sherlock/yandex style ones and to introduce new ideas/techniques that can be used in real life scenarios.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-30T12:49:18+02:00">
+    <meta property="article:modified_time" content="2024-11-30T12:49:18+02:00">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="OSINT">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CyCTF 2024 Finals OSINT Writeups">
+  <meta name="twitter:description" content="CyCTF is organized by Cyshield’s cysec team every year , demonstrating new ideas and techniques in different categories (web exploitation , cryptography ,reverse and malware analysis , pwn , osint , mobile). it was my pleasure to be the author of SMS and vengeance challenges in web exploitation category and for the osint category in qualifcation and finals. this blog post will be about the solutions for the osint category in the finals round. My approach for creating the challenges was to not make it sherlock/yandex style ones and to introduce new ideas/techniques that can be used in real life scenarios.">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" /><link rel="prev" href="http://example.org/posts/code-review/2024-05-06-wizerctf-may-2024/" /><link rel="next" href="http://example.org/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "CyCTF 2024 Finals OSINT Writeups",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/osint\/2024-11-30-cyctf-finals-osint-writeups\/"
+        },"genre": "posts","keywords": "CTF, OSINT","wordcount":  1274 ,
+        "url": "http:\/\/example.org\/posts\/osint\/2024-11-30-cyctf-finals-osint-writeups\/","datePublished": "2024-11-30T12:49:18+02:00","dateModified": "2024-11-30T12:49:18+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">CyCTF 2024 Finals OSINT Writeups</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/osint/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>OSINT</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-30">2024-11-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1274 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#new-friend">New Friend</a></li>
+    <li><a href="#maybe-in-another-universe">Maybe in another UniVerse</a></li>
+    <li><a href="#complicated">Complicated</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>CyCTF is organized by <a href="https://www.cyshield.com/" target="_blank" rel="noopener noreffer ">Cyshield</a>&rsquo;s cysec team every year , demonstrating new ideas and techniques in different categories (web exploitation , cryptography ,reverse and malware analysis , pwn , osint , mobile). it was my pleasure to be the author of SMS and vengeance challenges in web exploitation category and for the osint category in qualifcation and finals. this blog post will be about the solutions for the osint category in the finals round. My approach for creating the challenges was to not make it sherlock/yandex style ones and to introduce new ideas/techniques that can be used in real life scenarios.</p>
+<h2 id="new-friend">New Friend</h2>
+<table>
+  <thead>
+      <tr>
+          <th>challenge</th>
+          <th>New Friend</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>about</td>
+          <td>osint process , video analysis , GEOINT , SOCMINT</td>
+      </tr>
+      <tr>
+          <td>description</td>
+          <td>we have been tracking a female suspect recently and we were able to hack into her mobile phone , however she seems to be very cautious and most likely she already know her phone is not safe anymore , while trying to locate her place it was located in Egypt however we are sure 100% this is not true. we were able to record a short video from her phone before she powered it off eventually and we were not able to identify the location, she has been visiting this places a lot recently, can you help us? an extra information that might be helpful she has been a friend to a multi faceted hairstylist. our goal from this simple task is to reach the hairstylist so we can contact her and get more details about our suspect. the flag is her email address , example flag <code>CyCTF{fake_staylistmail@gmail.com}</code></td>
+      </tr>
+      <tr>
+          <td>attached</td>
+          <td>challenge.mp4</td>
+      </tr>
+      <tr>
+          <td>solves</td>
+          <td>4</td>
+      </tr>
+  </tbody>
+</table>
+<p>Our starting point will be the video given , best approach is to :</p>
+<ul>
+<li>extract all frames from the video to deal with it as images</li>
+<li>extract audio from the video (to identify language used)</li>
+</ul>
+<p>Using online tools like <a href="https://ezgif.com/video-to-jpg/" target="_blank" rel="noopener noreffer ">ezgif</a> we can extract all frames , the idea of this point is to extract important frames that can help us identify the location. there are 2 important main frames :</p>
+<p>First frame , we can identify the following artifacts :</p>
+<ul>
+<li>snow everywhere (we are in winter most likely , this is not the same status always)</li>
+<li>a river (so we are standing on a bridge)</li>
+<li>stairs in left and right of the river</li>
+<li>blue lights</li>
+<li>Tress on left and right</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116191551.png"
+        data-srcset="/assets/images/osint/20241116191551.png, /assets/images/osint/20241116191551.png 1.5x, /assets/images/osint/20241116191551.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116191551.png"
+        title="image" /></p>
+<p>Second Frame :</p>
+<ul>
+<li>Contains 2 big buildings</li>
+<li>one with blue colors</li>
+<li>the other one has the word &ldquo;Terrassen&rdquo; in it</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116192114.png"
+        data-srcset="/assets/images/osint/20241116192114.png, /assets/images/osint/20241116192114.png 1.5x, /assets/images/osint/20241116192114.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116192114.png"
+        title="image" /></p>
+<p>Doing basic GEOINT on the 2 frames and using google lens on the river frame , will find most images point to sweden , and this frame has same stairs in our frame</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116192445.png"
+        data-srcset="/assets/images/osint/20241116192445.png, /assets/images/osint/20241116192445.png 1.5x, /assets/images/osint/20241116192445.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116192445.png"
+        title="image" /></p>
+<p>we can take the image in results and drop it into geospy tool which quickly identifies the location</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116192715.png"
+        data-srcset="/assets/images/osint/20241116192715.png, /assets/images/osint/20241116192715.png 1.5x, /assets/images/osint/20241116192715.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116192715.png"
+        title="image" /></p>
+<p>it is not the most accurate location as from video we are standing on a bridge by a river which matches this location</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116192820.png"
+        data-srcset="/assets/images/osint/20241116192820.png, /assets/images/osint/20241116192820.png 1.5x, /assets/images/osint/20241116192820.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116192820.png"
+        title="image" /></p>
+<p>dropping street view we are in same location in video but different weather.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116192858.png"
+        data-srcset="/assets/images/osint/20241116192858.png, /assets/images/osint/20241116192858.png 1.5x, /assets/images/osint/20241116192858.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116192858.png"
+        title="image" /></p>
+<p>Now our goal is to search for the hair stylist/dresser mentioned , form maps there is a hair studio very close to the bridge which we can investigate</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193050.png"
+        data-srcset="/assets/images/osint/20241116193050.png, /assets/images/osint/20241116193050.png 1.5x, /assets/images/osint/20241116193050.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193050.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193123.png"
+        data-srcset="/assets/images/osint/20241116193123.png, /assets/images/osint/20241116193123.png 1.5x, /assets/images/osint/20241116193123.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193123.png"
+        title="image" /></p>
+<p>visiting the place website and in about us page will find team members listed</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193209.png"
+        data-srcset="/assets/images/osint/20241116193209.png, /assets/images/osint/20241116193209.png 1.5x, /assets/images/osint/20241116193209.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193209.png"
+        title="image" /></p>
+<p>the description mentioned a &ldquo;Multi-faceted&rdquo; hairstylist which matches this one called &ldquo;bero&rdquo;</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193248.png"
+        data-srcset="/assets/images/osint/20241116193248.png, /assets/images/osint/20241116193248.png 1.5x, /assets/images/osint/20241116193248.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193248.png"
+        title="image" /></p>
+<p>the page doesn&rsquo;t contain a mail for each person in the team , however a quick search will find the instagram page for the salon and they follow the team members on social media</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193405.png"
+        data-srcset="/assets/images/osint/20241116193405.png, /assets/images/osint/20241116193405.png 1.5x, /assets/images/osint/20241116193405.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193405.png"
+        title="image" /></p>
+<p>will find bero&rsquo;s account which contains a link on her bio</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193434.png"
+        data-srcset="/assets/images/osint/20241116193434.png, /assets/images/osint/20241116193434.png 1.5x, /assets/images/osint/20241116193434.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193434.png"
+        title="image" /></p>
+<p>and finally will find her mail address.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241116193500.png"
+        data-srcset="/assets/images/osint/20241116193500.png, /assets/images/osint/20241116193500.png 1.5x, /assets/images/osint/20241116193500.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241116193500.png"
+        title="image" /></p>
+<h2 id="maybe-in-another-universe">Maybe in another UniVerse</h2>
+<table>
+  <thead>
+      <tr>
+          <th>challenge</th>
+          <th>Maybe in another UniVerse</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>about</td>
+          <td>osint process  , GEOINT , Metaverse</td>
+      </tr>
+      <tr>
+          <td>description</td>
+          <td>The Authorities have been tracking a hacker goes with the name &ldquo;PWner&rdquo; , he has been travelling from a country to another to erase his steps , he was very cautions recently , he has deleted most of his social media accounts like facebook , instagram and others based on our observations ,so any user with same name you might found most probably a fake one. But recently we were able to find his wife location and she told us the last thing he sent her was this letter , We are sure that she is hiding something although we believe this is the last message from him ,But we can&rsquo;t solve this puzzle , can you help us ?</td>
+      </tr>
+      <tr>
+          <td>attached</td>
+          <td>challenge.png</td>
+      </tr>
+      <tr>
+          <td>solves</td>
+          <td>1</td>
+      </tr>
+  </tbody>
+</table>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/challenge.png"
+        data-srcset="/assets/images/osint/challenge.png, /assets/images/osint/challenge.png 1.5x, /assets/images/osint/challenge.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/challenge.png"
+        title="image" /></p>
+<p>The idea of challenge is to introduce new area of search which is metaverse assets ,the challenge image gives a big hint with the &ldquo;another Universe&rdquo; keyword,also mentioned 2 meta products facebook and instagram , which points to maybe the meta verse ?</p>
+<p>Searching for that will find a blog from osint Curios which discusses users can create a space and other users can join it so they can talk together and interact with VR in this space.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241105223237.png"
+        data-srcset="/assets/images/osint/20241105223237.png, /assets/images/osint/20241105223237.png 1.5x, /assets/images/osint/20241105223237.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241105223237.png"
+        title="image" /></p>
+<p>The url format  is <code>https://www.spatial.io/@jake</code> we can try add our target instead of <code>jake</code> to be <code>https://www.spatial.io/@PWner</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241105223414.png"
+        data-srcset="/assets/images/osint/20241105223414.png, /assets/images/osint/20241105223414.png 1.5x, /assets/images/osint/20241105223414.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241105223414.png"
+        title="image" /></p>
+<p>and we have a match , checking his spaces will find one called <code>1337 Room</code> , accessing it we can find a cyshield room</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241105223516.png"
+        data-srcset="/assets/images/osint/20241105223516.png, /assets/images/osint/20241105223516.png 1.5x, /assets/images/osint/20241105223516.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241105223516.png"
+        title="image" /></p>
+<p>Walking through the space will find the flag in an image on the wall</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241105223617.png"
+        data-srcset="/assets/images/osint/20241105223617.png, /assets/images/osint/20241105223617.png 1.5x, /assets/images/osint/20241105223617.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241105223617.png"
+        title="image" /></p>
+<h2 id="complicated">Complicated</h2>
+<table>
+  <thead>
+      <tr>
+          <th>challenge</th>
+          <th>Complicated</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>about</td>
+          <td>osint process  , advanced GEOINT , SOCMINT</td>
+      </tr>
+      <tr>
+          <td>description</td>
+          <td>Hello Old Friend , One of my friends challenged me to solve a case but you have never disappointed me and i don&rsquo;t think you will this time , all we know is that during tracking our target , he have recently attended a football match in France and after that he walked to KFC to have a nice meal, the catch is he made a mistake sharing something that reveals his identity while doing these activities. you may think that you have weak clues to find the target however actually it is not. The flag is the person&rsquo;s name , example &ldquo;Mohamed Samy&rdquo; will be CyCTF{Mohamed_Samy}</td>
+      </tr>
+      <tr>
+          <td>Hint1</td>
+          <td>did you know about french territories</td>
+      </tr>
+      <tr>
+          <td>Hint2</td>
+          <td>can you &ldquo;over pass&rdquo; ?</td>
+      </tr>
+      <tr>
+          <td>attached</td>
+          <td>none</td>
+      </tr>
+      <tr>
+          <td>solves</td>
+          <td>0</td>
+      </tr>
+  </tbody>
+</table>
+<p>The challenge description contains several information :</p>
+<ul>
+<li>the search area is France</li>
+<li>targets went to a stadium to watch a football game</li>
+<li>the stadium is still active as he was there &ldquo;recently&rdquo;</li>
+<li>he walked to KFC after game meaning the branch is close to the stadium</li>
+</ul>
+<p>So our initial approach is to search for KFCs near stadiums in France , searching this manually will be very time consuming so we can take a smarter approach which is overpass queries , the area is France the target is KFC near stadiums (we can start with 500m) as a start</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>out:json<span class="o">][</span>timeout:25<span class="o">]</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">area<span class="o">[</span><span class="s2">&#34;name&#34;</span><span class="o">=</span><span class="s2">&#34;France&#34;</span><span class="o">]</span>-&gt;.searchArea<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">(</span>
+</span></span><span class="line"><span class="cl">  node<span class="o">[</span><span class="s2">&#34;leisure&#34;</span><span class="o">=</span><span class="s2">&#34;stadium&#34;</span><span class="o">](</span>area.searchArea<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  way<span class="o">[</span><span class="s2">&#34;leisure&#34;</span><span class="o">=</span><span class="s2">&#34;stadium&#34;</span><span class="o">](</span>area.searchArea<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  relation<span class="o">[</span><span class="s2">&#34;leisure&#34;</span><span class="o">=</span><span class="s2">&#34;stadium&#34;</span><span class="o">](</span>area.searchArea<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>-&gt;.stadiums<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">(</span>
+</span></span><span class="line"><span class="cl">  node<span class="o">[</span><span class="s2">&#34;amenity&#34;</span><span class="o">=</span><span class="s2">&#34;fast_food&#34;</span><span class="o">][</span><span class="s2">&#34;name&#34;</span><span class="o">=</span><span class="s2">&#34;KFC&#34;</span><span class="o">](</span>around.stadiums:500<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  way<span class="o">[</span><span class="s2">&#34;amenity&#34;</span><span class="o">=</span><span class="s2">&#34;fast_food&#34;</span><span class="o">][</span><span class="s2">&#34;name&#34;</span><span class="o">=</span><span class="s2">&#34;KFC&#34;</span><span class="o">](</span>around.stadiums:500<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  relation<span class="o">[</span><span class="s2">&#34;amenity&#34;</span><span class="o">=</span><span class="s2">&#34;fast_food&#34;</span><span class="o">][</span><span class="s2">&#34;name&#34;</span><span class="o">=</span><span class="s2">&#34;KFC&#34;</span><span class="o">](</span>around.stadiums:500<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">out body<span class="p">;</span>
+</span></span><span class="line"><span class="cl">&gt;<span class="p">;</span>
+</span></span><span class="line"><span class="cl">out skel qt<span class="p">;</span></span></span></code></pre></div></div>
+<p>This narrows down possibilities a lot as we can see below</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110191244.png"
+        data-srcset="/assets/images/osint/20241110191244.png, /assets/images/osint/20241110191244.png 1.5x, /assets/images/osint/20241110191244.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110191244.png"
+        title="image" /></p>
+<p>The odd thing we can see in the image is this one , we search &ldquo;France&rdquo; and this showed up in results</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110191611.png"
+        data-srcset="/assets/images/osint/20241110191611.png, /assets/images/osint/20241110191611.png 1.5x, /assets/images/osint/20241110191611.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110191611.png"
+        title="image" /></p>
+<p>Searching about that we found the information that france has what is called &ldquo;Overseas&rdquo; contains several islands so basically this is french</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110191530.png"
+        data-srcset="/assets/images/osint/20241110191530.png, /assets/images/osint/20241110191530.png 1.5x, /assets/images/osint/20241110191530.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110191530.png"
+        title="image" /></p>
+<p>Zooming in will find the stadium and the KFC Branch</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110191719.png"
+        data-srcset="/assets/images/osint/20241110191719.png, /assets/images/osint/20241110191719.png 1.5x, /assets/images/osint/20241110191719.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110191719.png"
+        title="image" /></p>
+<p>Searching for it in google maps</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110191940.png"
+        data-srcset="/assets/images/osint/20241110191940.png, /assets/images/osint/20241110191940.png 1.5x, /assets/images/osint/20241110191940.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110191940.png"
+        title="image" /></p>
+<p>Found stadium name is &ldquo;Stade Roger Zami&rdquo; , after finding the place the description said he shared something that might reveal his identity , where can we find places and people rather than social media ?</p>
+<p>Checking The most famous apps for the location we have found :</p>
+<ul>
+<li>Flicker</li>
+<li>Instagram</li>
+<li>Snapmap</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110192503.png"
+        data-srcset="/assets/images/osint/20241110192503.png, /assets/images/osint/20241110192503.png 1.5x, /assets/images/osint/20241110192503.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110192503.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110192559.png"
+        data-srcset="/assets/images/osint/20241110192559.png, /assets/images/osint/20241110192559.png 1.5x, /assets/images/osint/20241110192559.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110192559.png"
+        title="image" /></p>
+<p>Finally we found our target and we can confirm it is him by checking comment and description</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110192616.png"
+        data-srcset="/assets/images/osint/20241110192616.png, /assets/images/osint/20241110192616.png 1.5x, /assets/images/osint/20241110192616.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110192616.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/osint/20241110192654.png"
+        data-srcset="/assets/images/osint/20241110192654.png, /assets/images/osint/20241110192654.png 1.5x, /assets/images/osint/20241110192654.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/osint/20241110192654.png"
+        title="image" /></p>
+<p>Hope to see you next year !</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-11-30</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" data-title="CyCTF 2024 Finals OSINT Writeups" data-via="tinkerhell1337" data-hashtags="CTF,OSINT"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" data-hashtag="CTF"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2fosint%2f2024-11-30-cyctf-finals-osint-writeups%2f&amp;text=CyCTF%202024%20Finals%20OSINT%20Writeups" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/osint/">OSINT</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/code-review/2024-05-06-wizerctf-may-2024/" class="prev" rel="prev" title="WizerCTF-May2024"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>WizerCTF-May2024</a>
+            <a href="/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" class="next" rel="next" title="EGCERT-CTF JDBCLeak Exploit">EGCERT-CTF JDBCLeak Exploit<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

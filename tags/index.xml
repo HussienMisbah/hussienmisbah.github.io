@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on My New Hugo Site</title>
+    <link>http://example.org/tags/</link>
+    <description>Recent content in Tags on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
+    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
+    <lastBuildDate>Wed, 28 May 2025 12:49:18 +0200</lastBuildDate>
+    <atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CTF</title>
+      <link>http://example.org/tags/ctf/</link>
+      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/ctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Java-Deserialization</title>
+      <link>http://example.org/tags/java-deserialization/</link>
+      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/java-deserialization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rce</title>
+      <link>http://example.org/tags/rce/</link>
+      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/rce/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>OSINT</title>
+      <link>http://example.org/tags/osint/</link>
+      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/osint/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nodejs</title>
+      <link>http://example.org/tags/nodejs/</link>
+      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/nodejs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>React</title>
+      <link>http://example.org/tags/react/</link>
+      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/react/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SQLi</title>
+      <link>http://example.org/tags/sqli/</link>
+      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/sqli/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>XSS</title>
+      <link>http://example.org/tags/xss/</link>
+      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/xss/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CSP</title>
+      <link>http://example.org/tags/csp/</link>
+      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/csp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker</title>
+      <link>http://example.org/tags/docker/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Git</title>
+      <link>http://example.org/tags/git/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/git/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hackthebox</title>
+      <link>http://example.org/tags/hackthebox/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/hackthebox/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Port-Forwarding</title>
+      <link>http://example.org/tags/port-forwarding/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/port-forwarding/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SSRF</title>
+      <link>http://example.org/tags/ssrf/</link>
+      <pubDate>Sat, 01 Oct 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/ssrf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Active-Directory</title>
+      <link>http://example.org/tags/active-directory/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/active-directory/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LAPS</title>
+      <link>http://example.org/tags/laps/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/laps/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pfx</title>
+      <link>http://example.org/tags/pfx/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/pfx/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sql-Injection</title>
+      <link>http://example.org/tags/sql-injection/</link>
+      <pubDate>Sat, 06 Aug 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/sql-injection/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ssti</title>
+      <link>http://example.org/tags/ssti/</link>
+      <pubDate>Mon, 25 Jul 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/ssti/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Adb</title>
+      <link>http://example.org/tags/adb/</link>
+      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/adb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Apk</title>
+      <link>http://example.org/tags/apk/</link>
+      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/apk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sudo-Exploit</title>
+      <link>http://example.org/tags/sudo-exploit/</link>
+      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/sudo-exploit/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Phishing</title>
+      <link>http://example.org/tags/phishing/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/phishing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tab-Nabbing</title>
+      <link>http://example.org/tags/tab-nabbing/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/tab-nabbing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vim</title>
+      <link>http://example.org/tags/vim/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/vim/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vulnhub</title>
+      <link>http://example.org/tags/vulnhub/</link>
+      <pubDate>Mon, 27 Jun 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/vulnhub/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Path-Poisoning</title>
+      <link>http://example.org/tags/path-poisoning/</link>
+      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/path-poisoning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Snmp</title>
+      <link>http://example.org/tags/snmp/</link>
+      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/snmp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>IDOR</title>
+      <link>http://example.org/tags/idor/</link>
+      <pubDate>Thu, 19 May 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/idor/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Decompile-Binary</title>
+      <link>http://example.org/tags/decompile-binary/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/decompile-binary/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Directory-Traversal</title>
+      <link>http://example.org/tags/directory-traversal/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/directory-traversal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>JWT</title>
+      <link>http://example.org/tags/jwt/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/jwt/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Html Injection</title>
+      <link>http://example.org/tags/html-injection/</link>
+      <pubDate>Mon, 02 May 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/html-injection/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TryHackme</title>
+      <link>http://example.org/tags/tryhackme/</link>
+      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/tryhackme/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Windows-Privesc</title>
+      <link>http://example.org/tags/windows-privesc/</link>
+      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/windows-privesc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gdb Server</title>
+      <link>http://example.org/tags/gdb-server/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/gdb-server/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Screen</title>
+      <link>http://example.org/tags/screen/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/screen/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Waste</title>
+      <link>http://example.org/tags/waste/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/waste/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wordpress</title>
+      <link>http://example.org/tags/wordpress/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/wordpress/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>http://example.org/tags/python/</link>
+      <pubDate>Sun, 17 Apr 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ipmi</title>
+      <link>http://example.org/tags/ipmi/</link>
+      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/ipmi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Maria-DB</title>
+      <link>http://example.org/tags/maria-db/</link>
+      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/maria-db/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Zabbix</title>
+      <link>http://example.org/tags/zabbix/</link>
+      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/zabbix/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>API</title>
+      <link>http://example.org/tags/api/</link>
+      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/api/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Core-Dump</title>
+      <link>http://example.org/tags/core-dump/</link>
+      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/core-dump/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SUID</title>
+      <link>http://example.org/tags/suid/</link>
+      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/suid/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Evil-Winrm</title>
+      <link>http://example.org/tags/evil-winrm/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/evil-winrm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Print Nigthmare</title>
+      <link>http://example.org/tags/print-nigthmare/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/print-nigthmare/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scf Attacks</title>
+      <link>http://example.org/tags/scf-attacks/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/scf-attacks/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PGP Decrypting</title>
+      <link>http://example.org/tags/pgp-decrypting/</link>
+      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/pgp-decrypting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Chisel</title>
+      <link>http://example.org/tags/chisel/</link>
+      <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/chisel/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Jekyll</title>
+      <link>http://example.org/tags/jekyll/</link>
+      <pubDate>Tue, 18 Jan 2022 15:34:30 -0400</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/tags/jekyll/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows Machines on My New Hugo Site</title>
+    <link>http://example.org/categories/windows-machines/</link>
+    <description>Recent content in Windows Machines on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
+    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
+    <lastBuildDate>Sat, 20 Aug 2022 00:49:18 +0200</lastBuildDate>
+    <atom:link href="http://example.org/categories/windows-machines/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Timelapse Hackthebox writeup</title>
+      <link>http://example.org/posts/windows-machines/2022-08-20-timelapse/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/windows-machines/2022-08-20-timelapse/</guid>
+      <description>&lt;p&gt;In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Windows-PrivEsc-Arena TryHackMe writeup</title>
+      <link>http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/</link>
+      <pubDate>Tue, 26 Apr 2022 00:52:13 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/</guid>
+      <description>&lt;p&gt;During studying the &lt;a href=&#34;https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners&#34; target=&#34;_blank&#34; rel=&#34;noopener noreffer &#34;&gt;TCM windows privilege escalation course&lt;/a&gt; this is the &lt;a href=&#34;https://tryhackme.com/room/windowsprivescarena&#34; target=&#34;_blank&#34; rel=&#34;noopener noreffer &#34;&gt;Lab&lt;/a&gt; designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Driver Hackthebox writeup</title>
+      <link>http://example.org/posts/windows-machines/2022-02-25-driver/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/windows-machines/2022-02-25-driver/</guid>
+      <description>&lt;p&gt;In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture&#xA;the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in&#xA;except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Alferd</title>
+      <link>http://example.org/posts/windows-machines/2022-01-07-alfred/</link>
+      <pubDate>Tue, 18 Jan 2022 15:34:30 -0400</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/windows-machines/2022-01-07-alfred/</guid>
+      <description>&lt;p&gt;In this room, we&amp;rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&amp;rsquo;ll use an interesting privilege escalation method to get full system access.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

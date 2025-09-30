@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Alferd - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/windows-machines/2022-01-07-alfred/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Alferd">
+  <meta property="og:description" content="In this room, we’ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we’ll use an interesting privilege escalation method to get full system access.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-01-18T15:34:30-04:00">
+    <meta property="article:modified_time" content="2022-01-18T15:34:30-04:00">
+    <meta property="article:tag" content="Jekyll">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Alferd">
+  <meta name="twitter:description" content="In this room, we’ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we’ll use an interesting privilege escalation method to get full system access.">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/windows-machines/2022-01-07-alfred/" /><link rel="next" href="http://example.org/posts/linux-machines/2022-01-27-previse/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Alferd",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/windows-machines\/2022-01-07-alfred\/"
+        },"genre": "posts","keywords": "Jekyll","wordcount":  557 ,
+        "url": "http:\/\/example.org\/posts\/windows-machines\/2022-01-07-alfred\/","datePublished": "2022-01-18T15:34:30-04:00","dateModified": "2022-01-18T15:34:30-04:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Alferd</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/windows-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Windows Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-01-18">2022-01-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;557 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p>In this room, we&rsquo;ll learn how to exploit a common misconfiguration on a widely used automation server(Jenkins - This tool is used to create continuous integration/continuous development pipelines that allow developers to automatically deploy their code once they made change to it). After which, we&rsquo;ll use an interesting privilege escalation method to get full system access.</p>
+<h1 id="scanning">Scanning</h1>
+<p>we can start with this scan providing the <code>-Pn</code> as it is a windows machine and may not respond ICMP</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -Pn -A -T4 <span class="nv">$IP</span> -oN nmap.intial</span></span></code></pre></div></div>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT     STATE SERVICE            VERSION
+</span></span><span class="line"><span class="cl">80/tcp   open  http               Microsoft IIS httpd 7.5
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-methods:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  Potentially risky methods: TRACE
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Microsoft-IIS/7.5
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Site doesn<span class="s1">&#39;t have a title (text/html).
+</span></span></span><span class="line"><span class="cl"><span class="s1">3389/tcp open  ssl/ms-wbt-server?
+</span></span></span><span class="line"><span class="cl"><span class="s1">| ssl-cert: Subject: commonName=alfred
+</span></span></span><span class="line"><span class="cl"><span class="s1">| Not valid before: 2022-07-03T14:01:24
+</span></span></span><span class="line"><span class="cl"><span class="s1">|_Not valid after:  2023-01-02T14:01:24
+</span></span></span><span class="line"><span class="cl"><span class="s1">|_ssl-date: 2022-07-04T14:03:22+00:00; 0s from scanner time.
+</span></span></span><span class="line"><span class="cl"><span class="s1">8080/tcp open  http               Jetty 9.4.z-SNAPSHOT
+</span></span></span><span class="line"><span class="cl"><span class="s1">| http-robots.txt: 1 disallowed entry
+</span></span></span><span class="line"><span class="cl"><span class="s1">|_/
+</span></span></span><span class="line"><span class="cl"><span class="s1">|_http-server-header: Jetty(9.4.z-SNAPSHOT)
+</span></span></span><span class="line"><span class="cl"><span class="s1">|_http-title: Site doesn&#39;</span>t have a title <span class="o">(</span>text/html<span class="p">;</span><span class="nv">charset</span><span class="o">=</span>utf-8<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Service Info: OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows</span></span></code></pre></div></div>
+<p>we have 2 web services running on ports 80 and 8080 respectively and the 3389 RDP port is open which can be used latter</p>
+<h1 id="enumeration">Enumeration</h1>
+<p>i started visiting the web applications at ports 80 and 8080 . at port 8080 we can see it is a Jenkins service running</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704160742.png"
+        data-srcset="/assets/images/Alfred/20220704160742.png, /assets/images/Alfred/20220704160742.png 1.5x, /assets/images/Alfred/20220704160742.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704160742.png"
+        title="error" /></p>
+<p>and Jenkins is known for the ability to execute system commands . so we can focus on it for now and if we get stuck we can get back to the web application at port 80.</p>
+<p>Trying default credentials <code>admin:admin</code> we are in already !</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704160909.png"
+        data-srcset="/assets/images/Alfred/20220704160909.png, /assets/images/Alfred/20220704160909.png 1.5x, /assets/images/Alfred/20220704160909.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704160909.png"
+        title="error" /></p>
+<p>we can now try to execute commands on the server.</p>
+<ul>
+<li>choose <code>New Item </code> from the left bar. choose any name then choose <code>Freesytle Project</code> then <code>Ok</code></li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704161453.png"
+        data-srcset="/assets/images/Alfred/20220704161453.png, /assets/images/Alfred/20220704161453.png 1.5x, /assets/images/Alfred/20220704161453.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704161453.png"
+        title="error" /></p>
+<p>under the Build we can choose what we want which is <code>Execute windows batch command</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704161557.png"
+        data-srcset="/assets/images/Alfred/20220704161557.png, /assets/images/Alfred/20220704161557.png 1.5x, /assets/images/Alfred/20220704161557.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704161557.png"
+        title="error" /></p>
+<p>specify the command we want</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704161702.png"
+        data-srcset="/assets/images/Alfred/20220704161702.png, /assets/images/Alfred/20220704161702.png 1.5x, /assets/images/Alfred/20220704161702.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704161702.png"
+        title="error" /></p>
+<p>save it then choose <code>build now</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704161753.png"
+        data-srcset="/assets/images/Alfred/20220704161753.png, /assets/images/Alfred/20220704161753.png 1.5x, /assets/images/Alfred/20220704161753.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704161753.png"
+        title="error" /></p>
+<p>when the build is done you will something like this</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704161907.png"
+        data-srcset="/assets/images/Alfred/20220704161907.png, /assets/images/Alfred/20220704161907.png 1.5x, /assets/images/Alfred/20220704161907.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704161907.png"
+        title="error" /></p>
+<p>click on it then choose the <code>Console output</code> From the left bar</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704161947.png"
+        data-srcset="/assets/images/Alfred/20220704161947.png, /assets/images/Alfred/20220704161947.png 1.5x, /assets/images/Alfred/20220704161947.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704161947.png"
+        title="error" /></p>
+<p>and we can execute commands indeed !</p>
+<h1 id="foothold">Foothold</h1>
+<p>There are a lot of ways we can use to get a reverse connection back like powershell empire, metasploit frameworks or others. i will change the user password and RDP into then we can get reverse shells if we need.
+To change the command in the new item we made we need to select <code>configure</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704162829.png"
+        data-srcset="/assets/images/Alfred/20220704162829.png, /assets/images/Alfred/20220704162829.png 1.5x, /assets/images/Alfred/20220704162829.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704162829.png"
+        title="error" /></p>
+<p>then replace the previous command with <code>net user bruce secret123</code> to change the user password</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704162902.png"
+        data-srcset="/assets/images/Alfred/20220704162902.png, /assets/images/Alfred/20220704162902.png 1.5x, /assets/images/Alfred/20220704162902.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704162902.png"
+        title="error" /></p>
+<p>save the setting and choose build now , it should be changed . to trace if error occurred you can choose the <code>Console outout</code> as previous</p>
+<p>i will use Remmina rdp application on Linux to connect to it</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704163146.png"
+        data-srcset="/assets/images/Alfred/20220704163146.png, /assets/images/Alfred/20220704163146.png 1.5x, /assets/images/Alfred/20220704163146.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704163146.png"
+        title="error" /></p>
+<p>and we are in</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704163246.png"
+        data-srcset="/assets/images/Alfred/20220704163246.png, /assets/images/Alfred/20220704163246.png 1.5x, /assets/images/Alfred/20220704163246.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704163246.png"
+        title="error" /></p>
+<h1 id="privilege-escalation">privilege escalation</h1>
+<p>if we run <code>net user bruce</code> output is</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">User name                    bruce
+</span></span><span class="line"><span class="cl">Full Name
+</span></span><span class="line"><span class="cl">Comment
+</span></span><span class="line"><span class="cl">User<span class="err">&#39;</span>s comment
+</span></span><span class="line"><span class="cl">Country code                 <span class="m">000</span> <span class="o">(</span>System Default<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Account active               Yes
+</span></span><span class="line"><span class="cl">Account expires              Never
+</span></span><span class="line"><span class="cl">Password last <span class="nb">set</span>            7/4/2022 3:23:38 PM
+</span></span><span class="line"><span class="cl">Password expires             Never
+</span></span><span class="line"><span class="cl">Password changeable          7/4/2022 3:23:38 PM
+</span></span><span class="line"><span class="cl">Password required            No
+</span></span><span class="line"><span class="cl">User may change password     Yes
+</span></span><span class="line"><span class="cl">Workstations allowed         All
+</span></span><span class="line"><span class="cl">Logon script
+</span></span><span class="line"><span class="cl">User profile
+</span></span><span class="line"><span class="cl">Home directory
+</span></span><span class="line"><span class="cl">Last logon                   7/4/2022 3:26:17 PM
+</span></span><span class="line"><span class="cl">Logon hours allowed          All
+</span></span><span class="line"><span class="cl">Local Group Memberships      *Administrators
+</span></span><span class="line"><span class="cl">Global Group memberships     *None
+</span></span><span class="line"><span class="cl">The <span class="nb">command</span> completed successfully.</span></span></code></pre></div></div>
+<p>the user bruce is in the administrators group . hence we have already rdp connection we can run as <code>administrator</code> the <code>cmd.exe</code> and we can now see the flag</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Alfred/20220704164840.png"
+        data-srcset="/assets/images/Alfred/20220704164840.png, /assets/images/Alfred/20220704164840.png 1.5x, /assets/images/Alfred/20220704164840.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Alfred/20220704164840.png"
+        title="error" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-01-18</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/windows-machines/2022-01-07-alfred/" data-title="Alferd" data-via="tinkerhell1337" data-hashtags="Jekyll"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/windows-machines/2022-01-07-alfred/" data-hashtag="Jekyll"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/windows-machines/2022-01-07-alfred/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2fwindows-machines%2f2022-01-07-alfred%2f&amp;text=Alferd" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/jekyll/">Jekyll</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/linux-machines/2022-01-27-previse/" class="next" rel="next" title="Previse Hackthebox writeup">Previse Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

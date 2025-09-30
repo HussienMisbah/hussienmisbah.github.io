@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hackthebox on My New Hugo Site</title>
+    <link>http://example.org/tags/hackthebox/</link>
+    <description>Recent content in Hackthebox on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
+    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
+    <lastBuildDate>Sat, 08 Oct 2022 00:45:19 +0200</lastBuildDate>
+    <atom:link href="http://example.org/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Open Source HackTheBox Writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-10-08-open-source/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-10-08-open-source/</guid>
+      <description>&lt;p&gt;In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Timelapse Hackthebox writeup</title>
+      <link>http://example.org/posts/windows-machines/2022-08-20-timelapse/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/windows-machines/2022-08-20-timelapse/</guid>
+      <description>&lt;p&gt;In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Routerspace Hackthebox writeup</title>
+      <link>http://example.org/posts/android-pentesting/2022-07-09-routerspace/</link>
+      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/android-pentesting/2022-07-09-routerspace/</guid>
+      <description>&lt;p&gt;In this Box we are going to examine an android appliacation (apk) , and monitroing the requests by placing a proxy we will notice a request which we can manipulate to get a remote code exection. this box has a lot of iptables rules which restrict us from getting a reverse shell in the usual way. so we will login via ssh by placing our public key at paul&amp;rsquo;s. from that we will gain root access by exploiting sudo itself.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Pandora Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-05-21-pandora/</link>
+      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-05-21-pandora/</guid>
+      <description>&lt;p&gt;In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Unicode Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-05-07-unicode/</link>
+      <pubDate>Sat, 07 May 2022 12:49:13 +1000</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-05-07-unicode/</guid>
+      <description>&lt;p&gt;In This medium Box we are playing with JWT Tokens in specific the jku Claim Misuse , which will let us login as admin account then we will use the Unicode Encoding to read files on the system. Eventually we will find a password for user then ssh to login. for the root part we are abusing the sudo privilege on a binary which can read files on the system.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Backdoor Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-01-21-backdoor/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-01-21-backdoor/</guid>
+      <description>&lt;p&gt;In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Shibboleth Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-04-01-shibboleth/</link>
+      <pubDate>Fri, 01 Apr 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-04-01-shibboleth/</guid>
+      <description>&lt;p&gt;In this Box we are going to enumerate a udp port and dump the administrator hash ,then we will crack it , using these credentials we will login to the zabbix web interface , using my exploit for this version of zabbix we will get a low-privilege shell. re-using same password will leverage our access to a user. for the root part we will exploit a vulnerable maria-db version&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Secret Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-03-26-secret/</link>
+      <pubDate>Sat, 26 Mar 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-03-26-secret/</guid>
+      <description>&lt;p&gt;In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has &lt;code&gt;PR_SET_DUMPABLE&lt;/code&gt; so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Devzat Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-03-11-devzat/</link>
+      <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-03-11-devzat/</guid>
+      <description>&lt;p&gt;In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Driver Hackthebox writeup</title>
+      <link>http://example.org/posts/windows-machines/2022-02-25-driver/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/windows-machines/2022-02-25-driver/</guid>
+      <description>&lt;p&gt;In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture&#xA;the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in&#xA;except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Bolt Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-02-18-bolt/</link>
+      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-02-18-bolt/</guid>
+      <description>&lt;p&gt;In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &amp;ldquo;demo&amp;rdquo; which has some functions aren&amp;rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Horizontall Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-02-04-horizontall/</link>
+      <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-02-04-horizontall/</guid>
+      <description>&lt;p&gt;we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Forge Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-01-27-forge/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:09 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-01-27-forge/</guid>
+      <description>&lt;p&gt;detailed writeup for retired machine Forge From Hackthebox&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Previse Hackthebox writeup</title>
+      <link>http://example.org/posts/linux-machines/2022-01-27-previse/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>http://example.org/posts/linux-machines/2022-01-27-previse/</guid>
+      <description>&lt;p&gt;In this Writeup you will find walkthrough of the retired machine previse From Hackthebox&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

