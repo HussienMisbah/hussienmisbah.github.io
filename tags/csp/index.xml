@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CSP on 0xMesbaha</title>
-    <link>http://example.org/tags/csp/</link>
+    <link>https://hussienmisbah.github.io/tags/csp/</link>
     <description>Recent content in CSP on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sun, 04 Jun 2023 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/csp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/csp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JustCTF Extra Safe Security Layers writeup</title>
-      <link>http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
-      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
+      <link>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
+      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
       <description>&lt;p&gt;This Challenge is about exploiting cross site scripting with a strict CSP in place along with XSS Santizer and other restrictions , the interesting part in this blog is about learning the root cause and idenfiy exploit points. the challenge may seem very easy and it is easy and fun indeed.&lt;/p&gt;</description>
     </item>
   </channel>

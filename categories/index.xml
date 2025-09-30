@@ -2,61 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 0xMesbaha</title>
-    <link>http://example.org/categories/</link>
+    <link>https://hussienmisbah.github.io/categories/</link>
     <description>Recent content in Categories on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Tue, 30 Sep 2025 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Exploitation</title>
-      <link>http://example.org/categories/exploitation/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/exploitation/</guid>
+      <link>https://hussienmisbah.github.io/categories/exploitation/</link>
+      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/exploitation/</guid>
       <description></description>
     </item>
     <item>
       <title>Code Review</title>
-      <link>http://example.org/categories/code-review/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/code-review/</guid>
+      <link>https://hussienmisbah.github.io/categories/code-review/</link>
+      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/code-review/</guid>
       <description></description>
     </item>
     <item>
       <title>OSINT</title>
-      <link>http://example.org/categories/osint/</link>
-      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/osint/</guid>
+      <link>https://hussienmisbah.github.io/categories/osint/</link>
+      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/osint/</guid>
       <description></description>
     </item>
     <item>
       <title>Web Exploitation</title>
-      <link>http://example.org/categories/web-exploitation/</link>
-      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/web-exploitation/</guid>
+      <link>https://hussienmisbah.github.io/categories/web-exploitation/</link>
+      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/web-exploitation/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux Machines</title>
-      <link>http://example.org/categories/linux-machines/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/linux-machines/</guid>
+      <link>https://hussienmisbah.github.io/categories/linux-machines/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/linux-machines/</guid>
       <description></description>
     </item>
     <item>
       <title>Windows Machines</title>
-      <link>http://example.org/categories/windows-machines/</link>
-      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/windows-machines/</guid>
+      <link>https://hussienmisbah.github.io/categories/windows-machines/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/windows-machines/</guid>
       <description></description>
     </item>
     <item>
       <title>Android Pentesting</title>
-      <link>http://example.org/categories/android-pentesting/</link>
-      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/categories/android-pentesting/</guid>
+      <link>https://hussienmisbah.github.io/categories/android-pentesting/</link>
+      <pubDate>Sat, 09 Jul 2022 00:51:12 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/android-pentesting/</guid>
       <description></description>
     </item>
   </channel>

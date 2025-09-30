@@ -2,33 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SSRF on 0xMesbaha</title>
-    <link>http://example.org/tags/ssrf/</link>
+    <link>https://hussienmisbah.github.io/tags/ssrf/</link>
     <description>Recent content in SSRF on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sat, 01 Oct 2022 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/ssrf/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/ssrf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>meme generator challenge writeup</title>
-      <link>http://example.org/posts/web-exploitation/2022-10-01-meme-generator/</link>
-      <pubDate>Sat, 01 Oct 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/web-exploitation/2022-10-01-meme-generator/</guid>
+      <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/</link>
+      <pubDate>Sat, 01 Oct 2022 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/</guid>
       <description>&lt;p&gt;This challenge was in Blackhat CTF Qualifications 2022 and we have participated under the team 0xCha0s, we have managed to solve multiple challenges. this challenge was ranked medium for 250 pts .&lt;/p&gt;</description>
     </item>
     <item>
       <title>Hacker Ts challenge writeup</title>
-      <link>http://example.org/posts/web-exploitation/2022-05-02-hacker-ts/</link>
-      <pubDate>Mon, 02 May 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/web-exploitation/2022-05-02-hacker-ts/</guid>
+      <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-05-02-hacker-ts/</link>
+      <pubDate>Mon, 02 May 2022 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-05-02-hacker-ts/</guid>
       <description>&lt;p&gt;Nahamcon ctf 2022 was held from the 28th of April Until the 30th of the month , and we have participated under the team 0xcha0s. this challenge idea was pretty new to me so it is helpful to document it in this writeup&lt;/p&gt;</description>
     </item>
     <item>
       <title>Forge Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-01-27-forge/</link>
-      <pubDate>Thu, 27 Jan 2022 00:45:09 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-01-27-forge/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-forge/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:09 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-forge/</guid>
       <description>&lt;p&gt;detailed writeup for retired machine Forge From Hackthebox&lt;/p&gt;</description>
     </item>
   </channel>

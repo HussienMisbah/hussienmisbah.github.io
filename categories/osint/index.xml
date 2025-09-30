@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OSINT on 0xMesbaha</title>
-    <link>http://example.org/categories/osint/</link>
+    <link>https://hussienmisbah.github.io/categories/osint/</link>
     <description>Recent content in OSINT on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sat, 30 Nov 2024 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/categories/osint/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/categories/osint/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CyCTF 2024 Finals OSINT Writeups</title>
-      <link>http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</link>
-      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</guid>
+      <link>https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</link>
+      <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</guid>
       <description>&lt;p&gt;CyCTF is organized by &lt;a href=&#34;https://www.cyshield.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreffer &#34;&gt;Cyshield&lt;/a&gt;&amp;rsquo;s cysec team every year , demonstrating new ideas and techniques in different categories (web exploitation , cryptography ,reverse and malware analysis , pwn , osint , mobile). it was my pleasure to be the author of SMS and vengeance challenges in web exploitation category and for the osint category in qualifcation and finals. this blog post will be about the solutions for the osint category in the finals round. My approach for creating the challenges was to not make it sherlock/yandex style ones and to introduce new ideas/techniques that can be used in real life scenarios.&lt;/p&gt;</description>
     </item>
   </channel>

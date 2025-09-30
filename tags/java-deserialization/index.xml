@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java-Deserialization on 0xMesbaha</title>
-    <link>http://example.org/tags/java-deserialization/</link>
+    <link>https://hussienmisbah.github.io/tags/java-deserialization/</link>
     <description>Recent content in Java-Deserialization on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Wed, 28 May 2025 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/java-deserialization/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/java-deserialization/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EGCERT-CTF JDBCLeak Exploit</title>
-      <link>http://example.org/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</link>
-      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</guid>
+      <link>https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</link>
+      <pubDate>Wed, 28 May 2025 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</guid>
       <description>&lt;p&gt;&lt;em&gt;JDBCLeak Leak was a challenge introducted in EGCERT CTF Finals 2025 under the category R&amp;amp;D , tbh i didn&amp;rsquo;t even look at the challenge during CTF Time , didn&amp;rsquo;t expect this category to introduce such good example of a real case code review challenge , however after reading the author&amp;rsquo;s blog &lt;a href=&#34;https://bitthebyte.medium.com/here-is-what-you-missed-during-the-egcert-ctf-2025-finals-927297143d9a&#34; target=&#34;_blank&#34; rel=&#34;noopener noreffer &#34;&gt;here&lt;/a&gt; about the category and challenge i thought of trying it myself and create a POC for it to get rce reading /flag.txt , we got 3rd place btw :&amp;ldquo;D&lt;/em&gt;&lt;/p&gt;</description>
     </item>
   </channel>

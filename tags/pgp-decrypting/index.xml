@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PGP Decrypting on 0xMesbaha</title>
-    <link>http://example.org/tags/pgp-decrypting/</link>
+    <link>https://hussienmisbah.github.io/tags/pgp-decrypting/</link>
     <description>Recent content in PGP Decrypting on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Fri, 18 Feb 2022 00:45:12 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/pgp-decrypting/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/pgp-decrypting/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bolt Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-02-18-bolt/</link>
-      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-02-18-bolt/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-02-18-bolt/</link>
+      <pubDate>Fri, 18 Feb 2022 00:45:12 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-02-18-bolt/</guid>
       <description>&lt;p&gt;In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &amp;ldquo;demo&amp;rdquo; which has some functions aren&amp;rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .&lt;/p&gt;</description>
     </item>
   </channel>

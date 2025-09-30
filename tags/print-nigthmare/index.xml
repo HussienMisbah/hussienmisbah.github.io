@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Print Nigthmare on 0xMesbaha</title>
-    <link>http://example.org/tags/print-nigthmare/</link>
+    <link>https://hussienmisbah.github.io/tags/print-nigthmare/</link>
     <description>Recent content in Print Nigthmare on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Fri, 25 Feb 2022 00:45:08 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/print-nigthmare/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/print-nigthmare/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Driver Hackthebox writeup</title>
-      <link>http://example.org/posts/windows-machines/2022-02-25-driver/</link>
-      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/windows-machines/2022-02-25-driver/</guid>
+      <link>https://hussienmisbah.github.io/posts/windows-machines/2022-02-25-driver/</link>
+      <pubDate>Fri, 25 Feb 2022 00:45:08 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/windows-machines/2022-02-25-driver/</guid>
       <description>&lt;p&gt;In this Box, we are going to abuse the ability of uploading the firmware of a shared printer and capture&#xA;the NTLMv2 hash of a user on this machine. By cracking the hash there is nothing that can stop us from logging in&#xA;except the smb shares aren&amp;rsquo;t accessible so we will use evil-winrm to get the initial access, for the Administrator part we will make use of the vulnerable service &amp;ldquo;spooler&amp;rdquo; and add a user in the administrator group.&lt;/p&gt;</description>
     </item>
   </channel>

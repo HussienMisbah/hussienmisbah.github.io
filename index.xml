@@ -1,82 +1,81 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>0xMesbaha</title>
-        <link>http://example.org/</link>
+        <link>https://hussienmisbah.github.io/</link>
         <description>This is 0xMesbaha</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-            <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster><lastBuildDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</lastBuildDate>
-            <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</lastBuildDate>
+            <atom:link href="https://hussienmisbah.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>CVE-2022-0650 Analysis &amp; POC</title>
-    <link>http://example.org/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</link>
+    <link>https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</link>
     <pubDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</guid>
     <description><![CDATA[<p>Recently i was exploring Firmware analysis and iot exploitation domain out  of curiosity , and it turned out to be very interesting to me. i spent a while studying Exploitation Basics , Solving Basic PWN &amp; Reverse Engineering Challanges and Checking IOT Pentesting Course From <a href="https://fahemsec.com/course/7" target="_blank" rel="noopener noreffer ">FahemSec</a>. I Spent days analyzing firmware and binaries in Ghidra and GDB and Finally I was able to reproduce couple of CVEs on TpLink Routers and even discover new ones!</p>]]></description>
 </item>
 <item>
     <title>EGCERT-CTF JDBCLeak Exploit</title>
-    <link>http://example.org/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</link>
+    <link>https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</link>
     <pubDate>Wed, 28 May 2025 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/</guid>
     <description><![CDATA[<p><em>JDBCLeak Leak was a challenge introducted in EGCERT CTF Finals 2025 under the category R&amp;D , tbh i didn&rsquo;t even look at the challenge during CTF Time , didn&rsquo;t expect this category to introduce such good example of a real case code review challenge , however after reading the author&rsquo;s blog <a href="https://bitthebyte.medium.com/here-is-what-you-missed-during-the-egcert-ctf-2025-finals-927297143d9a" target="_blank" rel="noopener noreffer ">here</a> about the category and challenge i thought of trying it myself and create a POC for it to get rce reading /flag.txt , we got 3rd place btw :&ldquo;D</em></p>]]></description>
 </item>
 <item>
     <title>CyCTF 2024 Finals OSINT Writeups</title>
-    <link>http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</link>
+    <link>https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</link>
     <pubDate>Sat, 30 Nov 2024 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/</guid>
     <description><![CDATA[<p>CyCTF is organized by <a href="https://www.cyshield.com/" target="_blank" rel="noopener noreffer ">Cyshield</a>&rsquo;s cysec team every year , demonstrating new ideas and techniques in different categories (web exploitation , cryptography ,reverse and malware analysis , pwn , osint , mobile). it was my pleasure to be the author of SMS and vengeance challenges in web exploitation category and for the osint category in qualifcation and finals. this blog post will be about the solutions for the osint category in the finals round. My approach for creating the challenges was to not make it sherlock/yandex style ones and to introduce new ideas/techniques that can be used in real life scenarios.</p>]]></description>
 </item>
 <item>
     <title>WizerCTF-May2024</title>
-    <link>http://example.org/posts/code-review/2024-05-06-wizerctf-may-2024/</link>
+    <link>https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/</link>
     <pubDate>Sun, 05 May 2024 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/code-review/2024-05-06-wizerctf-may-2024/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/</guid>
     <description><![CDATA[<p><em>Wizer CTF is an exciting game designed specifically for developers . It&rsquo;s all about putting your skills to the test and seeing if you can identify and exploit vulnerabilities while honing your secure coding abilities. The game kicks off with a snappy code snippet that comes with some tricky vulnerabilities. Your goal? Spot those vulnerabilities and figure out how to exploit them.
 The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&rsquo;ve got it right. You can actually execute your payload right there on the game page. If you manage to successfully exploit the vulnerabilities, you&rsquo;ll earn yourself a flag and a well-deserved spot on leaderboard , The main focus area is web exploitation and the ctf event is held every quarter , this writeup discusses 5 challenges out of 6.</em></p>]]></description>
 </item>
 <item>
     <title>JustCTF Extra Safe Security Layers writeup</title>
-    <link>http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
     <pubDate>Sun, 04 Jun 2023 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
     <description><![CDATA[<p>This Challenge is about exploiting cross site scripting with a strict CSP in place along with XSS Santizer and other restrictions , the interesting part in this blog is about learning the root cause and idenfiy exploit points. the challenge may seem very easy and it is easy and fun indeed.</p>]]></description>
 </item>
 <item>
     <title>Open Source HackTheBox Writeup</title>
-    <link>http://example.org/posts/linux-machines/2022-10-08-open-source/</link>
+    <link>https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/</link>
     <pubDate>Sat, 08 Oct 2022 00:45:19 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/linux-machines/2022-10-08-open-source/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/</guid>
     <description><![CDATA[<p>In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git</p>]]></description>
 </item>
 <item>
     <title>meme generator challenge writeup</title>
-    <link>http://example.org/posts/web-exploitation/2022-10-01-meme-generator/</link>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/</link>
     <pubDate>Sat, 01 Oct 2022 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/web-exploitation/2022-10-01-meme-generator/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/</guid>
     <description><![CDATA[<p>This challenge was in Blackhat CTF Qualifications 2022 and we have participated under the team 0xCha0s, we have managed to solve multiple challenges. this challenge was ranked medium for 250 pts .</p>]]></description>
 </item>
 <item>
     <title>Timelapse Hackthebox writeup</title>
-    <link>http://example.org/posts/windows-machines/2022-08-20-timelapse/</link>
+    <link>https://hussienmisbah.github.io/posts/windows-machines/2022-08-20-timelapse/</link>
     <pubDate>Sat, 20 Aug 2022 00:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/windows-machines/2022-08-20-timelapse/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/windows-machines/2022-08-20-timelapse/</guid>
     <description><![CDATA[<p>In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text</p>]]></description>
 </item>
 <item>
     <title>kenzy challenge Writeup</title>
-    <link>http://example.org/posts/web-exploitation/2022-08-06-kenzy/</link>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-08-06-kenzy/</link>
     <pubDate>Sat, 06 Aug 2022 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/web-exploitation/2022-08-06-kenzy/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-08-06-kenzy/</guid>
     <description><![CDATA[<table>
   <thead>
       <tr>
@@ -129,10 +128,10 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </item>
 <item>
     <title>Flushed Emoji challenge Writeup</title>
-    <link>http://example.org/posts/web-exploitation/2022-07-25-flused-emoji/</link>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-07-25-flused-emoji/</link>
     <pubDate>Mon, 25 Jul 2022 12:49:18 &#43;0200</pubDate>
-    <author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-    <guid>http://example.org/posts/web-exploitation/2022-07-25-flused-emoji/</guid>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-07-25-flused-emoji/</guid>
     <description><![CDATA[<p>Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.</p>]]></description>
 </item>
 </channel>

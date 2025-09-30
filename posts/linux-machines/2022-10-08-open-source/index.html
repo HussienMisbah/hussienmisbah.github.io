@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>Open Source HackTheBox Writeup - 0xMesbaha</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="http://example.org/posts/linux-machines/2022-10-08-open-source/">
+        <title>Open Source HackTheBox Writeup - 0xMesbaha</title><meta name="Description" content="This is 0xMesbaha"><meta property="og:url" content="https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/">
   <meta property="og:site_name" content="0xMesbaha">
   <meta property="og:title" content="Open Source HackTheBox Writeup">
   <meta property="og:description" content="In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git">
@@ -26,7 +26,7 @@
 <meta name="apple-mobile-web-app-title" content="0xMesbaha">
 <meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/linux-machines/2022-10-08-open-source/" /><link rel="prev" href="http://example.org/posts/web-exploitation/2022-10-01-meme-generator/" /><link rel="next" href="http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/web-exploitation/2022-10-01-meme-generator/" /><link rel="next" href="https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -36,9 +36,9 @@
         "inLanguage": "en",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "http:\/\/example.org\/posts\/linux-machines\/2022-10-08-open-source\/"
+            "@id": "https:\/\/hussienmisbah.github.io\/posts\/linux-machines\/2022-10-08-open-source\/"
         },"genre": "posts","keywords": "Hackthebox, git, docker, port-forwarding","wordcount":  955 ,
-        "url": "http:\/\/example.org\/posts\/linux-machines\/2022-10-08-open-source\/","datePublished": "2022-10-08T00:45:19+02:00","dateModified": "2022-10-08T00:45:19+02:00","publisher": {
+        "url": "https:\/\/hussienmisbah.github.io\/posts\/linux-machines\/2022-10-08-open-source\/","datePublished": "2022-10-08T00:45:19+02:00","dateModified": "2022-10-08T00:45:19+02:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -457,7 +457,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://example.org/posts/linux-machines/2022-10-08-open-source/" data-title="Open Source HackTheBox Writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,git,docker,port-forwarding"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/linux-machines/2022-10-08-open-source/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://example.org/posts/linux-machines/2022-10-08-open-source/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2fexample.org%2fposts%2flinux-machines%2f2022-10-08-open-source%2f&amp;text=Open%20Source%20HackTheBox%20Writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/" data-title="Open Source HackTheBox Writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,git,docker,port-forwarding"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fhussienmisbah.github.io%2fposts%2flinux-machines%2f2022-10-08-open-source%2f&amp;text=Open%20Source%20HackTheBox%20Writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>

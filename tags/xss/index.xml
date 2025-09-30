@@ -2,33 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>XSS on 0xMesbaha</title>
-    <link>http://example.org/tags/xss/</link>
+    <link>https://hussienmisbah.github.io/tags/xss/</link>
     <description>Recent content in XSS on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sun, 05 May 2024 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/xss/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/xss/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>WizerCTF-May2024</title>
-      <link>http://example.org/posts/code-review/2024-05-06-wizerctf-may-2024/</link>
-      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/code-review/2024-05-06-wizerctf-may-2024/</guid>
+      <link>https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/</link>
+      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/</guid>
       <description>&lt;p&gt;&lt;em&gt;Wizer CTF is an exciting game designed specifically for developers . It&amp;rsquo;s all about putting your skills to the test and seeing if you can identify and exploit vulnerabilities while honing your secure coding abilities. The game kicks off with a snappy code snippet that comes with some tricky vulnerabilities. Your goal? Spot those vulnerabilities and figure out how to exploit them.&#xA;The cool thing is that you don&amp;rsquo;t have to rely on guesswork to know if you&amp;rsquo;ve got it right. You can actually execute your payload right there on the game page. If you manage to successfully exploit the vulnerabilities, you&amp;rsquo;ll earn yourself a flag and a well-deserved spot on leaderboard , The main focus area is web exploitation and the ctf event is held every quarter , this writeup discusses 5 challenges out of 6.&lt;/em&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>JustCTF Extra Safe Security Layers writeup</title>
-      <link>http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
-      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
+      <link>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</link>
+      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/</guid>
       <description>&lt;p&gt;This Challenge is about exploiting cross site scripting with a strict CSP in place along with XSS Santizer and other restrictions , the interesting part in this blog is about learning the root cause and idenfiy exploit points. the challenge may seem very easy and it is easy and fun indeed.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Kryptos Support challenge Writeup</title>
-      <link>http://example.org/posts/web-exploitation/2022-05-19-kryptos-support/</link>
-      <pubDate>Thu, 19 May 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/web-exploitation/2022-05-19-kryptos-support/</guid>
+      <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-05-19-kryptos-support/</link>
+      <pubDate>Thu, 19 May 2022 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-05-19-kryptos-support/</guid>
       <description>&lt;p&gt;HTB Cyber Apocalypse CTF 2022 was held from the 14th of May Until the 19th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy&lt;/p&gt;</description>
     </item>
   </channel>

@@ -2,26 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Path-Poisoning on 0xMesbaha</title>
-    <link>http://example.org/tags/path-poisoning/</link>
+    <link>https://hussienmisbah.github.io/tags/path-poisoning/</link>
     <description>Recent content in Path-Poisoning on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sat, 21 May 2022 00:51:12 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/path-poisoning/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/path-poisoning/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pandora Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-05-21-pandora/</link>
-      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-05-21-pandora/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-05-21-pandora/</link>
+      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-05-21-pandora/</guid>
       <description>&lt;p&gt;In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access&lt;/p&gt;</description>
     </item>
     <item>
       <title>Previse Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-01-27-previse/</link>
-      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-01-27-previse/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/</link>
+      <pubDate>Thu, 27 Jan 2022 00:45:08 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/</guid>
       <description>&lt;p&gt;In this Writeup you will find walkthrough of the retired machine previse From Hackthebox&lt;/p&gt;</description>
     </item>
   </channel>

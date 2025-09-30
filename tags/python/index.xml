@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on 0xMesbaha</title>
-    <link>http://example.org/tags/python/</link>
+    <link>https://hussienmisbah.github.io/tags/python/</link>
     <description>Recent content in Python on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sun, 17 Apr 2022 12:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SQL Tutor challenge writeup</title>
-      <link>http://example.org/posts/web-exploitation/2022-04-17-sql-tutor/</link>
-      <pubDate>Sun, 17 Apr 2022 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/web-exploitation/2022-04-17-sql-tutor/</guid>
+      <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-04-17-sql-tutor/</link>
+      <pubDate>Sun, 17 Apr 2022 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-04-17-sql-tutor/</guid>
       <description>&lt;p&gt;DCTF 2022 was held from the 15th of April Until the 17th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was ranked easy.&lt;/p&gt;</description>
     </item>
   </channel>

@@ -2,40 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Port-Forwarding on 0xMesbaha</title>
-    <link>http://example.org/tags/port-forwarding/</link>
+    <link>https://hussienmisbah.github.io/tags/port-forwarding/</link>
     <description>Recent content in Port-Forwarding on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sat, 08 Oct 2022 00:45:19 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/port-forwarding/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/port-forwarding/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Open Source HackTheBox Writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-10-08-open-source/</link>
-      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-10-08-open-source/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/</link>
+      <pubDate>Sat, 08 Oct 2022 00:45:19 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-10-08-open-source/</guid>
       <description>&lt;p&gt;In This Box we are facing interesting Stuff like Docker , git hooks and other stuff. first we got access to a docker in the machine by overwritting the application code with a reverse shell. then we make port forwarding to scan the original host which has a Service running and we can see it from the docker. From this Service we can get access to the actual machine and from their we can get the root access using git hooks because the root seems to have a cronjob running git&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pandora Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-05-21-pandora/</link>
-      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-05-21-pandora/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-05-21-pandora/</link>
+      <pubDate>Sat, 21 May 2022 00:51:12 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-05-21-pandora/</guid>
       <description>&lt;p&gt;In This Box we are going to enumerate the snmp port which will show user daniel with his password as a string in the output , we are going to login with ssh to him and will see there is another user matt which has the user.txt , after some enumeration we will see there is pandora fms running internally with user matt , we will port forward to exploit the vulnerable service then we will abuse a path poisoning in a custom binary for the root access&lt;/p&gt;</description>
     </item>
     <item>
       <title>Devzat Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-03-11-devzat/</link>
-      <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-03-11-devzat/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-03-11-devzat/</link>
+      <pubDate>Fri, 11 Mar 2022 00:45:12 +0900</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-03-11-devzat/</guid>
       <description>&lt;p&gt;In this Hackthebox we will get a user access through a command injection in a vhost , then will make port forwarding to find a service that will give us the password for another user who have access to some backups, in this backups we can find the source-code for a bot , the bot has 2 versions one of them is running locally and it has a command &amp;ldquo;file&amp;rdquo; which allows us to read any file on the sytsem we will make port forwarding one more time to read the root private key and login as root&lt;/p&gt;</description>
     </item>
     <item>
       <title>Horizontall Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-02-04-horizontall/</link>
-      <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-02-04-horizontall/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/</link>
+      <pubDate>Fri, 04 Feb 2022 00:45:09 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/</guid>
       <description>&lt;p&gt;we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh&lt;/p&gt;</description>
     </item>
   </channel>

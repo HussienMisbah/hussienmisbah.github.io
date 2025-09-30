@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gdb Server on 0xMesbaha</title>
-    <link>http://example.org/tags/gdb-server/</link>
+    <link>https://hussienmisbah.github.io/tags/gdb-server/</link>
     <description>Recent content in Gdb Server on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sat, 23 Apr 2022 00:51:12 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/gdb-server/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/gdb-server/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Backdoor Hackthebox writeup</title>
-      <link>http://example.org/posts/linux-machines/2022-01-21-backdoor/</link>
-      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/linux-machines/2022-01-21-backdoor/</guid>
+      <link>https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/</link>
+      <pubDate>Sat, 23 Apr 2022 00:51:12 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/</guid>
       <description>&lt;p&gt;In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.&lt;/p&gt;</description>
     </item>
   </channel>

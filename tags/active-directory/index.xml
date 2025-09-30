@@ -2,19 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Active-Directory on 0xMesbaha</title>
-    <link>http://example.org/tags/active-directory/</link>
+    <link>https://hussienmisbah.github.io/tags/active-directory/</link>
     <description>Recent content in Active-Directory on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
-    <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Sat, 20 Aug 2022 00:49:18 +0200</lastBuildDate>
-    <atom:link href="http://example.org/tags/active-directory/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/active-directory/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Timelapse Hackthebox writeup</title>
-      <link>http://example.org/posts/windows-machines/2022-08-20-timelapse/</link>
-      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>http://example.org/posts/windows-machines/2022-08-20-timelapse/</guid>
+      <link>https://hussienmisbah.github.io/posts/windows-machines/2022-08-20-timelapse/</link>
+      <pubDate>Sat, 20 Aug 2022 00:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/posts/windows-machines/2022-08-20-timelapse/</guid>
       <description>&lt;p&gt;In this Box we are against a windows machine has the active directory service installed on it , we can list files on smb shares and access some shared folder to find a backup.zip file which contains a pfx file for a user on the domain , we can also find some hints about LAPS. after extracting the key and certificate from the pfx file we can login using WinRM. then checking the powershell history we can see password for another user which is a memeber of the LAPS_READERS Group so the other user can read the administrator password in clear text&lt;/p&gt;</description>
     </item>
   </channel>
