@@ -76,55 +76,7 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
     <pubDate>Sat, 06 Aug 2022 12:49:18 &#43;0200</pubDate>
     <author>0xMesbaha</author>
     <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-08-06-kenzy/</guid>
-    <description><![CDATA[<table>
-  <thead>
-      <tr>
-          <th></th>
-          <th></th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>CTF name</td>
-          <td><a href="https://www.ascyberwargames.com/" target="_blank" rel="noopener noreffer ">AWG 2022</a></td>
-      </tr>
-      <tr>
-          <td>challenge</td>
-          <td>kenzy</td>
-      </tr>
-      <tr>
-          <td>category</td>
-          <td>web</td>
-      </tr>
-      <tr>
-          <td>about</td>
-          <td>SQL injection</td>
-      </tr>
-      <tr>
-          <td>description</td>
-          <td>captcha is not that secure</td>
-      </tr>
-      <tr>
-          <td>points</td>
-          <td>900</td>
-      </tr>
-      <tr>
-          <td>team</td>
-          <td><a href="https://ctftime.org/team/168238" target="_blank" rel="noopener noreffer ">0xCha0s</a></td>
-      </tr>
-  </tbody>
-</table>
-<h2 id="discovery">Discovery</h2>
-<p>we are introduced with this page which takes username ,password and the Captcha</p>
-<p></p>
-<p>If we check the source code we can notice this comment</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-cmd">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">        <span class="p">&lt;</span>!-- Username =====<span class="p">&gt;</span> admin --&gt;</span></span></code></pre></div></div>
-<p>we can also find the endpoint which generates the captcha each time we request it different captcha is assigned</p>]]></description>
+    <description><![CDATA[<p>This Challenge is From Arab Security WarGames 2022 qualificatons , we managed to solve it intime and qualify to finals round.</p>]]></description>
 </item>
 <item>
     <title>Flushed Emoji challenge Writeup</title>
