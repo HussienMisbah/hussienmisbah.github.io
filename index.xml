@@ -11,8 +11,7 @@
     <pubDate>Thu, 30 Apr 2026 12:49:18 &#43;0200</pubDate>
     <author>0xMesbaha</author>
     <guid>https://hussienmisbah.github.io/posts/web-exploitation/2026-04-30-executing-php-through-unexpected-paths/</guid>
-    <description><![CDATA[<p></p>
-<p>In a recent project i came across a file upload function which i really love to spend time understanding how it exactly works to ensure either it can be exploited or not. the interesting thing which makes me write this blog is the bypass idea which is not really common and btw i spent much time chatting with ai platforms to get suggestions and none of them directed me through this path to be honest it was 6 months ago so maybe it can now :&ldquo;D</p>]]></description>
+    <description><![CDATA[<p>In a recent project i came across a file upload function which i really love to spend time understanding how it exactly works to ensure either it can be exploited or not. the interesting thing which makes me write this blog is the bypass idea which is not really common and btw i spent much time chatting with ai platforms to get suggestions and none of them directed me through this path to be honest it was 6 months ago so maybe it can now :&ldquo;D</p>]]></description>
 </item>
 <item>
     <title>CVE-2022-0650 Analysis &amp; POC</title>
