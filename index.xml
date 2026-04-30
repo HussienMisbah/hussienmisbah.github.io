@@ -3,9 +3,17 @@
         <title>0xMesbaha</title>
         <link>https://hussienmisbah.github.io/</link>
         <description>This is 0xMesbaha</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 30 Apr 2026 12:49:18 &#43;0200</lastBuildDate>
             <atom:link href="https://hussienmisbah.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>No .php, No Problem: Executing PHP Through Unexpected Paths</title>
+    <link>https://hussienmisbah.github.io/posts/web-exploitation/2026-04-30-executing-php-through-unexpected-paths/</link>
+    <pubDate>Thu, 30 Apr 2026 12:49:18 &#43;0200</pubDate>
+    <author>0xMesbaha</author>
+    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2026-04-30-executing-php-through-unexpected-paths/</guid>
+    <description><![CDATA[<p>In a recent project i came across a file upload function which i really love to spend time understanding how it exactly works to ensure either it can be exploited or not. the interesting thing which makes me write this blog is the bypass idea which is not really common and btw i spent much time chatting with ai platforms to get suggestions and none of them directed me through this path to be honest it was 6 months ago so maybe it can now :&ldquo;D</p>]]></description>
+</item>
+<item>
     <title>CVE-2022-0650 Analysis &amp; POC</title>
     <link>https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/</link>
     <pubDate>Tue, 30 Sep 2025 12:49:18 &#43;0200</pubDate>
@@ -77,14 +85,6 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
     <author>0xMesbaha</author>
     <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-08-06-kenzy/</guid>
     <description><![CDATA[<p>This Challenge is From Arab Security WarGames 2022 qualificatons , we managed to solve it intime and qualify to finals round.</p>]]></description>
-</item>
-<item>
-    <title>Flushed Emoji challenge Writeup</title>
-    <link>https://hussienmisbah.github.io/posts/web-exploitation/2022-07-25-flused-emoji/</link>
-    <pubDate>Mon, 25 Jul 2022 12:49:18 &#43;0200</pubDate>
-    <author>0xMesbaha</author>
-    <guid>https://hussienmisbah.github.io/posts/web-exploitation/2022-07-25-flused-emoji/</guid>
-    <description><![CDATA[<p>Lexington Informatics Tournament CTF CTF 2022 was held from the 22nd of July Until the 25th of the month , and we have participated under the team 0xcha0s, we have managed to solve multiple challenges. this challenge was solved less than 50 times in the 3 days and it was really nice.</p>]]></description>
 </item>
 </channel>
 </rss>

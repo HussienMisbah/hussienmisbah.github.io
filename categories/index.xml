@@ -6,8 +6,15 @@
     <description>Recent content in Categories on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 30 Sep 2025 12:49:18 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 30 Apr 2026 12:49:18 +0200</lastBuildDate>
     <atom:link href="https://hussienmisbah.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Exploitation</title>
+      <link>https://hussienmisbah.github.io/categories/web-exploitation/</link>
+      <pubDate>Thu, 30 Apr 2026 12:49:18 +0200</pubDate>
+      <guid>https://hussienmisbah.github.io/categories/web-exploitation/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Exploitation</title>
       <link>https://hussienmisbah.github.io/categories/exploitation/</link>
@@ -27,13 +34,6 @@
       <link>https://hussienmisbah.github.io/categories/osint/</link>
       <pubDate>Sat, 30 Nov 2024 12:49:18 +0200</pubDate>
       <guid>https://hussienmisbah.github.io/categories/osint/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Web Exploitation</title>
-      <link>https://hussienmisbah.github.io/categories/web-exploitation/</link>
-      <pubDate>Sun, 04 Jun 2023 12:49:18 +0200</pubDate>
-      <guid>https://hussienmisbah.github.io/categories/web-exploitation/</guid>
       <description></description>
     </item>
     <item>
