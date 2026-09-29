@@ -8,20 +8,20 @@
     <language>en</language>
     <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
     <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
-    <lastBuildDate>Thu, 30 Apr 2026 12:49:18 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 12:49:18 +0200</lastBuildDate>
     <atom:link href="https://hussienmisbah.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vulnerability Research</title>
+      <link>https://hussienmisbah.github.io/categories/vulnerability-research/</link>
+      <pubDate>Tue, 29 Sep 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>https://hussienmisbah.github.io/categories/vulnerability-research/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Web Exploitation</title>
       <link>https://hussienmisbah.github.io/categories/web-exploitation/</link>
       <pubDate>Thu, 30 Apr 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
       <guid>https://hussienmisbah.github.io/categories/web-exploitation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Exploitation</title>
-      <link>https://hussienmisbah.github.io/categories/exploitation/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>https://hussienmisbah.github.io/categories/exploitation/</guid>
       <description></description>
     </item>
     <item>

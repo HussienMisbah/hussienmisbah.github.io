@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>CVE on 0xMesbaha</title>
-    <link>https://hussienmisbah.github.io/tags/cve/</link>
-    <description>Recent content in CVE on 0xMesbaha</description>
+    <title>VR on 0xMesbaha</title>
+    <link>https://hussienmisbah.github.io/tags/vr/</link>
+    <description>Recent content in VR on 0xMesbaha</description>
     <generator>Hugo</generator>
     <language>en</language>
     <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
     <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
     <lastBuildDate>Tue, 29 Sep 2026 12:49:18 +0200</lastBuildDate>
-    <atom:link href="https://hussienmisbah.github.io/tags/cve/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hussienmisbah.github.io/tags/vr/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Payload CMS SQL Injection</title>
       <link>https://hussienmisbah.github.io/posts/vulnerability-research/2026-09-30-payloadcms-sqli/</link>
       <pubDate>Tue, 29 Sep 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
       <guid>https://hussienmisbah.github.io/posts/vulnerability-research/2026-09-30-payloadcms-sqli/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;Payload CMS is an open-source,full-stack framework/CMS built natively on Next.js. It gives you a backend, database layer, Admin Panel, authentication, APIs, access control, uploads, and content management without having to build those pieces yourself. they always highlight &amp;ldquo;Define your schema in code and get a full TypeScript backend and admin panel. Instantly.&amp;rdquo; in their Docs to ensure easy deployment, they handle everyting for you from admin panel , apis , database and more. PayloadCMS is one of the most fast growing platforms as they have 589.1k downloads weekly. &lt;br&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://hussienmisbah.github.io/assets/images/pyCMS.jpg&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;I have been playing with Ai Tools/Models/agents harness for a while trying to get the most benefits out of it in some areas specially vulnerability research and CVE Discovery. Don&amp;rsquo;t worry, this blog post isn&amp;rsquo;t just another piece of AI slop content :&amp;ldquo;D&lt;/p&gt;&#xA;&lt;p&gt;This research results goes back to June 2026 but they just fixed it so i can blog about it, in this post we will go through what i did to discover such bug and the reason of this post is not just showing some basic SQL Injection example or showing how great AI is at discovering vulnerabilites but the technique of exploitation is really cool and even frontier models at that time wasn&amp;rsquo;t able to spot it initialy without guidance and hinting which makes it even cooler. also a side note the Maintainers said before &lt;em&gt;&amp;ldquo;We regularly red-team our own codebase, including review of pull requests as they&amp;rsquo;re opened and merged, so issues are caught before they ship rather than after.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>CVE-2022-0650 Analysis &amp; POC</title>
-      <link>https://hussienmisbah.github.io/posts/vulnerability-research/2025-10-01-cve-2022-0650-analysis/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>https://hussienmisbah.github.io/posts/vulnerability-research/2025-10-01-cve-2022-0650-analysis/</guid>
-      <description>&lt;p&gt;Recently i was exploring Firmware analysis and iot exploitation domain out  of curiosity , and it turned out to be very interesting to me. i spent a while studying Exploitation Basics , Solving Basic PWN &amp;amp; Reverse Engineering Challanges and Checking IOT Pentesting Course From &lt;a href=&#34;https://fahemsec.com/course/7&#34; target=&#34;_blank&#34; rel=&#34;noopener noreffer &#34;&gt;FahemSec&lt;/a&gt;. I Spent days analyzing firmware and binaries in Ghidra and GDB and Finally I was able to reproduce couple of CVEs on TpLink Routers and even discover new ones!&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

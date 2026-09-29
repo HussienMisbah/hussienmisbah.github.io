@@ -8,8 +8,29 @@
     <language>en</language>
     <managingEditor>hussienmisbah11@gmail.com (0xMesbaha)</managingEditor>
     <webMaster>hussienmisbah11@gmail.com (0xMesbaha)</webMaster>
-    <lastBuildDate>Thu, 30 Apr 2026 12:49:18 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 12:49:18 +0200</lastBuildDate>
     <atom:link href="https://hussienmisbah.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CVE</title>
+      <link>https://hussienmisbah.github.io/tags/cve/</link>
+      <pubDate>Tue, 29 Sep 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>https://hussienmisbah.github.io/tags/cve/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SQLi</title>
+      <link>https://hussienmisbah.github.io/tags/sqli/</link>
+      <pubDate>Tue, 29 Sep 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>https://hussienmisbah.github.io/tags/sqli/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>VR</title>
+      <link>https://hussienmisbah.github.io/tags/vr/</link>
+      <pubDate>Tue, 29 Sep 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
+      <guid>https://hussienmisbah.github.io/tags/vr/</guid>
+      <description></description>
+    </item>
     <item>
       <title>File Upload</title>
       <link>https://hussienmisbah.github.io/tags/file-upload/</link>
@@ -29,13 +50,6 @@
       <link>https://hussienmisbah.github.io/tags/rce/</link>
       <pubDate>Thu, 30 Apr 2026 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
       <guid>https://hussienmisbah.github.io/tags/rce/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CVE</title>
-      <link>https://hussienmisbah.github.io/tags/cve/</link>
-      <pubDate>Tue, 30 Sep 2025 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>https://hussienmisbah.github.io/tags/cve/</guid>
       <description></description>
     </item>
     <item>
@@ -85,13 +99,6 @@
       <link>https://hussienmisbah.github.io/tags/react/</link>
       <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
       <guid>https://hussienmisbah.github.io/tags/react/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>SQLi</title>
-      <link>https://hussienmisbah.github.io/tags/sqli/</link>
-      <pubDate>Sun, 05 May 2024 12:49:18 +0200</pubDate><author>hussienmisbah11@gmail.com (0xMesbaha)</author>
-      <guid>https://hussienmisbah.github.io/tags/sqli/</guid>
       <description></description>
     </item>
     <item>
