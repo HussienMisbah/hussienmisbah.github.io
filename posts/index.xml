@@ -10,8 +10,7 @@
     <pubDate>Tue, 29 Sep 2026 12:49:18 &#43;0200</pubDate>
     <author>0xMesbaha</author>
     <guid>https://hussienmisbah.github.io/posts/vulnerability-research/2026-09-30-payloadcms-sqli/</guid>
-    <description><![CDATA[<h2 id="introduction">Introduction</h2>
-<p>Payload CMS is an open-source,full-stack framework/CMS built natively on Next.js. It gives you a backend, database layer, Admin Panel, authentication, APIs, access control, uploads, and content management without having to build those pieces yourself. they always highlight &ldquo;Define your schema in code and get a full TypeScript backend and admin panel. Instantly.&rdquo; in their Docs to ensure easy deployment, they handle everyting for you from admin panel , apis , database and more. PayloadCMS is one of the most fast growing platforms as they have 589.1k downloads weekly. <br>
+    <description><![CDATA[<p>Payload CMS is an open-source,full-stack framework/CMS built natively on Next.js. It gives you a backend, database layer, Admin Panel, authentication, APIs, access control, uploads, and content management without having to build those pieces yourself. they always highlight &ldquo;Define your schema in code and get a full TypeScript backend and admin panel. Instantly.&rdquo; in their Docs to ensure easy deployment, they handle everyting for you from admin panel , apis , database and more. PayloadCMS is one of the most fast growing platforms as they have 589.1k downloads weekly. <br>
 <figure>
 </figure>
 </p>
